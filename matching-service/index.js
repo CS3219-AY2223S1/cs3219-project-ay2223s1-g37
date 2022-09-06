@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import { createServer } from 'http';
+import { Server } from 'socket.io';
+import { createMatch } from './controller/socket-controller.js';
 
 const app = express();
 app.use(express.urlencoded({ extended: true }))
@@ -13,5 +15,18 @@ app.get('/', (req, res) => {
 });
 
 const httpServer = createServer(app)
+const io = new Server(httpServer, {});
 
-httpServer.listen(8001);
+app.get('/', (_, res) => res.send('Hello World from matching-service'));
+
+io.on('connection', (socket) => {
+    console.log('Successfully connected via Socket.io!');
+
+    socket.on('disconnect', () => {
+        console.log('User disconnected from Socket.io');
+    });
+
+    socket.on('match', createMatch);
+});
+
+httpServer.listen(8001, () => console.log('matching-service listening on port 8001'));
