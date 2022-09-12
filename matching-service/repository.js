@@ -6,11 +6,12 @@ import Sequelize from 'sequelize';
 import DataTypes from 'sequelize';
 import { Op } from 'sequelize';
 
+// TODO: Decide if host should be local or remote
 let sequelize = new Sequelize('database', 'username', 'password', {
     host: 'localhost',
     dialect: 'sqlite',
     storage: "./db/database.sqlite"
-}); // not sure what the uri should be
+});
 
 let Match;
 
