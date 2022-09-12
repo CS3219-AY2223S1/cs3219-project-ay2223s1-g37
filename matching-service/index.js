@@ -2,7 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import { createMatch } from './controller/socket-controller.js';
+import { createMatch } from './controller/match-controller.js';
+import { pairMatches } from './controller/pairing-controller.js';
 
 const app = express();
 app.use(express.urlencoded({ extended: true }))
@@ -27,6 +28,8 @@ io.on('connection', (socket) => {
     });
 
     socket.on('match', createMatch);
+
+    socket.on('pairing', pairMatches);
 });
 
 httpServer.listen(8001, () => console.log('matching-service listening on port 8001'));

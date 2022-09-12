@@ -1,4 +1,4 @@
-import { createMatch } from '../repository.js';
+import { createMatch, pairMatches } from '../repository.js';
 
 export async function ormCreateMatch(username1, difficulty) {
     // console.log("match-orm: create match w {" + username1 + ", " + difficulty + "}");
@@ -9,6 +9,16 @@ export async function ormCreateMatch(username1, difficulty) {
         return true;
     } catch (err) {
         console.log('ERROR: Could not create new match');
+        return { err };
+    }
+}
+
+export async function ormPairMatches(username1, difficulty) {
+    try {
+        await pairMatches({username1, difficulty});
+        return true;
+    } catch (err) {
+        console.log("Error in running pairing");
         return { err };
     }
 }
