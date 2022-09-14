@@ -8,6 +8,7 @@ import SignupPage from "./components/SignupPage";
 import SelectDifficultyPage from "./components/SelectDifficultyPage";
 import { Box } from "@mui/material";
 import socketClient from "socket.io-client";
+import CountdownPage from "./components/CountdownPage";
 
 const SERVER = "http://127.0.0.1:8001";
 
@@ -26,6 +27,7 @@ function App() {
             ></Route>
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/difficulty" element={<SelectDifficultyPage />} />
+            <Route path="/countdown" element={<CountdownPage />} />
           </Routes>
         </Router>
       </Box>
