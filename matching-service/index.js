@@ -15,3 +15,5 @@ app.get('/', (req, res) => {
 const httpServer = createServer(app)
 
 httpServer.listen(8001);
+
+export { app }
