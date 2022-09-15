@@ -37,4 +37,6 @@ io.on('connection', (socket) => {
     socket.on('pairing', pairMatches);
 });
 
-httpServer.listen(8001, () => console.log('matching-service listening on port 8001'));
+httpServer.listen(8001);
+
+export { app }
