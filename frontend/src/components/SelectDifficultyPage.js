@@ -41,6 +41,7 @@ function SelectDifficultyPage() {
       display={"flex"}
       flexDirection={"column"}
       width={"50%"}
+      margin={"0px auto"}
       //   sx={{ backgroundColor: "green" }}
     >
       <Typography variant={"h3"} marginBottom={"2rem"}>
