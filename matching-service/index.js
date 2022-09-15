@@ -1,6 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import { createServer } from 'http';
+import { Server } from 'socket.io';
+import { createMatch } from './controller/match-controller.js';
+import { pairMatches } from './controller/pairing-controller.js';
 
 const app = express();
 app.use(express.urlencoded({ extended: true }))
@@ -13,6 +16,26 @@ app.get('/', (req, res) => {
 });
 
 const httpServer = createServer(app)
+const io = new Server(httpServer, {
+    cors: {
+        origin: 'http://localhost:3000',
+        methods: ['GET', 'POST'],
+    },
+});
+
+app.get('/', (_, res) => res.send('Hello World from matching-service'));
+
+io.on('connection', (socket) => {
+    console.log('Successfully connected via Socket.io!');
+
+    socket.on('disconnect', () => {
+        console.log('User disconnected from Socket.io');
+    });
+
+    socket.on('match', createMatch);
+
+    socket.on('pairing', pairMatches);
+});
 
 httpServer.listen(8001);
 
