@@ -1,5 +1,6 @@
 import { ormCheckUser as _checkUser } from '../model/user-orm.js'
 import { ormCreateUser as _createUser } from '../model/user-orm.js'
+import jwt from 'jsonwebtoken'
 
 export async function createUser(req, res) {
     try {
@@ -23,4 +24,29 @@ export async function createUser(req, res) {
     } catch (err) {
         return res.status(500).json({message: 'Database failure when creating new user!'})
     }
+}
+
+export async function userLogin(req, res) {
+    try {
+        const { username, password } = req.body;
+        const user = await _checkUser(username);
+    
+        if (!user) {
+            return res.status(404).json({message: `Username: ${username} not found in database!`})
+        }
+        // todo: add check to check if password is correct and return 401/403 (need check) if incorrect password
+        // todo: add check to check if there are any fields left blank, return 500 if so
+
+        const token = jwt.sign({
+            username: username
+        }, "helloworld", { expiresIn: '3h'}) // helloworld is the jwt secret key, it's just an example and should put in env file
+        
+        return res.status(200).json({message: 'Authentication successful', token: token})
+    } catch (err) {
+        return res.status(500).json({message: 'Database failure when retrieving a user!'})
+    }
+}
+
+export async function deleteUser(req, res) {
+
 }

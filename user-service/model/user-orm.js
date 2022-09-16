@@ -16,7 +16,8 @@ export async function ormCreateUser(username, password) {
 export async function ormCheckUser(username) {
     try {
         const user = await UserModel.find({username: username});
-        if (user) {
+        console.log(user)
+        if (user.length !== 0) {
             return true;
         } else {
             return false;
