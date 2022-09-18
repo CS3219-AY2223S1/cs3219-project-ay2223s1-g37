@@ -44,7 +44,7 @@ export async function userLogin(req, res) {
         }, "helloworld", { expiresIn: '3h'}) // helloworld is the jwt secret key, it's just an example and should put in env file
         console.log(token)
         res.cookie('token', token, { httpOnly: true }) // httponly fslse to allow cookie to pass to front
-        return res.status(200).json({message: 'Authentication successful'})
+        return res.status(200).json({message: 'Authentication successful', token})
     } catch (err) {
         return res.status(500).json({message: 'Error logging in!'})
     }

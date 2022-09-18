@@ -24,12 +24,10 @@ function App() {
             ></Route>
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/login" element={<LogininPage/>}/>
-            <Route path="/home" element={
-              <ProtectedRoute>  
-                <Home/>
-              </ProtectedRoute>
-            }/>
-            <Route path="/countdown" element={<CountdownPage />} />
+            <Route path="/" element={<ProtectedRoute/>}> 
+              <Route path="home" element={<Home/>}/>
+              <Route path="countdown" element={<CountdownPage />} />
+            </Route>
           </Routes>
       </Box>
     </div>

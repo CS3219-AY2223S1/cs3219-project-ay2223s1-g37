@@ -29,6 +29,7 @@ function Home() {
             })
             if (res && res.status === STATUS_CODE_OK) {
             console.log("Successfully log out!")
+            sessionStorage.removeItem('token')
             navigate('/login')
         }
     }
