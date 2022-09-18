@@ -12,8 +12,11 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { io } from 'socket.io-client';
+
+const socket = io.connect('http://localhost:8001');
 
 function SelectDifficultyPage() {
   const navigate = useNavigate();
@@ -21,6 +24,7 @@ function SelectDifficultyPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
   const [dialogMsg, setDialogMsg] = useState("");
+  const [isConnected, setIsConnected] = useState(socket.connected);
 
   const handleSelect = (event) => {
     setDifficulty(event.target.value);
@@ -31,12 +35,53 @@ function SelectDifficultyPage() {
       setIsDialogOpen(true);
       setDialogTitle("Error");
       setDialogMsg("Please select a difficulty level to continue");
-    } else {
-      navigate('/countdown')
+      return
     }
+
+    sendMatch(difficulty)
   };
 
+  const sendMatch = (difficulty) => {
+    let username1 = "abc"; // TODO: retrieve current session's username
+    if (isConnected) socket.emit('match', {username1, difficulty});
+  }
+
+  const routeToNext = useCallback((isMatchCreated) => {
+    if (isMatchCreated) {
+      navigate('/countdown')
+    } else {
+      setIsDialogOpen(true);
+      setDialogTitle("Error");
+      setDialogMsg("Please try again");
+    }  
+  }, [navigate]);
+
   const closeDialog = () => setIsDialogOpen(false);
+
+  useEffect(() => {
+    socket.on('connect', () => {
+      setIsConnected(true);
+    });
+
+    socket.on('disconnect', () => {
+      setIsConnected(false);
+    });
+
+    socket.on('matchCreationSuccess', () => {
+      routeToNext(true);
+    })
+
+    socket.on('matchCreationFailure', () => {
+      routeToNext(false);
+    })
+
+    return () => {
+      socket.off('connect');
+      socket.off('disconnect');
+      socket.off('matchCreationSuccess');
+      socket.off('matchCreationFailure');
+    };
+  }, [routeToNext]);
 
   return (
     <Box
