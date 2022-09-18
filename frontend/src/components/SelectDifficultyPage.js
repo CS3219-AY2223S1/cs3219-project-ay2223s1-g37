@@ -13,8 +13,10 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function SelectDifficultyPage() {
+  const navigate = useNavigate();
   const [difficulty, setDifficulty] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
@@ -30,7 +32,7 @@ function SelectDifficultyPage() {
       setDialogTitle("Error");
       setDialogMsg("Please select a difficulty level to continue");
     } else {
-      alert(difficulty);
+      navigate('/countdown')
     }
   };
 
@@ -42,6 +44,7 @@ function SelectDifficultyPage() {
       flexDirection={"column"}
       width={"50%"}
       margin={"0px auto"}
+      padding={"4rem"}
       //   sx={{ backgroundColor: "green" }}
     >
       <Typography variant={"h3"} marginBottom={"2rem"}>

@@ -28,3 +28,11 @@ export async function ormCheckUser(username) {
     }
 }
 
+export async function ormDeleteUser(username) {
+    try {
+        await UserModel.findOneAndRemove({username: username})
+    } catch {
+        console.log('ERROR: Could not delete for a user')
+        return { err }
+    }
+}

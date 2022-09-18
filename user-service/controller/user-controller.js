@@ -1,5 +1,6 @@
 import { ormCheckUser as _checkUser } from '../model/user-orm.js'
 import { ormCreateUser as _createUser } from '../model/user-orm.js'
+import { ormDeleteUser as _deleteUser } from '../model/user-orm.js'
 import jwt from 'jsonwebtoken'
 
 export async function createUser(req, res) {
@@ -36,17 +37,41 @@ export async function userLogin(req, res) {
         }
         // todo: add check to check if password is correct and return 401/403 (need check) if incorrect password
         // todo: add check to check if there are any fields left blank, return 500 if so
-
+        // todo: try use bycrpt
         const token = jwt.sign({
-            username: username
+            username: username,
+            password: password
         }, "helloworld", { expiresIn: '3h'}) // helloworld is the jwt secret key, it's just an example and should put in env file
-        
-        return res.status(200).json({message: 'Authentication successful', token: token})
+        console.log(token)
+        res.cookie('token', token, { httpOnly: true }) // httponly fslse to allow cookie to pass to front
+        return res.status(200).json({message: 'Authentication successful'})
     } catch (err) {
-        return res.status(500).json({message: 'Database failure when retrieving a user!'})
+        return res.status(500).json({message: 'Error logging in!'})
+    }
+}
+
+export async function userLogout(req, res) {
+    console.log(req.cookies)
+    try {
+        const token = req.headers?.cookie.split('=')[1]
+        // todo: blacklist token (probably create like a table that holds all the temporary token with time limit)
+        return res.clearCookie("token").status(200).json({message: "Successfully log out!"})
+    } catch (err) {
+        return res.status(500).json({message: 'Error logging user out!'})
     }
 }
 
 export async function deleteUser(req, res) {
-
+    try {
+        // todo: might need to use token for authentication to delete
+        const { username } = req.body
+        const user = await _checkUser(username)
+        if (user) {
+            _deleteUser(username)
+            return res.status(200).json({message: `Username ${username} successfully deleted`})
+        }
+        return res.status(404).json({message: `Unable to find username ${username} in database` })
+    } catch (err) {
+        return res.status(500).json({message: "Error deleting account"})
+    }
 }

@@ -8,21 +8,27 @@ import SelectDifficultyPage from "./components/SelectDifficultyPage";
 import LogininPage from './components/LoginPage';
 import { Box } from "@mui/material";
 import CountdownPage from "./components/CountdownPage";
+import Home from "./views/Home"
+import ProtectedRoute from "./utils/ProtectedRoute"
 
 function App() {
 
   return (
     <div className="App">
-      <Box display={"flex"} flexDirection={"column"} padding={"4rem"}>
+      <Box display={"flex"} flexDirection={"column"}>
           <Routes>
             <Route
               exact
               path="/"
-              element={<Navigate replace to="/signup" />}
+              element={<Navigate replace to="/login" />}
             ></Route>
             <Route path="/signup" element={<SignupPage />} />
-            <Route path="/difficulty" element={<SelectDifficultyPage />} />
             <Route path="/login" element={<LogininPage/>}/>
+            <Route path="/home" element={
+              <ProtectedRoute>  
+                <Home/>
+              </ProtectedRoute>
+            }/>
             <Route path="/countdown" element={<CountdownPage />} />
           </Routes>
       </Box>
