@@ -28,7 +28,7 @@ function LogininPage () {
 
     const handleLogin = async () => {
         setIsLoginSuccess(false)
-        const res = await axios.post(URL_USER_SVC, {username, password})
+        const res = await axios.post(URL_USER_SVC, {username, password}, {withCredentials: true})
             .catch((err) => {
                 if (err.response.status === STATUS_CODE_BAD_REQUEST) {
                     setErrorDialog("Username or password is missing")
@@ -41,8 +41,9 @@ function LogininPage () {
             })
         if (res && res.status === STATUS_CODE_OK) {
             console.log("Successfully logged in")
+            sessionStorage.setItem('token', res.data.token)
             setIsLoginSuccess(true)
-            navigate('/difficulty')
+            navigate('/home')
         }
     }
 
@@ -55,7 +56,7 @@ function LogininPage () {
     };
 
     return (
-        <Box display={"flex"} flexDirection={"column"} width={"30%"} margin={"0px auto"}>
+        <Box display={"flex"} flexDirection={"column"} width={"30%"} margin={"0px auto"} padding={"4rem"}>
             <Typography variant={"h3"} marginBottom={"2rem"}>Log in</Typography>
             <TextField
                 label="Username"
@@ -74,7 +75,10 @@ function LogininPage () {
                 sx={{marginBottom: "2rem"}}
             />
             <Box display={"flex"} flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
-                <Typography component={Link} to="/signup">No account? Sign up here</Typography>
+                <Box>
+                    <Typography component={Link} to="/signup">No account? Sign up here</Typography>
+                    <Typography>Forget password?</Typography>
+                </Box>
                 <Button variant={"outlined"} onClick={handleLogin} >Log in</Button>
             </Box>
 

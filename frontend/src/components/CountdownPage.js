@@ -1,7 +1,9 @@
 import { Box, Typography, Button } from "@mui/material";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function CountdownPage() {
+  const navigate = useNavigate();
   const [timeLeft, setTimeLeft] = useState(30);
 
   useEffect(() => {
@@ -28,7 +30,9 @@ function CountdownPage() {
           <Typography variant={"h6"} marginBottom={5}>
             No match found.
           </Typography>
-          <Button variant={"outlined"} onClick={() => {}}>
+          <Button variant={"outlined"} onClick={() => {
+            navigate("/home")
+          }}>
             Back
           </Button>
         </Box>

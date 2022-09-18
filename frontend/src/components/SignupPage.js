@@ -55,7 +55,7 @@ function SignupPage() {
     };
 
     return (
-        <Box display={"flex"} flexDirection={"column"} width={"30%"} margin={"0px auto"}>
+        <Box display={"flex"} flexDirection={"column"} width={"30%"} margin={"0px auto"} padding={"4rem"}>
             <Typography variant={"h3"} marginBottom={"2rem"}>Sign Up</Typography>
             <TextField
                 label="Username"

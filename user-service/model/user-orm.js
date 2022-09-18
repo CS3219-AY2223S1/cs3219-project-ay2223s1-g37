@@ -32,6 +32,16 @@ export async function ormCheckUser(username) {
     }
 }
 
+
+export async function ormDeleteUser(username) {
+    try {
+        await UserModel.findOneAndRemove({username: username})
+    } catch {
+        console.log('ERROR: Could not delete for a user')
+        return { err }
+    }
+}
+
 export async function ormCheckPassword(username, password) {
     try {
         const user = await UserModel.findOne({username: username});
@@ -60,3 +70,4 @@ export async function ormChangePassword(username, newPassword) {
         return { err };
     }
 }
+

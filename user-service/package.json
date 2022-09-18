@@ -19,6 +19,7 @@
     "nodemon": "^2.0.19"
   },
   "dependencies": {
+    "cookie-parser": "^1.4.6",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
