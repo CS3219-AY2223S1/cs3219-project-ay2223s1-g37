@@ -14,9 +14,7 @@ import {
 } from "@mui/material";
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { io } from 'socket.io-client';
-
-const socket = io.connect('http://localhost:8001');
+import socket from "../utils/Socket.js"
 
 function SelectDifficultyPage() {
   const navigate = useNavigate();
@@ -46,9 +44,9 @@ function SelectDifficultyPage() {
     if (isConnected) socket.emit('match', {username1, difficulty});
   }
 
-  const routeToNext = useCallback((isMatchCreated) => {
+  const routeToNext = useCallback((isMatchCreated, userInfo) => {
     if (isMatchCreated) {
-      navigate('/countdown')
+      navigate('/countdown', { state: userInfo })
     } else {
       setIsDialogOpen(true);
       setDialogTitle("Error");
@@ -67,8 +65,9 @@ function SelectDifficultyPage() {
       setIsConnected(false);
     });
 
-    socket.on('matchCreationSuccess', () => {
-      routeToNext(true);
+    // userInfo contains the username and difficulty of successfully created user
+    socket.on('matchCreationSuccess', (userInfo) => {
+      routeToNext(true, userInfo);
     })
 
     socket.on('matchCreationFailure', () => {

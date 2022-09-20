@@ -15,7 +15,7 @@ export async function createMatch(req, socket) {
                 return
             } else {
                 console.log(`Created new match for ${username1} successfully!`);
-                socket.emit('matchCreationSuccess');
+                socket.emit('matchCreationSuccess', resp);
                 return
             }
         } else {
