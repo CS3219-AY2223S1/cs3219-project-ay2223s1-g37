@@ -65,7 +65,7 @@ function SelectDifficultyPage() {
       setIsConnected(false);
     });
 
-    // userInfo contains the username and difficulty of successfully created user
+    // userInfo contains the DB entry ID of successfully created user
     socket.on('matchCreationSuccess', (userInfo) => {
       routeToNext(true, userInfo);
     })
