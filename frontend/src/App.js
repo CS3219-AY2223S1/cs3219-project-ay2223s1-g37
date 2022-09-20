@@ -9,6 +9,7 @@ import LogininPage from './components/LoginPage';
 import { Box } from "@mui/material";
 import CountdownPage from "./components/CountdownPage";
 import Home from "./views/Home"
+import RoomPage from "./components/RoomPage";
 import ProtectedRoute from "./utils/ProtectedRoute"
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
               <Route path="home" element={<Home/>}/>
               <Route path="selectdifficulty" element={<SelectDifficultyPage />}/>
               <Route path="countdown" element={<CountdownPage />} />
+              <Route path="room" element={<RoomPage />} />
             </Route>
           </Routes>
       </Box>
