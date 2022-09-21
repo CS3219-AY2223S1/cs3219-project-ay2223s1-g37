@@ -74,13 +74,26 @@ export async function userLogout(req, res) {
 export async function deleteUser(req, res) {
     try {
         // todo: might need to use token for authentication to delete
-        const { username } = req.body
+        const { username, password } = req.body
+        if (!username || !password) {
+            return res.status(400).json({message: 'Username and/or Password are missing!'})
+        }
+
         const user = await _checkUser(username)
         if (user) {
-            _deleteUser(username)
-            return res.status(200).json({message: `Username ${username} successfully deleted`})
+            const validPassword = await _checkPassword(username, password);
+            if (validPassword) { // true route
+                const user = _deleteUser(username)
+                if (user) {
+                    res.clearCookie("token") // clear token
+                    return res.status(200).json({message: `Username ${username} successfully deleted`})
+                }
+            } else {
+                return res.status(401).json({message: 'Incorrect password! Unable to delete account'})
+            }
+        } else {
+            return res.status(404).json({message: `Unable to find username ${username} in database` })
         }
-        return res.status(404).json({message: `Unable to find username ${username} in database` })
     } catch (err) {
         return res.status(500).json({message: "Error deleting account"})
     }
@@ -88,19 +101,24 @@ export async function deleteUser(req, res) {
 
 export async function changePassword(req, res) {
     try {
-        const { username, password } = req.body;
+        const { username, oldPassword, newPassword } = req.body;
         const user = await _checkUser(username);
 
-        if (!username || !password) {
+        if (!username || !oldPassword || !newPassword) {
             return res.status(400).json({message: 'Username and/or Password are missing!'})
         }
-
+        console.log(user)
         if (user) {
-            const resp = await _changePassword(username, password);
-            if (resp.err) {
-                return res.status(400).json({message: 'Could not change password!'});
+            const validPassword = await _checkPassword(username, oldPassword);
+            if (validPassword) {
+                const resp = await _changePassword(username, newPassword);
+                if (resp.err) {
+                    return res.status(400).json({message: 'Could not change password!'});
+                } else {
+                    return res.status(200).json({message: 'Password changed successfully!'})
+                }
             } else {
-                return res.status(200).json({message: 'Password changed successfully!'})
+                return res.status(401).json({message: 'Incorrect password! Unable to update account'})
             }
         } else {
             return res.status(404).json({message: `Username: ${username} not found in database!`})

@@ -4,12 +4,12 @@ import {
   Navigate,
 } from "react-router-dom";
 import SignupPage from "./components/SignupPage";
-import SelectDifficultyPage from "./components/SelectDifficultyPage";
 import LogininPage from './components/LoginPage';
 import { Box } from "@mui/material";
 import CountdownPage from "./components/CountdownPage";
-import Home from "./views/Home"
+import Home from "./components/Home"
 import ProtectedRoute from "./utils/ProtectedRoute"
+import UpdateAccount from "./components/UpdateAccount";
 
 function App() {
 
@@ -24,6 +24,7 @@ function App() {
             ></Route>
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/login" element={<LogininPage/>}/>
+            <Route path="/update" element={<UpdateAccount/>}/>
             <Route path="/" element={<ProtectedRoute/>}> 
               <Route path="home" element={<Home/>}/>
               <Route path="countdown" element={<CountdownPage />} />
