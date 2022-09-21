@@ -26,6 +26,7 @@ function App() {
             <Route path="/login" element={<LogininPage/>}/>
             <Route path="/" element={<ProtectedRoute/>}> 
               <Route path="home" element={<Home/>}/>
+              <Route path="selectdifficulty" element={<SelectDifficultyPage />}/>
               <Route path="countdown" element={<CountdownPage />} />
             </Route>
           </Routes>

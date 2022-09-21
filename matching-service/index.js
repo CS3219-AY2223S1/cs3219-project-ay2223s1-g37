@@ -32,7 +32,7 @@ io.on('connection', (socket) => {
         console.log('User disconnected from Socket.io');
     });
 
-    socket.on('match', createMatch);
+    socket.on('match', data => createMatch(data, socket));
 
     socket.on('pairing', pairMatches);
 });
