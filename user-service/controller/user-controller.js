@@ -5,6 +5,7 @@ import { ormCheckPassword as _checkPassword } from '../model/user-orm.js'
 import { ormChangePassword as _changePassword } from '../model/user-orm.js'
 
 import jwt from 'jsonwebtoken'
+import BlackListTokenModel from '../model/blacklist-token-model.js'
 
 export async function createUser(req, res) {
     try {
@@ -48,6 +49,7 @@ export async function userLogin(req, res) {
                     username: username
                 }, "helloworld", { expiresIn: '3h'}) // helloworld is the jwt secret key, it's just an example and should put in env file
                 res.cookie('token', token, { httpOnly: true }) // httponly false to allow cookie to pass to front
+                console.log(token)
                 return res.status(200).json({message: 'Authentication successful', token: token})
             } else {
                 return res.status(401).json({message: 'Incorrect username or password!'})
@@ -64,7 +66,12 @@ export async function userLogout(req, res) {
     console.log(req.cookies)
     try {
         const token = req.headers?.cookie.split('=')[1]
+        console.log(token)
         // todo: blacklist token (probably create like a table that holds all the temporary token with time limit)
+        const blacklistedToken = new BlackListTokenModel({
+            token: token
+        })
+        blacklistedToken.save();
         return res.clearCookie("token").status(200).json({message: "Successfully log out!"})
     } catch (err) {
         return res.status(500).json({message: 'Error logging user out!'})
