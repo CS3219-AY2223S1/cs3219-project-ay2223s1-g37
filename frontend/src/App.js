@@ -27,7 +27,6 @@ function App() {
             <Route path="/update" element={<UpdateAccount/>}/>
             <Route path="/" element={<ProtectedRoute/>}> 
               <Route path="home" element={<Home/>}/>
-              <Route path="selectdifficulty" element={<SelectDifficultyPage />}/>
               <Route path="countdown" element={<CountdownPage />} />
             </Route>
           </Routes>
