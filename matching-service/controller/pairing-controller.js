@@ -1,29 +1,29 @@
-import { ormPairMatches as _pairMatches } from '../model/match-orm.js'
+import { ormPairMatches as _pairMatches } from "../model/match-orm.js";
+import { ormRemoveMatch as _removeMatch } from "../model/match-orm.js";
 
-export async function pairMatches(req) {
-    try {
-        const { username1, difficulty } = req;
-
-        if (username1 && difficulty) {
-            const resp = await _pairMatches(username1, difficulty);
-            console.log(resp);
-            if (resp.err) {
-                console.log('Could not pair matches!');
-                return
-                // return res.status(400).json({message: 'Could not create a new match!'});
-            } else {
-                console.log(`Found match for ${username1} successfully!`);
-                return
-                // return res.status(201).json({message: `Created new match for ${username1} successfully!`});
-            }
-        } else {
-            console.log('Username and/or difficulty are missing!');
-            return
-            // return res.status(400).json({message: 'Username and/or difficulty are missing!'});
-        }
-    } catch (err) {
-        console.log('Database failure when pairing match!');
-        return
-        // return res.status(500).json({message: 'Database failure when creating new match!'})
+export async function pairMatches(req, socket) {
+  try {
+    if (req.timeLeft > 0) {
+      const updatedMatchId = await _pairMatches(req.matchEntryId);
+      // console.log(`Updated match id: ${updatedMatchId}`);
+      if (updatedMatchId) {
+        console.log(`Found match for ${req.matchEntryId} successfully!`);
+        socket.emit("pairingSuccess");
+        return;
+      } else {
+        console.log("No match found yet");
+        return;
+      }
+    } else {
+      console.log("Pair not found within countdown.");
+      const removedMatchId = await _removeMatch(req.matchEntryId);
+      console.log(`Removed match: ${removedMatchId}`);
+      socket.emit("pairingFailed");
+      return;
     }
+  } catch (err) {
+    console.log("Database failure when pairing match!");
+    return;
+    // return res.status(500).json({message: 'Database failure when creating new match!'})
+  }
 }
