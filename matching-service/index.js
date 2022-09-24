@@ -35,6 +35,8 @@ io.on('connection', (socket) => {
     socket.on('match', data => createMatch(data, socket));
 
     socket.on('pairing', pairMatches);
+
+    socket.on('createRoom', data => createRoom(date, socket));
 });
 
 httpServer.listen(8001);
