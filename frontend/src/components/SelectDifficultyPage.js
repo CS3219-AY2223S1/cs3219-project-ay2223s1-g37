@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import socket from "../utils/Socket.js"
+import socket from "../utils/Socket.js";
 
 function SelectDifficultyPage() {
   const navigate = useNavigate();
@@ -33,52 +33,55 @@ function SelectDifficultyPage() {
       setIsDialogOpen(true);
       setDialogTitle("Error");
       setDialogMsg("Please select a difficulty level to continue");
-      return
+      return;
     }
 
-    sendMatch(difficulty)
+    sendMatch(difficulty);
   };
 
   const sendMatch = (difficulty) => {
     let username1 = "abc"; // TODO: retrieve current session's username
-    if (isConnected) socket.emit('match', {username1, difficulty});
-  }
+    if (isConnected) socket.emit("match", { username1, difficulty });
+  };
 
-  const routeToNext = useCallback((isMatchCreated, userInfo) => {
-    if (isMatchCreated) {
-      navigate('/countdown', { state: userInfo })
-    } else {
-      setIsDialogOpen(true);
-      setDialogTitle("Error");
-      setDialogMsg("Please try again");
-    }  
-  }, [navigate]);
+  const routeToNext = useCallback(
+    (isMatchCreated, userInfo) => {
+      if (isMatchCreated) {
+        navigate("/countdown", { state: userInfo });
+      } else {
+        setIsDialogOpen(true);
+        setDialogTitle("Error");
+        setDialogMsg("Please try again");
+      }
+    },
+    [navigate]
+  );
 
   const closeDialog = () => setIsDialogOpen(false);
 
   useEffect(() => {
-    socket.on('connect', () => {
+    socket.on("connect", () => {
       setIsConnected(true);
     });
 
-    socket.on('disconnect', () => {
+    socket.on("disconnect", () => {
       setIsConnected(false);
     });
 
     // userInfo contains the DB entry ID of successfully created user
-    socket.on('matchCreationSuccess', (userInfo) => {
+    socket.on("matchCreationSuccess", (userInfo) => {
       routeToNext(true, userInfo);
-    })
+    });
 
-    socket.on('matchCreationFailure', () => {
+    socket.on("matchCreationFailure", () => {
       routeToNext(false);
-    })
+    });
 
     return () => {
-      socket.off('connect');
-      socket.off('disconnect');
-      socket.off('matchCreationSuccess');
-      socket.off('matchCreationFailure');
+      socket.off("connect");
+      socket.off("disconnect");
+      socket.off("matchCreationSuccess");
+      socket.off("matchCreationFailure");
     };
   }, [routeToNext]);
 

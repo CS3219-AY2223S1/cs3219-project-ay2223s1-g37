@@ -12,15 +12,25 @@ import {
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useState } from 'react'
 import axios from 'axios'
-import SelectDifficultyPage from '../components/SelectDifficultyPage'
+import SelectDifficultyPage from './SelectDifficultyPage'
 import { useNavigate } from "react-router-dom";
 import { STATUS_CODE_OK } from "../constants";
 import { URL_USER_SVC } from "../configs";
+import DeleteAccount from "./DeleteAccount"
 
 
 function Home() {
     const navigate = useNavigate();
     const [anchorElUser, setAnchorElUser] = useState(null);
+    const [visible, setVisisble] = useState(false);
+
+    const showModal = () => {
+        setVisisble(true)
+    }
+
+    const closeModal = () => {
+        setVisisble(false)
+    }
 
     const handleLogout = async () => {
         const res = await axios.post(URL_USER_SVC + '/auth', {},  { withCredentials: true })
@@ -30,7 +40,7 @@ function Home() {
             if (res && res.status === STATUS_CODE_OK) {
             console.log("Successfully log out!")
             sessionStorage.removeItem('token')
-            navigate('/login')
+            navigate('/login', { state: { logoutUser: true, loginUser: false, deleteUser: false } })
         }
     }
 
@@ -84,7 +94,9 @@ function Home() {
                                         <Typography textAlign="center">{setting}</Typography>
                                     </MenuItem>
                                 ))} */}
-                                <MenuItem onClick={handleCloseUserMenu}>Delete Account</MenuItem>
+                                <MenuItem onClick={showModal}>
+                                    Delete Account
+                                </MenuItem>
                                 <MenuItem onClick={test}>Update Password</MenuItem>
                                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
                             </Menu>
@@ -92,6 +104,9 @@ function Home() {
                     </Toolbar>
                 </Container>        
             </AppBar>
+            {visible? 
+                <DeleteAccount open={visible} close={closeModal}/>
+             : null}
             <SelectDifficultyPage />
         </div>
     )
