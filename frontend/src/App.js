@@ -21,10 +21,10 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LogininPage />} />
           <Route path="/update" element={<UpdateAccount />} />
-          <Route path="/" element={<ProtectedRoute />}>
             <Route path="home" element={<Home />} />
             <Route path="countdown" element={<CountdownPage />} />
             <Route path="matchedroom" element={<MatchedRoom />} />
+          <Route path="/" element={<ProtectedRoute />}>
           </Route>
         </Routes>
       </Box>
