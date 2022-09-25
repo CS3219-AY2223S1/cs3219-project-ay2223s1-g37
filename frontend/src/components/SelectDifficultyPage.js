@@ -40,7 +40,7 @@ function SelectDifficultyPage() {
   };
 
   const sendMatch = (difficulty) => {
-    let username1 = "abc"; // TODO: retrieve current session's username
+    let username1 = sessionStorage.getItem("username");
     if (isConnected) socket.emit("match", { username1, difficulty });
   };
 

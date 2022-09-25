@@ -28,11 +28,12 @@ function MatchedRoom() {
     const [dialogTitle, setDialogTitle] = useState("");
     const [dialogMsg, setDialogMsg] = useState("");
     const [isConnected, setIsConnected] = useState(socket.connected);
-    const [isRoomCreated, setRoomCreated] = useState(true)
+    const [isRoomCreated, setRoomCreated] = useState(false)
     const [timeLeft, setTimeLeft] = useState(Number.MAX_VALUE)
     const [isInterviewer, setIsInterviewer] = useState(true)
 
     useEffect(() => {
+      // Requesting for collaboration service to create new room
       if (isConnected) socket.emit('createRoom', matchEntry)
     }, [isConnected, matchEntry])
 
@@ -45,10 +46,12 @@ function MatchedRoom() {
         setIsConnected(false);
       });
 
+      // Listening for roomCreated event emitted from collaboration service
       socket.on('roomCreated', (roomInfo) => {
         setRoomInfo(roomInfo);
         setRoomCreated(true);
         setTimeLeft(roomInfo.timeLeft)
+        setIsInterviewer(roomInfo.interviewer === sessionStorage.getItem("username"))
       })
 
       return () => {
@@ -59,9 +62,13 @@ function MatchedRoom() {
 
     useEffect(() => {
       // Reduce timeLeft by calling setTimeLeft function 1 every second (1000ms)
-      if (timeLeft === 0) {
+      if (timeLeft === 0 && !roomInfo.hasSwitched) {
         setDialogTitle("Times up!");
         setDialogMsg("Would you like to switch roles and continue?")
+        setIsDialogOpen(true)
+      } else if (timeLeft === 0 && roomInfo.hasSwitched) {
+        setDialogTitle("Times up!");
+        setDialogMsg("Would you like to try another question with the same partner?")
         setIsDialogOpen(true)
       } else {
         const timer =
@@ -76,9 +83,15 @@ function MatchedRoom() {
       setDialogMsg("All progress made will be lost.");
     };
 
-    const routeToNext = () => {
+    const handleExit = () => {
+      // TODO: Remove the pair's entry from collaboration service DB
+      // TODO: Remove the pair's entry from matching service DB
       navigate('/home');
-    };
+    }
+
+    const handleSwitch = () => {
+      // TODO: Emit event to request collaboration service to switch user roles
+    }
 
     const closeDialog = () => setIsDialogOpen(false);
 
@@ -100,7 +113,7 @@ function MatchedRoom() {
           </Grid>
 
           <Grid item xs={4} sx={{textAlign:"right"}}>
-            <Button variant={"outlined"}>
+            <Button variant={"outlined"} onClick={exitClicked}>
               Back to Home
             </Button>
           </Grid>
@@ -137,8 +150,8 @@ function MatchedRoom() {
           <DialogContentText>{dialogMsg}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeDialog}>No</Button>
-          <Button onClick={routeToNext}>Yes</Button>
+          <Button onClick={handleExit}>No</Button>
+          <Button onClick={handleSwitch}>Yes</Button>
         </DialogActions>
       </Dialog>
 
