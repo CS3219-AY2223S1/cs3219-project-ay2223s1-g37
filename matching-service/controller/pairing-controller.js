@@ -4,11 +4,11 @@ import { ormRemoveMatch as _removeMatch } from "../model/match-orm.js";
 export async function pairMatches(req, socket) {
   try {
     if (req.timeLeft > 0) {
-      const updatedMatch = await _pairMatches(req.matchEntryId);
+      const updatedMatchId = await _pairMatches(req.matchEntryId);
       // console.log(`Updated match id: ${updatedMatchId}`);
-      if (updatedMatch) {
+      if (updatedMatchId.matchEntryId !== undefined) {
         console.log(`Found match for ${req.matchEntryId} successfully!`);
-        socket.emit("pairingSuccess", updatedMatch);
+        socket.emit("pairingSuccess", updatedMatchId);
         return;
       } else {
         console.log("No match found yet");
