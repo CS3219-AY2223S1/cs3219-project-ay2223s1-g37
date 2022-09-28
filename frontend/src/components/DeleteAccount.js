@@ -50,6 +50,7 @@ function DeleteAccount(props) {
         if (res && res.status === STATUS_CODE_OK) {
             console.log("Successfully deleted")
             sessionStorage.removeItem('token')
+            sessionStorage.removeItem('username')
             navigate('/login')
         }
     }

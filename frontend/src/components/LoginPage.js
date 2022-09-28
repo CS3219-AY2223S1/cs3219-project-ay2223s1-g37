@@ -51,6 +51,7 @@ function LogininPage() {
     if (res && res.status === STATUS_CODE_OK) {
       console.log("Successfully logged in");
       sessionStorage.setItem("token", res.data.token);
+      sessionStorage.setItem("username", username);
       setIsLoginSuccess(true);
       navigate("/home");
     }

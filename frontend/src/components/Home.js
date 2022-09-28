@@ -40,6 +40,7 @@ function Home() {
             if (res && res.status === STATUS_CODE_OK) {
             console.log("Successfully log out!")
             sessionStorage.removeItem('token')
+            sessionStorage.removeItem('username');
             navigate('/login', { state: { logoutUser: true, loginUser: false, deleteUser: false } })
         }
     }
