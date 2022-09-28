@@ -21,7 +21,7 @@ function CountdownPage() {
   const routeToNext = useCallback(
     (isPaired, pairInfo) => {
       if (isPaired) {
-        navigate("/matchedroom", pairInfo);
+        navigate("/matchedroom", { state: pairInfo });
       }
     },
     [navigate]

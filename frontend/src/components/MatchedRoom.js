@@ -19,7 +19,7 @@ import socket from "../utils/Socket.js"
 
 function MatchedRoom() {
     const location = useLocation();
-    const matchEntry = location.state;
+    const matchEntry = location.state.matchEntryId;
     console.log("matchEntry: " + JSON.stringify(matchEntry))
 
     const navigate = useNavigate();
@@ -62,14 +62,8 @@ function MatchedRoom() {
 
     useEffect(() => {
       // Reduce timeLeft by calling setTimeLeft function 1 every second (1000ms)
-      if (timeLeft === 0 && !roomInfo.hasSwitched) {
-        setDialogTitle("Times up!");
-        setDialogMsg("Would you like to switch roles and continue?")
-        setIsDialogOpen(true)
-      } else if (timeLeft === 0 && roomInfo.hasSwitched) {
-        setDialogTitle("Times up!");
-        setDialogMsg("Would you like to try another question with the same partner?")
-        setIsDialogOpen(true)
+      if (timeLeft === 0) {
+        navigate("/sessionended", roomInfo)
       } else {
         const timer =
           timeLeft > 0 && setInterval(() => setTimeLeft(timeLeft - 1), 1000);
@@ -87,10 +81,6 @@ function MatchedRoom() {
       // TODO: Remove the pair's entry from collaboration service DB
       // TODO: Remove the pair's entry from matching service DB
       navigate('/home');
-    }
-
-    const handleSwitch = () => {
-      // TODO: Emit event to request collaboration service to switch user roles
     }
 
     const closeDialog = () => setIsDialogOpen(false);
@@ -150,8 +140,8 @@ function MatchedRoom() {
           <DialogContentText>{dialogMsg}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleExit}>No</Button>
-          <Button onClick={handleSwitch}>Yes</Button>
+          <Button onClick={closeDialog}>No</Button>
+          <Button onClick={handleExit}>Yes</Button>
         </DialogActions>
       </Dialog>
 

@@ -4,6 +4,7 @@ import LogininPage from "./components/LoginPage";
 import { Box } from "@mui/material";
 import CountdownPage from "./components/CountdownPage";
 import MatchedRoom from "./components/MatchedRoom";
+import SessionEndedPage from "./components/SessionEndedPage";
 import Home from "./components/Home";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import UpdateAccount from "./components/UpdateAccount";
@@ -25,6 +26,7 @@ function App() {
             <Route path="home" element={<Home />} />
             <Route path="countdown" element={<CountdownPage />} />
             <Route path="matchedroom" element={<MatchedRoom />} />
+            <Route path="sessionended" element={<SessionEndedPage />} />
           </Route>
         </Routes>
       </Box>
