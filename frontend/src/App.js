@@ -8,6 +8,8 @@ import SessionEndedPage from "./components/SessionEndedPage";
 import Home from "./components/Home";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import UpdateAccount from "./components/UpdateAccount";
+import ResetPasswordPage from './components/ResetPasswordPage'
+import ForgetPasswordPage from './components/ForgetPasswordPage'
 
 function App() {
   return (
@@ -21,7 +23,10 @@ function App() {
           ></Route>
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LogininPage />} />
+          <Route path="/reset/:id/:token" element={<ResetPasswordPage />} />
+          {/* most likely move updating password into protected routes */}
           <Route path="/update" element={<UpdateAccount />} />
+          <Route path="/reset" element={<ForgetPasswordPage />} />
           <Route path="/" element={<ProtectedRoute />}>
             <Route path="home" element={<Home />} />
             <Route path="countdown" element={<CountdownPage />} />

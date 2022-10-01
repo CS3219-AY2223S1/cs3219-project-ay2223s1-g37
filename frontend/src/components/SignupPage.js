@@ -16,6 +16,7 @@ import { STATUS_CODE_CONFLICT, STATUS_CODE_CREATED } from "../constants";
 import { Link } from "react-router-dom";
 
 function SignupPage() {
+    const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -26,7 +27,7 @@ function SignupPage() {
     const handleSignup = async () => {
         setIsSignupSuccess(false);
         const res = await axios
-        .post(URL_USER_SVC + PREFIX_CREATE_USER, { username, password })
+        .post(URL_USER_SVC + PREFIX_CREATE_USER, { email, username, password })
         .catch((err) => {
             if (err.response.status === STATUS_CODE_CONFLICT) {
                 setErrorDialog("This username already exists");
@@ -35,7 +36,7 @@ function SignupPage() {
             }
         });
         if (res && res.status === STATUS_CODE_CREATED) {
-            setSuccessDialog("Account successfully created");
+            setSuccessDialog("Account successfully created! Please go to your inbox to verify your account");
             setIsSignupSuccess(true);
         }
     };
@@ -57,6 +58,14 @@ function SignupPage() {
     return (
         <Box display={"flex"} flexDirection={"column"} width={"30%"} margin={"0px auto"} padding={"4rem"}>
             <Typography variant={"h3"} marginBottom={"2rem"}>Sign Up</Typography>
+            <TextField
+                label="Email"
+                variant="standard"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                sx={{ marginBottom: "1rem" }}
+                autoFocus
+            />
             <TextField
                 label="Username"
                 variant="standard"
