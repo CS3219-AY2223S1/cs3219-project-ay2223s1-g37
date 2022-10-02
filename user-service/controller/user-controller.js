@@ -3,7 +3,6 @@ import { ormCreateUser as _createUser } from '../model/user-orm.js'
 import { ormDeleteUser as _deleteUser } from '../model/user-orm.js'
 import { ormCheckPassword as _checkPassword } from '../model/user-orm.js'
 import { ormChangePassword as _changePassword } from '../model/user-orm.js'
-import { ormCheckEmail as _checkEmail } from '../model/user-orm.js'
 import { ormCreateEmailToken as _createEmailToken } from '../model/user-orm.js'
 import { ormCheckEmailToken as _checkEmailToken } from '../model/user-orm.js'
 import { ormDeleteEmailToken as _deleteEmailToken } from '../model/user-orm.js'
@@ -34,7 +33,7 @@ export async function createUser(req, res) {
            return res.status(409).json({message: `Username ${username} already exist!`})
         }
 
-        const newEmail = await _checkEmail(email)
+        const newEmail = await _checkUser(0, email)
         if (newEmail) {
            return res.status(409).json({message: `Email already exist!`})
         }

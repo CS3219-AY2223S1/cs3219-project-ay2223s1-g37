@@ -74,16 +74,6 @@ export async function ormCheckEmailToken(user, tokenId) {
     }
 }
 
-export async function ormCheckEmail(email) {
-    try {
-        const user = await UserModel.findOne({email: email}).exec();
-        return user
-    } catch {
-        console.log('ERROR: Could not check for a user')
-        return { err }
-    }
-}
-
 export async function ormDeleteEmailToken(id) {
     try {
         const emailToken = await EmailTokenModel.findByIdAndRemove(id).exec()
