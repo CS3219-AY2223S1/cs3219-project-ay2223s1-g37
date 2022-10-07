@@ -1,5 +1,5 @@
 import { ormPairMatches as _pairMatches } from "../model/match-orm.js";
-import { ormRemoveMatch as _removeMatch } from "../model/match-orm.js";
+import { ormRemoveMatchTimeout as _removeMatch } from "../model/match-orm.js";
 
 export async function pairMatches(req, socket) {
   try {
@@ -8,7 +8,7 @@ export async function pairMatches(req, socket) {
       // console.log(`Updated match id: ${updatedMatchId}`);
       if (updatedMatchId) {
         console.log(`Found match for ${req.matchEntryId} successfully!`);
-        socket.emit("pairingSuccess");
+        socket.emit("pairingSuccess", updatedMatchId);
         return;
       } else {
         console.log("No match found yet");

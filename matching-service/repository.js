@@ -2,7 +2,7 @@ import MatchModelSchema from "./model/match-model.js";
 // import 'dotenv/config'
 
 // Set up sequelize connection
-import Sequelize from "sequelize";
+import Sequelize, { Model } from "sequelize";
 import DataTypes from "sequelize";
 import { Op } from "sequelize";
 
@@ -88,7 +88,7 @@ export async function pairMatches(matchEntryId) {
   }
 }
 
-export async function removeMatch(matchEntryId) {
+export async function removeMatchTimeout(matchEntryId) {
   const currentMatch = await Match.findByPk(matchEntryId);
   // If using username search in future
   // const username1 = currentMatch.username1;
@@ -103,4 +103,37 @@ export async function removeMatch(matchEntryId) {
       difficulty: difficulty,
     },
   });
+}
+
+export async function removeMatchEndSession(matchEntryId) {
+  const currentMatch = await Match.findByPk(matchEntryId);
+  const difficulty = currentMatch.difficulty;
+
+  console.log("Detroying....");
+  return await Match.destroy({
+    where: {
+      id: matchEntryId,
+      difficulty: difficulty,
+    },
+  });
+}
+
+// Increment rounds by 1 every time the user gets to
+export async function updateMatch(matchEntryId) {
+  console.log(`Updating match...`);
+  const currentMatch = await Match.findByPk(matchEntryId);
+  if (currentMatch.rounds != 0 && currentMatch.rounds % 4 == 0) {
+    // TODO: Currently % 4 because update is executing twice for some reason
+    // Session completed
+    console.log(`Session complete!!!!!!`);
+    return true;
+  } else {
+    // Session not completed yet
+    console.log(`Another round to go..........`);
+    await Match.update(
+      { rounds: Sequelize.literal("rounds + 1") },
+      { where: { id: matchEntryId } }
+    );
+    return false;
+  }
 }

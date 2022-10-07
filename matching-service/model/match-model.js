@@ -2,28 +2,33 @@
  * Match requires info abt...
  * User1 - username
  * User2 - username
+ * current total rounds in the session
  * difficulty of qns
  * matching start time
  */
 
-let MatchModelSchema = (sequelize, DataTypes) => sequelize.define('Match', {
+let MatchModelSchema = (sequelize, DataTypes) =>
+  sequelize.define("Match", {
     username1: {
-        type: DataTypes.STRING,
-        allowNull: false,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     username2: {
-        type: DataTypes.STRING,
+      type: DataTypes.STRING,
     },
     difficulty: {
-        type: DataTypes.STRING,
-        allowNull: false,
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    rounds: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
     },
     startTime: {
-        type: DataTypes.DATE,
-        // allowNull: false,
-        defaultValue: DataTypes.NOW,
-    }
-});
- 
-export default MatchModelSchema
- 
+      type: DataTypes.DATE,
+      // allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+  });
+
+export default MatchModelSchema;

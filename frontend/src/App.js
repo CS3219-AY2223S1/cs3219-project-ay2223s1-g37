@@ -7,6 +7,7 @@ import MatchedRoom from "./components/MatchedRoom";
 import Home from "./components/Home";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import UpdateAccount from "./components/UpdateAccount";
+import SessionEnd from "./components/SessionEnd";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="home" element={<Home />} />
             <Route path="countdown" element={<CountdownPage />} />
             <Route path="matchedroom" element={<MatchedRoom />} />
+            <Route path="/sessionended" element={<SessionEnd />} />
           </Route>
         </Routes>
       </Box>

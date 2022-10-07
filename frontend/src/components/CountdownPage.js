@@ -19,9 +19,9 @@ function CountdownPage() {
   };
 
   const routeToNext = useCallback(
-    (isPaired) => {
+    (isPaired, updatedMatchId) => {
       if (isPaired) {
-        navigate("/matchedroom");
+        navigate("/matchedroom", { state: updatedMatchId });
       }
     },
     [navigate]
@@ -37,9 +37,9 @@ function CountdownPage() {
       setIsConnected(false);
     });
 
-    socket.on("pairingSuccess", () => {
+    socket.on("pairingSuccess", (updatedMatchId) => {
       setPairFound(true);
-      routeToNext(true);
+      routeToNext(true, updatedMatchId);
     });
 
     socket.on("pairingFailed", () => {
