@@ -1,7 +1,7 @@
 import { ormCheckUser as _checkUser } from '../model/user-orm.js'
 import { ormCreateUser as _createUser } from '../model/user-orm.js'
 import { ormDeleteUser as _deleteUser } from '../model/user-orm.js'
-import { ormCheckPassword as _checkPassword } from '../model/user-orm.js'
+import { ormCheckPassword as _checkCorrectPassword } from '../model/user-orm.js'
 import { ormChangePassword as _changePassword } from '../model/user-orm.js'
 import { ormCreateEmailToken as _createEmailToken } from '../model/user-orm.js'
 import { ormCheckEmailToken as _checkEmailToken } from '../model/user-orm.js'
@@ -19,6 +19,12 @@ function validateEmail(email) {
     .match(
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
+}
+
+function checkPasswordRequirement(password) {
+    // Password must have length of at least 11, with at least a digit, symbol, uppercase and lowercase letter
+    var regex = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{11,}$/;
+    return regex.test(password);
 }
 
 export async function createUser(req, res) {
@@ -39,6 +45,9 @@ export async function createUser(req, res) {
         }
 
         if (email && username && password) {
+            if (!checkPasswordRequirement(password)) {
+                return res.status(400).json({message: 'Password does not meet requirements!'});
+            }
             const user = await _createUser(email, username, password);
             if (!user) {
                 return res.status(400).json({message: 'Could not create a new user!'});
@@ -102,7 +111,7 @@ export async function userLogin(req, res) {
 
         if (user && user.verified) {
             // todo: add check to check if password is correct and return 401/403 (need check) if incorrect password
-            const validPassword = await _checkPassword(username, password);
+            const validPassword = await _checkCorrectPassword(username, password);
             if (validPassword) {
                 const token = jwt.sign({
                     username: username
@@ -140,7 +149,7 @@ export async function deleteUser(req, res) {
 
         const user = await _checkUser(username, 0)
         if (user) {
-            const validPassword = await _checkPassword(username, password);
+            const validPassword = await _checkCorrectPassword(username, password);
             if (validPassword) { // true route
                 const user = await _deleteUser(username)
                 if (user) {
@@ -195,6 +204,9 @@ export async function resetPassword(req, res) {
 
         const verifyToken = await _checkEmailToken(user, token)
         if (verifyToken) {
+            if (!checkPasswordRequirement(newPassword)) {
+                return res.status(400).json({message: 'New password does not meet requirements!'});
+            }
             // remove email token from email token database
             const emailToken = await _deleteEmailToken(verifyToken._id)
         
@@ -222,8 +234,11 @@ export async function changePassword(req, res) {
             return res.status(400).json({message: 'Username and/or Password are missing!'})
         }
         if (user) {
-            const validPassword = await _checkPassword(username, oldPassword);
+            const validPassword = await _checkCorrectPassword(username, oldPassword);
             if (validPassword) {
+                if (!checkPasswordRequirement(newPassword)) {
+                    return res.status(400).json({message: 'New password does not meet requirements!'});
+                }
                 const resp = await _changePassword(username, newPassword);
                 if (resp.err) {
                     return res.status(400).json({message: 'Could not change password!'});
