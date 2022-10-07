@@ -1,0 +1,180 @@
+[
+    {  
+        "name": "Two Sum",
+        "description": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.\n\nYou may assume that each input would have exactly one solution, and you may not use the same element twice.\n\nYou can return the answer in any order.",
+        "category": "array",
+        "difficulty": "easy",
+        "url": "https://leetcode.com/problems/two-sum/"
+    },
+    {  
+        "name": "Best Time to Buy and Sell Stock",
+        "description": "You are given an array prices where prices[i] is the price of a given stock on the ith day.\n\nYou want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.\n\nReturn the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.",
+        "category": "array",
+        "difficulty": "easy",
+        "url": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/"
+    },
+    {
+        "name": "Contains Duplicate",
+        "description": "Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.",
+        "category": "array",
+        "difficulty": "easy",
+        "url": "https://leetcode.com/problems/contains-duplicate/"
+    },
+    {
+        "name": "Product of Array Except Self",
+        "description": "Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i].\n\nThe product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.\n\nYou must write an algorithm that runs in O(n) time and without using the division operation.",
+        "category": "array",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/product-of-array-except-self/"
+    },
+    {
+        "name": "Maximum Subarray",
+        "description": "Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.\n\nA subarray is a contiguous part of an array.",
+        "category": "array",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/maximum-subarray/"
+    },
+    {
+        "name": "Maximum Product Subarray",
+        "description": "Given an integer array nums, find a contiguous non-empty subarray within the array that has the largest product, and return the product.\n\nThe test cases are generated so that the answer will fit in a 32-bit integer.\n\nA subarray is a contiguous subsequence of the array.",
+        "category": "array",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/maximum-product-subarray/"
+    },
+    {
+        "name": "Find Minimum in Rotated Sorted Array",
+        "description": "Suppose an array of length n sorted in ascending order is rotated between 1 and n times. For example, the array nums = [0,1,2,4,5,6,7] might become:\n- [4,5,6,7,0,1,2] if it was rotated 4 times.\n- [0,1,2,4,5,6,7] if it was rotated 7 times.\nNotice that rotating an array [a[0], a[1], a[2], ..., a[n-1]] 1 time results in the array [a[n-1], a[0], a[1], a[2], ..., a[n-2]].\n\nGiven the sorted rotated array nums of unique elements, return the minimum element of this array.\n\nYou must write an algorithm that runs in O(log n) time.",
+        "category": "array",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/"
+    },
+    {
+        "name": "Search in Rotated Sorted Array",
+        "description": "There is an integer array nums sorted in ascending order (with distinct values).\n\nPrior to being passed to your function, nums is possibly rotated at an unknown pivot index k (1 <= k < nums.length) such that the resulting array is [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]] (0-indexed). For example, [0,1,2,4,5,6,7] might be rotated at pivot index 3 and become [4,5,6,7,0,1,2].\n\nGiven the array nums after the possible rotation and an integer target, return the index of target if it is in nums, or -1 if it is not in nums.\n\nYou must write an algorithm with O(log n) runtime complexity.",
+        "category": "array",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/search-in-rotated-sorted-array/"
+    },
+    {
+        "name": "3Sum",
+        "description": "Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.\n\nNotice that the solution set must not contain duplicate triplets.",
+        "category": "array",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/3sum/"
+    },
+    {
+        "name": "Container With Most Water",
+        "description": "You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]).\n\nFind two lines that together with the x-axis form a container, such that the container contains the most water.\n\nReturn the maximum amount of water a container can store.\n\nNotice that you may not slant the container.",
+        "category": "array",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/container-with-most-water/"
+    },
+    {
+        "name": "Sum of Two Integers",
+        "description": "Given two integers a and b, return the sum of the two integers without using the operators + and -.",
+        "category": "binary",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/sum-of-two-integers/"
+    },
+    {
+        "name": "Number of 1 Bits",
+        "description": "Write a function that takes an unsigned integer and returns the number of '1' bits it has (also known as the Hamming weight).\n\nNote:\n- Note that in some languages, such as Java, there is no unsigned integer type. In this case, the input will be given as a signed integer type. It should not affect your implementation, as the integer's internal binary representation is the same, whether it is signed or unsigned.\n- In Java, the compiler represents the signed integers using 2's complement notation.",
+        "category": "binary",
+        "difficulty": "easy",
+        "url": "https://leetcode.com/problems/number-of-1-bits/"
+    },
+    {
+        "name": "Counting Bits",
+        "description": "Given an integer n, return an array ans of length n + 1 such that for each i (0 <= i <= n), ans[i] is the number of 1's in the binary representation of i.",
+        "category": "binary",
+        "difficulty": "easy",
+        "url": "https://leetcode.com/problems/counting-bits/"
+    },
+    {
+        "name": "Missing Number",
+        "description": "Given an array nums containing n distinct numbers in the range [0, n], return the only number in the range that is missing from the array.",
+        "category": "binary",
+        "difficulty": "easy",
+        "url": "https://leetcode.com/problems/missing-number/"
+    },
+    {
+        "name": "Reverse Bits",
+        "description": "Reverse bits of a given 32 bits unsigned integer.\n\nNote:\n- Note that in some languages, such as Java, there is no unsigned integer type. In this case, both input and output will be given as a signed integer type. They should not affect your implementation, as the integer's internal binary representation is the same, whether it is signed or unsigned.\n- In Java, the compiler represents the signed integers using 2's complement notation.",
+        "category": "binary",
+        "difficulty": "easy",
+        "url": "https://leetcode.com/problems/reverse-bits/"
+    },
+    {
+        "name": "Climbing Stairs",
+        "description": "You are climbing a staircase. It takes n steps to reach the top.\n\nEach time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?",
+        "category": "dynamic programming",
+        "difficulty": "easy",
+        "url": "https://leetcode.com/problems/climbing-stairs/"
+    },
+    {
+        "name": "Coin Change",
+        "description": "You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money.\n\nReturn the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.\n\nYou may assume that you have an infinite number of each kind of coin.",
+        "category": "dynamic programming",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/coin-change/"
+    },
+    {
+        "name": "Longest Increasing Subsequence",
+        "description": "Given an integer array nums, return the length of the longest strictly increasing subsequence.\n\nA subsequence is a sequence that can be derived from an array by deleting some or no elements without changing the order of the remaining elements. For example, [3,6,2,7] is a subsequence of the array [0,3,1,6,2,2,7].",
+        "category": "dynamic programming",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/longest-increasing-subsequence/"
+    }, 
+    {
+        "name": "Word Break",
+        "description": "Given a string s and a dictionary of strings wordDict, return true if s can be segmented into a space-separated sequence of one or more dictionary words.\n\nNote that the same word in the dictionary may be reused multiple times in the segmentation.",
+        "category": "dynamic programming",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/word-break/"
+    },
+    {
+        "name": "Combination Sum IV",
+        "description": "Given an array of distinct integers nums and a target integer target, return the number of possible combinations that add up to target.\n\nThe test cases are generated so that the answer can fit in a 32-bit integer.",
+        "category": "dynamic programming",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/combination-sum-iv/"
+    },
+    {
+        "name": "House Robber",
+        "description": "You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security systems connected and it will automatically contact the police if two adjacent houses were broken into on the same night.\n\nGiven an integer array nums representing the amount of money of each house, return the maximum amount of money you can rob tonight without alerting the police.",
+        "category": "dynamic programming",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/house-robber/"
+    },
+    {
+        "name": "House Robber II", 
+        "description": "You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed. All houses at this place are arranged in a circle. That means the first house is the neighbor of the last one. Meanwhile, adjacent houses have a security system connected, and it will automatically contact the police if two adjacent houses were broken into on the same night.\n\nGiven an integer array nums representing the amount of money of each house, return the maximum amount of money you can rob tonight without alerting the police.",
+        "category": "dynamic programming",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/house-robber-ii/"
+    },
+    {
+        "name": "Decode Ways",
+        "description": "A message containing letters from A-Z can be encoded into numbers using the following mapping:\n'A' -> \"1\"\n'B' -> \"2\"\n...\n'Z' -> \"26\"\n\nTo decode an encoded message, all the digits must be grouped then mapped back into letters using the reverse of the mapping above (there may be multiple ways). For example, \"11106\" can be mapped into:\n- \"AAJF\" with the grouping (1 1 10 6)\n- \"KJF\" with the grouping (11 10 6)\n\nNote that the grouping (1 11 06) is invalid because \"06\" cannot be mapped into 'F' since \"6\" is different from \"06\".\n\nGiven a string s containing only digits, return the number of ways to decode it.",
+        "category": "dynamic programming",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/decode-ways/"
+    },
+    {
+        "name": "Unique Paths",
+        "description": "There is a robot on an m x n grid. The robot is initially located at the top-left corner (i.e., grid[0][0]). The robot tries to move to the bottom-right corner (i.e., grid[m - 1][n - 1]). The robot can only move either down or right at any point in time.\n\nGiven the two integers m and n, return the number of possible unique paths that the robot can take to reach the bottom-right corner.",
+        "category": "dynamic programming",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/unique-paths/"
+    },
+    {
+        "name": "Jump Game",
+        "description": "You are given an integer array nums. You are initially positioned at the array's first index, and each element in the array represents your maximum jump length at that position.\n\nReturn true if you can reach the last index, or false otherwise.",
+        "category": "dynamic programming",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/jump-game/"
+    }
+]
+
+
+
