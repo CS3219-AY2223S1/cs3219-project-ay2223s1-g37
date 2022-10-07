@@ -72,6 +72,7 @@ function ResetPasswordPage() {
                 variant="standard"
                 type="password"
                 value={password}
+                helperText="New password must have length of at least 11 and must contain a number, special character, uppercase and lowercase alphabet."
                 onChange={(e) => setPassword(e.target.value)}
                 sx={{marginBottom: "2rem"}}
             />

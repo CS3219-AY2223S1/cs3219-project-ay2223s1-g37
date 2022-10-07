@@ -95,6 +95,7 @@ function UpdateAccount() {
                 variant="standard"
                 type="password"
                 value={newPassword}
+                helperText="New password must have length of at least 11 and must contain a number, special character, uppercase and lowercase alphabet."
                 onChange={(e) => setNewPassword(e.target.value)}
                 sx={{marginBottom: "2rem"}}
             />
