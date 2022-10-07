@@ -1,48 +1,91 @@
-import {
-    Box,
-    Typography,
-    Button
-  } from "@mui/material";
-  import { useState, useEffect } from "react";
-  import { useLocation, useNavigate } from "react-router-dom";
-  import socket from "../utils/Socket.js"
-  
-  function SessionEndedPage() {
-    const location = useLocation();
-    const roomInfo = location.state;
+import { Box, Typography, Button } from "@mui/material";
+import { useState, useEffect, useCallback } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import socket from "../utils/Socket.js";
 
-    const navigate = useNavigate();
+function SessionEndedPage() {
+  // const location = useLocation();
+  // const roomInfo = location.state;
+  // const roomId = roomInfo.matchEntryId;
+  const roomId = 2; // TODO: REMOVE. Hardcoded temporarily
+  const navigate = useNavigate();
 
-    const handleExit = () => {
-      // TODO: Remove the pair's entry from collaboration service DB
-      // TODO: Remove the pair's entry from matching service DB
-      navigate('/home');
+  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [isSessionComplete, setSessionComplete] = useState(false);
+
+  const handleExit = () => {
+    // TODO: Remove the pair's entry from collaboration service DB
+    socket.emit("endSession", { roomId: roomId });
+    navigate("/home");
+  };
+
+  const handleSwitchOrRestart = () => {
+    if (isSessionComplete) {
+      // TODO: Handle resarting of session. Ensure both parties say YES before going to matched room
+    } else {
+      // TODO: Switch users
+      navigate("/matchedroom");
     }
-  
-    const handleSwitch = () => {
-      // TODO: Emit event to request collaboration service to switch user roles
-    }
-  
-    return (
-      <Box    
-        width={"90%"}
-        alignSelf={"center"}
-        padding={"2rem 0px"}>
-  
-        <Typography variant={"h1"}>Times up!</Typography>
-        <Typography fontSize={"1rem"}>
-          {/* {roomInfo.hasSwitched
-              ? "Would you like to switch roles and continue?"
-              : "Would you like to try another question with the same partner?"
-          } */}
-          
-          Would you like to switch roles and continue?
-        </Typography>
+  };
 
+  // On initial render of the screen, update 'rounds' count
+  useEffect(() => {
+    if (isConnected) {
+      socket.emit("sessionEnded", { roomId: roomId });
+    }
+  }, []);
+
+  useEffect(() => {
+    socket.on("connect", () => {
+      setIsConnected(true);
+    });
+
+    socket.on("disconnect", () => {
+      setIsConnected(false);
+    });
+
+    // The 2 users already had their turn
+    socket.on("sessionComplete", () => {
+      setSessionComplete(true);
+    });
+
+    return () => {
+      socket.off("connect");
+      socket.off("disconnect");
+    };
+  }, []);
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flex: 1,
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100%",
+        padding: 20,
+      }}
+    >
+      <Typography variant={"h1"}>Times up!</Typography>
+      <Typography fontSize={"1rem"}>
+        {isSessionComplete
+          ? "Would you like to try another question with the same partner?"
+          : "Would you like to switch roles and continue?"}
+      </Typography>
+      <div
+        style={{
+          display: "flex",
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Button onClick={handleSwitchOrRestart}>Yes</Button>
         <Button onClick={handleExit}>No</Button>
-        <Button onClick={handleSwitch}>Yes</Button>
-      </Box>
-    );
-  }
-  
-  export default SessionEndedPage;
+      </div>
+    </div>
+  );
+}
+
+export default SessionEndedPage;

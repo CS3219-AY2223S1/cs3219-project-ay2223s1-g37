@@ -94,7 +94,7 @@ export async function removeMatchTimeout(matchEntryId) {
   // const username1 = currentMatch.username1;
   const difficulty = currentMatch.difficulty;
 
-  console.log("Detroying....");
+  console.log("Detroying timed out match....");
   return await Match.destroy({
     where: {
       // username1: username1,
@@ -105,25 +105,25 @@ export async function removeMatchTimeout(matchEntryId) {
   });
 }
 
-export async function removeMatchEndSession(matchEntryId) {
-  const currentMatch = await Match.findByPk(matchEntryId);
+export async function removeMatchEndSession(roomId) {
+  const currentMatch = await Match.findByPk(roomId);
   const difficulty = currentMatch.difficulty;
 
-  console.log("Detroying....");
+  console.log("Detroying match....");
   return await Match.destroy({
     where: {
-      id: matchEntryId,
+      id: roomId,
       difficulty: difficulty,
     },
   });
 }
 
 // Increment rounds by 1 every time the user gets to
-export async function updateMatch(matchEntryId) {
+export async function updateMatch(roomId) {
   console.log(`Updating match...`);
-  const currentMatch = await Match.findByPk(matchEntryId);
+  const currentMatch = await Match.findByPk(roomId);
   if (currentMatch.rounds != 0 && currentMatch.rounds % 4 == 0) {
-    // TODO: Currently % 4 because update is executing twice for some reason
+    // TODO: Currently % 4 because update is executing twice for some reason. Figure out why
     // Session completed
     console.log(`Session complete!!!!!!`);
     return true;
@@ -132,7 +132,7 @@ export async function updateMatch(matchEntryId) {
     console.log(`Another round to go..........`);
     await Match.update(
       { rounds: Sequelize.literal("rounds + 1") },
-      { where: { id: matchEntryId } }
+      { where: { id: roomId } }
     );
     return false;
   }

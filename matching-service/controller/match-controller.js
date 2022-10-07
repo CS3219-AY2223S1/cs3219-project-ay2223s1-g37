@@ -34,9 +34,9 @@ export async function createMatch(req, socket) {
 }
 
 export async function updateMatch(req, socket) {
-  const { matchEntryId } = req;
+  const { roomId } = req;
   try {
-    const resp = await _updateMatch(matchEntryId);
+    const resp = await _updateMatch(roomId);
     console.log(`match-controller response: ${resp}`);
     if (resp == true) {
       console.log("Emitting session complete");
@@ -51,9 +51,9 @@ export async function updateMatch(req, socket) {
 }
 
 export async function deleteMatch(req, socket) {
-  const { matchEntryId } = req;
+  const { roomId } = req;
   try {
-    const removedMatchId = await _removeMatchEndSession(matchEntryId);
+    const removedMatchId = await _removeMatchEndSession(roomId);
     console.log(`Deleted match: ${removedMatchId}`);
   } catch (err) {
     console.log("Error deleting match!");

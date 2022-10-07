@@ -44,18 +44,18 @@ export async function ormRemoveMatchTimeout(matchEntryId) {
   }
 }
 
-export async function ormRemoveMatchEndSession(matchEntryId) {
+export async function ormRemoveMatchEndSession(roomId) {
   try {
-    const removedMatchId = await removeMatchEndSession(matchEntryId);
+    const removedMatchId = await removeMatchEndSession(roomId);
     return removedMatchId;
   } catch (err) {
     return { err };
   }
 }
 
-export async function ormUpdateMatch(matchEntryId) {
+export async function ormUpdateMatch(roomId) {
   try {
-    const isComplete = await updateMatch(matchEntryId);
+    const isComplete = await updateMatch(roomId);
     console.log(`match-orm response: ${isComplete}`);
     return isComplete;
   } catch (err) {
