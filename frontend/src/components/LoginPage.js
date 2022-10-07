@@ -109,8 +109,8 @@ function LogininPage() {
           <Typography component={Link} to="/signup">
             No account? Sign up here
           </Typography>
-          <Typography component={Link} to="/update">
-            Update password?
+          <Typography component={Link} to="/reset">
+            Forget password?
           </Typography>
         </Box>
         <Button variant={"outlined"} onClick={handleLogin}>

@@ -1,40 +1,92 @@
 import { createUser } from './repository.js';
 import UserModel from './user-model.js'
 import bcrypt from 'bcrypt'
+import crypto from 'crypto'
+
+import EmailTokenModel from '../model/email-token-model.js'
+import BlackListTokenModel from '../model/blacklist-token-model.js'
 
 //need to separate orm functions from repository to decouple business logic from persistence
-export async function ormCreateUser(username, password) {
+export async function ormCreateUser(email, username, password) {
     try {
-        const newUser = await createUser({username, password});
+        const newUser = await createUser({email, username, password});
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
         newUser.password = hashedPassword;
         newUser.save();
-        return true;
+        return newUser;
     } catch (err) {
         console.log('ERROR: Could not create new user');
         return { err };
     }
 }
 
-export async function ormCheckUser(username) {
+export async function ormCheckUser(username, email) {
     try {
-        const user = await UserModel.find({username: username});
-        console.log(user)
-        if (user.length !== 0) {
-            return true;
-        } else {
-            return false;
+        let user
+        if (username === 0) {
+            user = await UserModel.findOne({ email: email }).exec()
+        } else if (email === 0) {
+            user = await UserModel.findOne({ username: username }).exec();
         }
+        return user
     } catch {
         console.log('ERROR: Could not check for a user')
         return { err }
     }
 }
 
+export async function ormUpdateUser(id, newPassword, verified) {
+    try {
+        let user
+        if (verified === 0) {
+            user = await UserModel.updateOne({_id: id}, {password: newPassword}).exec()
+        } else if (newPassword === 0) {
+            user = await UserModel.updateOne({_id: id}, {verified: verified}).exec()
+        }
+        return user
+    } catch (err) {
+        console.log('ERROR: Could not update user')
+        return {err}
+    }
+}
+
+export async function ormCreateEmailToken(user) {
+    try {
+        const newToken = new EmailTokenModel({
+            userId: user._id,
+            token: crypto.randomBytes(32).toString("hex"),
+        }).save();
+        return newToken;
+    } catch (err) {
+        console.log('ERROR: Could not create email token');
+        return { err }
+    }
+}
+
+export async function ormCheckEmailToken(user, tokenId) {
+     try {
+        const token = await EmailTokenModel.findOne({userId: user._id, token: tokenId})
+        return token;
+    } catch (err) {
+        console.log('ERROR: Could not find email token');
+        return { err }
+    }
+}
+
+export async function ormDeleteEmailToken(id) {
+    try {
+        const emailToken = await EmailTokenModel.findByIdAndRemove(id).exec()
+        return emailToken
+    } catch (err) {
+        console.log('ERROR: Could not delete email token')
+        return {err}
+    }
+}
+
 export async function ormDeleteUser(username) {
     try {
-        const user = await UserModel.findOneAndRemove({username: username});
+        const user = await UserModel.findOneAndRemove({username: username}).exec();
         if (!user) {
             return false
         }
@@ -47,7 +99,7 @@ export async function ormDeleteUser(username) {
 
 export async function ormCheckPassword(username, password) {
     try {
-        const user = await UserModel.findOne({username: username});
+        const user = await UserModel.findOne({username: username}).exec();
         if (user) {
             const validPassword = await bcrypt.compare(password, user.password);
             return validPassword;
@@ -62,7 +114,7 @@ export async function ormCheckPassword(username, password) {
 
 export async function ormChangePassword(username, newPassword) {
     try {
-        const user = await UserModel.findOne({username: username});
+        const user = await UserModel.findOne({username: username}).exec();
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(newPassword, salt);
         user.password = hashedPassword;
@@ -71,6 +123,19 @@ export async function ormChangePassword(username, newPassword) {
     } catch (err) {
         console.log('ERROR: Could not change password');
         return { err };
+    }
+}
+
+export async function ormCreateBlacklistToken(token) {
+    try {
+        const blacklistToken = new BlackListTokenModel({
+            token: token
+        })
+        blacklistToken.save()
+        return blacklistToken
+    } catch (err) {
+        console.log('ERROR: Could not create blacklist token')
+        return {err}
     }
 }
 

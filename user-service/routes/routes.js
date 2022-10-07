@@ -1,6 +1,10 @@
 import express from 'express';
 const router = express.Router();
-import { createUser, userLogin, deleteUser, userLogout, changePassword } from '../controller/user-controller.js';
+import { createUser, userLogin, deleteUser, 
+    userLogout, changePassword, verifyEmailToken, 
+    resetPasswordUsingEmail,
+    resetPassword
+} from '../controller/user-controller.js';
 import {auth} from "../utils/auth.js"
 
 // Controller will contain all the User-defined Routes
@@ -12,8 +16,17 @@ router.route('/')
     .delete(deleteUser)
     .put(changePassword)
 
+router.route('/:id/:token')
+    .get(verifyEmailToken)
+
 router.route('/auth')
     .get(auth)
     .post(userLogout, auth)
+
+router.route('/reset')
+    .post(resetPasswordUsingEmail)
+
+router.route('/reset/password')
+    .post(resetPassword)
 
 export { router }
