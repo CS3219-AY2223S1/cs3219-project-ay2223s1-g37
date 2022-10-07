@@ -81,7 +81,7 @@ export async function pairMatches(matchEntryId) {
         // { where: { username1: username1 } }
         { where: { id: matchEntryId } }
       );
-      return pendingMatches[0].id;
+      return pendingMatches[0];
     } else {
       return undefined;
     }

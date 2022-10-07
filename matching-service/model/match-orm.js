@@ -28,7 +28,7 @@ export async function ormPairMatches(matchEntryId) {
   try {
     const updatedMatch = await pairMatches(matchEntryId);
     // console.log(`updatedMatch id match-orm: ${updatedMatch}`);
-    return updatedMatch;
+    return { matchEntryId: updatedMatch };
   } catch (err) {
     console.log("Error in running pairing");
     // return { err };

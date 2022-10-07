@@ -6,7 +6,7 @@ export async function pairMatches(req, socket) {
     if (req.timeLeft > 0) {
       const updatedMatchId = await _pairMatches(req.matchEntryId);
       // console.log(`Updated match id: ${updatedMatchId}`);
-      if (updatedMatchId) {
+      if (updatedMatchId.matchEntryId !== undefined) {
         console.log(`Found match for ${req.matchEntryId} successfully!`);
         socket.emit("pairingSuccess", updatedMatchId);
         return;
