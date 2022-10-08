@@ -52,7 +52,7 @@ export async function pairMatches(matchEntryId) {
   // console.log(`already matched: ${alreadyMatched}`);
 
   if (alreadyMatched != null) {
-    return await Match.destroy({
+    await Match.destroy({
       where: {
         // username1: username1,
         id: matchEntryId,
@@ -60,6 +60,7 @@ export async function pairMatches(matchEntryId) {
         difficulty: difficulty,
       },
     });
+    return alreadyMatched;
   } else {
     const pendingMatches = await Match.findAll({
       where: {
@@ -81,7 +82,8 @@ export async function pairMatches(matchEntryId) {
         // { where: { username1: username1 } }
         { where: { id: matchEntryId } }
       );
-      return pendingMatches[0];
+      
+      return Match.findByPk(matchEntryId);
     } else {
       return undefined;
     }
