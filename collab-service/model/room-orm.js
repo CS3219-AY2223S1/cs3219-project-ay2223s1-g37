@@ -11,14 +11,14 @@ export async function ormCreateRoom(username1, username2, difficulty) {
     let allocatedTime = 0;
   
     switch (difficulty) {
-      case "easy":
-        allocatedTime = 20;
+      case "Easy":
+        allocatedTime = 20 * 60;
         break;
-      case "medium":
-        allocatedTime = 30;
+      case "Medium":
+        allocatedTime = 30 * 60;
         break;
-      case "hard":
-        allocatedTime = 40;
+      case "Hard":
+        allocatedTime = 40 * 60;
         break;
       default:
         allocatedTime = 0;

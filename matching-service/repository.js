@@ -47,6 +47,7 @@ export async function pairMatches(matchEntryId) {
   const alreadyMatched = await Match.findOne({
     where: {
       username2: username1,
+      difficulty: difficulty,
     },
   });
   // console.log(`already matched: ${alreadyMatched}`);
