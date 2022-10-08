@@ -10,7 +10,7 @@ import { Op } from "sequelize";
 let sequelize = new Sequelize("database", "username", "password", {
   host: "localhost",
   dialect: "sqlite",
-  storage: "./db/database.sqlite",
+  storage: "./db/matchDB.sqlite",
 });
 
 let Match;
