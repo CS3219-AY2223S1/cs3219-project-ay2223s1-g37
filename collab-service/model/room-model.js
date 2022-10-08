@@ -19,6 +19,9 @@ let RoomModelSchema = (sequelize, DataTypes) =>
       type: DataTypes.STRING,
       allowNull: false,
     },
+    interviewer: {
+      type: DataTypes.STRING,
+    },
     difficulty: {
       type: DataTypes.STRING,
       allowNull: false,

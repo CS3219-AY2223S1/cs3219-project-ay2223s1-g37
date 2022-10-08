@@ -7,7 +7,9 @@ import {
 export async function ormCreateRoom(username1, username2, difficulty) {
   // console.log("match-orm: create match w {" + username1 + ", " + difficulty + "}");
   try {
+    let interviewer = username1;
     let allocatedTime = 0;
+  
     switch (difficulty) {
       case "easy":
         allocatedTime = 20;
@@ -25,12 +27,14 @@ export async function ormCreateRoom(username1, username2, difficulty) {
     const newRoom = await createRoom({
       username1,
       username2,
+      interviewer,
       difficulty,
       allocatedTime
     });
     newRoom.save();
-    const roomId = newRoom.id;
-    return { roomId: roomId };
+    // const roomId = newRoom.id;
+    // return { roomId: roomId };
+    return { room: newRoom };
   } catch (err) {
     console.log("ERROR: Could not create new room");
     return { err };

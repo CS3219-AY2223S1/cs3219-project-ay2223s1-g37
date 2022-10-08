@@ -28,6 +28,18 @@ export default sequelize;
 
 export async function createRoom(params) {
   // console.log("respository.js: Create room w params " + JSON.stringify(params));
+  const alreadyCreated = await Room.findOne({
+    where: {
+      username1: params.username1,
+      username2: params.username2,
+      difficulty: params.difficulty
+    },
+  });
+
+  if (alreadyCreated != null) {
+    return alreadyCreated;
+  }
+
   return Room.create(params).catch((err) => {
     console.log("respository.js: Unable to add room!\n" + err);
   });
