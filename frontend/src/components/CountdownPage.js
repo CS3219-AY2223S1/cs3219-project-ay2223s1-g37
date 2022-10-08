@@ -1,7 +1,7 @@
 import { Box, Typography, Button } from "@mui/material";
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import socket from "../utils/Socket.js";
+import { matchingSocket } from "../utils/Socket.js";
 
 function CountdownPage() {
   const location = useLocation();
@@ -10,11 +10,11 @@ function CountdownPage() {
   const navigate = useNavigate();
   const [timeLeft, setTimeLeft] = useState(30);
   const [pairFound, setPairFound] = useState(false);
-  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [isConnected, setIsConnected] = useState(matchingSocket.connected);
 
   const getPairing = (matchEntryId) => {
     if (isConnected) {
-      socket.emit("pairing", { matchEntryId, timeLeft });
+      matchingSocket.emit("pairing", { matchEntryId, timeLeft });
     }
   };
 
@@ -29,28 +29,28 @@ function CountdownPage() {
 
   // On first rendering of screen, start finding a pairing
   useEffect(() => {
-    socket.on("connect", () => {
+    matchingSocket.on("connect", () => {
       setIsConnected(true);
     });
 
-    socket.on("disconnect", () => {
+    matchingSocket.on("disconnect", () => {
       setIsConnected(false);
     });
 
-    socket.on("pairingSuccess", (pairInfo) => {
+    matchingSocket.on("pairingSuccess", (pairInfo) => {
       setPairFound(true);
       routeToNext(true, pairInfo);
     });
 
-    socket.on("pairingFailed", () => {
+    matchingSocket.on("pairingFailed", () => {
       routeToNext(false);
     });
 
     return () => {
-      socket.off("connect");
-      socket.off("disconnect");
-      socket.off("pairingSuccess");
-      socket.off("pairingFailed");
+      matchingSocket.off("connect");
+      matchingSocket.off("disconnect");
+      matchingSocket.off("pairingSuccess");
+      matchingSocket.off("pairingFailed");
     };
   }, [routeToNext]);
 

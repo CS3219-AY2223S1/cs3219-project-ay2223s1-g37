@@ -1,5 +1,4 @@
 import { ormCreateMatch as _createMatch } from "../model/match-orm.js";
-import { ormUpdateMatch as _updateMatch } from "../model/match-orm.js";
 import { ormRemoveMatchTimeout as _removeMatchTimeout } from "../model/match-orm.js";
 import { ormRemoveMatchEndSession as _removeMatchEndSession } from "../model/match-orm.js";
 
@@ -29,23 +28,6 @@ export async function createMatch(req, socket) {
   } catch (err) {
     console.log("Database failure when creating new match!");
     socket.emit("matchCreationFailure");
-    return;
-  }
-}
-
-export async function updateMatch(req, socket) {
-  const { roomId } = req;
-  try {
-    const resp = await _updateMatch(roomId);
-    console.log(`match-controller response: ${resp}`);
-    if (resp == true) {
-      console.log("Emitting session complete");
-      socket.emit("sessionComplete");
-    } else {
-      return;
-    }
-  } catch (err) {
-    console.log("Database failure when updating match!");
     return;
   }
 }

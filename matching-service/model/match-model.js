@@ -21,10 +21,6 @@ let MatchModelSchema = (sequelize, DataTypes) =>
       type: DataTypes.STRING,
       allowNull: false,
     },
-    rounds: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
-    },
     startTime: {
       type: DataTypes.DATE,
       // allowNull: false,

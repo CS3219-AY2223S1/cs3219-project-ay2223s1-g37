@@ -1,5 +1,6 @@
 import { io } from 'socket.io-client';
 
-const socket = io.connect('http://localhost:8001');
+const matchingSocket = io.connect('http://localhost:8001');
+const collabSocket = io.connect('http://localhost:8002');
 
-export default socket;
+export { matchingSocket, collabSocket };

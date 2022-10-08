@@ -1,21 +1,25 @@
 import { Box, Typography, Button } from "@mui/material";
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import socket from "../utils/Socket.js";
+import { matchingSocket, collabSocket } from "../utils/Socket.js";
 
 function SessionEndedPage() {
-  // const location = useLocation();
-  // const roomInfo = location.state;
-  // const roomId = roomInfo.matchEntryId;
-  const roomId = 2; // TODO: REMOVE. Hardcoded temporarily
+  const location = useLocation();
+  const matchEntry = location.state.matchEntry;
+  const roomInfo = location.state.roomInfo;
+  // const roomId = 2; // TODO: REMOVE. Hardcoded temporarily
   const navigate = useNavigate();
 
-  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [isMatchingConnected, setIsMatchingConnected] = useState(matchingSocket.connected);
+  const [isCollabConnected, setIsCollabConnected] = useState(collabSocket.connected);
   const [isSessionComplete, setSessionComplete] = useState(false);
 
+  console.log("session ended match entry: " + JSON.stringify(matchEntry));
+  console.log("session ended room info: " + JSON.stringify(roomInfo));
+
   const handleExit = () => {
-    // TODO: Remove the pair's entry from collaboration service DB
-    socket.emit("endSession", { roomId: roomId });
+    matchingSocket.emit("endSession", { roomId: matchEntry.id });
+    collabSocket.emit("sessionComplete", { roomId: roomInfo.id });
     navigate("/home");
   };
 
@@ -30,28 +34,29 @@ function SessionEndedPage() {
 
   // On initial render of the screen, update 'rounds' count
   useEffect(() => {
-    if (isConnected) {
-      socket.emit("sessionEnded", { roomId: roomId });
+    if (isMatchingConnected) {
+      collabSocket.emit("sessionEnded", { roomId: roomInfo.id });
     }
   }, []);
 
   useEffect(() => {
-    socket.on("connect", () => {
-      setIsConnected(true);
+    matchingSocket.on("connect", () => {
+      setIsMatchingConnected(true);
     });
 
-    socket.on("disconnect", () => {
-      setIsConnected(false);
+    matchingSocket.on("disconnect", () => {
+      setIsMatchingConnected(false);
     });
 
     // The 2 users already had their turn
-    socket.on("sessionComplete", () => {
+    collabSocket.on("sessionComplete", () => {
       setSessionComplete(true);
     });
 
     return () => {
-      socket.off("connect");
-      socket.off("disconnect");
+      matchingSocket.off("connect");
+      matchingSocket.off("disconnect");
+      collabSocket.off("sessionComplete");
     };
   }, []);
 

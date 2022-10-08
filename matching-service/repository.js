@@ -10,7 +10,7 @@ import { Op } from "sequelize";
 let sequelize = new Sequelize("database", "username", "password", {
   host: "localhost",
   dialect: "sqlite",
-  storage: "./db/database.sqlite",
+  storage: "./db/matchDB.sqlite",
 });
 
 let Match;
@@ -47,12 +47,13 @@ export async function pairMatches(matchEntryId) {
   const alreadyMatched = await Match.findOne({
     where: {
       username2: username1,
+      difficulty: difficulty,
     },
   });
   // console.log(`already matched: ${alreadyMatched}`);
 
   if (alreadyMatched != null) {
-    return await Match.destroy({
+    await Match.destroy({
       where: {
         // username1: username1,
         id: matchEntryId,
@@ -60,6 +61,7 @@ export async function pairMatches(matchEntryId) {
         difficulty: difficulty,
       },
     });
+    return alreadyMatched;
   } else {
     const pendingMatches = await Match.findAll({
       where: {
@@ -81,7 +83,8 @@ export async function pairMatches(matchEntryId) {
         // { where: { username1: username1 } }
         { where: { id: matchEntryId } }
       );
-      return pendingMatches[0];
+      
+      return Match.findByPk(matchEntryId);
     } else {
       return undefined;
     }
@@ -116,24 +119,4 @@ export async function removeMatchEndSession(roomId) {
       difficulty: difficulty,
     },
   });
-}
-
-// Increment rounds by 1 every time the user gets to
-export async function updateMatch(roomId) {
-  console.log(`Updating match...`);
-  const currentMatch = await Match.findByPk(roomId);
-  if (currentMatch.rounds != 0 && currentMatch.rounds % 4 == 0) {
-    // TODO: Currently % 4 because update is executing twice for some reason. Figure out why
-    // Session completed
-    console.log(`Session complete!!!!!!`);
-    return true;
-  } else {
-    // Session not completed yet
-    console.log(`Another round to go..........`);
-    await Match.update(
-      { rounds: Sequelize.literal("rounds + 1") },
-      { where: { id: roomId } }
-    );
-    return false;
-  }
 }
