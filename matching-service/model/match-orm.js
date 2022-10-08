@@ -3,7 +3,6 @@ import {
   pairMatches,
   removeMatchTimeout,
   removeMatchEndSession,
-  updateMatch,
 } from "../repository.js";
 
 export async function ormCreateMatch(username1, difficulty) {
@@ -48,16 +47,6 @@ export async function ormRemoveMatchEndSession(roomId) {
   try {
     const removedMatchId = await removeMatchEndSession(roomId);
     return removedMatchId;
-  } catch (err) {
-    return { err };
-  }
-}
-
-export async function ormUpdateMatch(roomId) {
-  try {
-    const isComplete = await updateMatch(roomId);
-    console.log(`match-orm response: ${isComplete}`);
-    return isComplete;
   } catch (err) {
     return { err };
   }

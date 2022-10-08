@@ -120,23 +120,3 @@ export async function removeMatchEndSession(roomId) {
     },
   });
 }
-
-// Increment rounds by 1 every time the user gets to
-export async function updateMatch(roomId) {
-  console.log(`Updating match...`);
-  const currentMatch = await Match.findByPk(roomId);
-  if (currentMatch.rounds != 0 && currentMatch.rounds % 4 == 0) {
-    // TODO: Currently % 4 because update is executing twice for some reason. Figure out why
-    // Session completed
-    console.log(`Session complete!!!!!!`);
-    return true;
-  } else {
-    // Session not completed yet
-    console.log(`Another round to go..........`);
-    await Match.update(
-      { rounds: Sequelize.literal("rounds + 1") },
-      { where: { id: roomId } }
-    );
-    return false;
-  }
-}

@@ -4,7 +4,6 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import {
   createMatch,
-  updateMatch,
   deleteMatch,
 } from "./controller/match-controller.js";
 import { pairMatches } from "./controller/pairing-controller.js";
@@ -39,8 +38,6 @@ io.on("connection", (socket) => {
   socket.on("match", (data) => createMatch(data, socket));
 
   socket.on("pairing", (data) => pairMatches(data, socket));
-
-  socket.on("sessionEnded", (data) => updateMatch(data, socket));
 
   socket.on("endSession", (data) => deleteMatch(data, socket));
 });
