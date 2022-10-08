@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import socket from "../utils/Socket.js";
+import { matchingSocket, collabSocket } from "../utils/Socket.js";
 
 function MatchedRoom() {
   const navigate = useNavigate();
@@ -27,47 +27,71 @@ function MatchedRoom() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
   const [dialogMsg, setDialogMsg] = useState("");
-  const [isConnected, setIsConnected] = useState(socket.connected);
-  // const [isRoomCreated, setRoomCreated] = useState(false);
-  const [isRoomCreated, setRoomCreated] = useState(true);
-  // const [timeLeft, setTimeLeft] = useState(Number.MAX_VALUE);
-  const [timeLeft, setTimeLeft] = useState(0);
+  const [isMatchingConnected, setIsMatchingConnected] = useState(matchingSocket.connected);
+  const [isCollabConnected, setIsCollabConnected] = useState(collabSocket.connected);
+  const [isRoomCreated, setRoomCreated] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(Number.MAX_VALUE);
   const [isInterviewer, setIsInterviewer] = useState(true);
+  
+  useEffect(() => {
+    collabSocket.emit("createRoom", matchEntry);
+  }, []);
 
   useEffect(() => {
-    // Requesting for collaboration service to create new room
-    if (isConnected) socket.emit("createRoom", matchEntry);
-  }, [isConnected, matchEntry]);
-
-  useEffect(() => {
-    socket.on("connect", () => {
-      setIsConnected(true);
+    matchingSocket.on("connect", () => {
+      setIsMatchingConnected(true);
     });
 
-    socket.on("disconnect", () => {
-      setIsConnected(false);
+    matchingSocket.on("disconnect", () => {
+      setIsMatchingConnected(false);
+    });
+
+    collabSocket.on("connect", () => {
+      setIsCollabConnected(true);
+    });
+
+    collabSocket.on("disconnect", () => {
+      setIsCollabConnected(false);
     });
 
     // Listening for roomCreated event emitted from collaboration service
-    socket.on("roomCreated", (roomInfo) => {
-      setRoomInfo(roomInfo);
+    collabSocket.on("roomCreationSuccess", ({ room }) => {
+      console.log("matchedRoom room: ", JSON.stringify(room));
+      setRoomInfo(room);
       setRoomCreated(true);
-      setTimeLeft(roomInfo.timeLeft);
+      setTimeLeft(room.allocatedTime);
       setIsInterviewer(
-        roomInfo.interviewer === sessionStorage.getItem("username")
+        room.interviewer === sessionStorage.getItem("username")
       );
     });
 
+    collabSocket.on("roomCreationFailure", () => {
+      // Remove match object from Match DB
+      if (isMatchingConnected) {
+        matchingSocket.emit("endSession", matchEntry.id);
+      }
+      navigate("/home");
+    })
+
     return () => {
-      socket.off("connect");
-      socket.off("disconnect");
+      matchingSocket.off("connect");
+      matchingSocket.off("disconnect");
+      collabSocket.off("connect");
+      collabSocket.off("disconnect");
+      collabSocket.off("roomCreationSuccess");
+      collabSocket.off("roomCreationFailure");
     };
   }, []);
 
   useEffect(() => {
     // Reduce timeLeft by calling setTimeLeft function 1 every second (1000ms)
     if (timeLeft === 0) {
-      navigate("/sessionended", roomInfo);
+      navigate("/sessionended",
+        { state: {
+          "matchEntry": matchEntry,
+          "roomInfo": roomInfo,
+        }
+      });
     } else {
       const timer =
         timeLeft > 0 && setInterval(() => setTimeLeft(timeLeft - 1), 1000);
@@ -82,8 +106,12 @@ function MatchedRoom() {
   };
 
   const handleExit = () => {
-    // TODO: Remove the pair's entry from collaboration service DB
-    // TODO: Remove the pair's entry from matching service DB
+    if (isMatchingConnected) {
+      matchingSocket.emit("endSession", { roomId: matchEntry.id });
+    }
+    if (isCollabConnected) {
+      collabSocket.emit("sessionComplete", { roomId: roomInfo.id });
+    }
     navigate("/home");
   };
 

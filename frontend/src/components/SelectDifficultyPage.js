@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import socket from "../utils/Socket.js";
+import { matchingSocket } from "../utils/Socket.js";
 
 function SelectDifficultyPage() {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ function SelectDifficultyPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
   const [dialogMsg, setDialogMsg] = useState("");
-  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [isConnected, setIsConnected] = useState(matchingSocket.connected);
 
   const handleSelect = (event) => {
     setDifficulty(event.target.value);
@@ -41,7 +41,7 @@ function SelectDifficultyPage() {
 
   const sendMatch = (difficulty) => {
     let username1 = sessionStorage.getItem("username");
-    if (isConnected) socket.emit("match", { username1, difficulty });
+    if (isConnected) matchingSocket.emit("match", { username1, difficulty });
   };
 
   const routeToNext = useCallback(
@@ -60,28 +60,28 @@ function SelectDifficultyPage() {
   const closeDialog = () => setIsDialogOpen(false);
 
   useEffect(() => {
-    socket.on("connect", () => {
+    matchingSocket.on("connect", () => {
       setIsConnected(true);
     });
 
-    socket.on("disconnect", () => {
+    matchingSocket.on("disconnect", () => {
       setIsConnected(false);
     });
 
     // userInfo contains the DB entry ID of successfully created user
-    socket.on("matchCreationSuccess", (userInfo) => {
+    matchingSocket.on("matchCreationSuccess", (userInfo) => {
       routeToNext(true, userInfo);
     });
 
-    socket.on("matchCreationFailure", () => {
+    matchingSocket.on("matchCreationFailure", () => {
       routeToNext(false);
     });
 
     return () => {
-      socket.off("connect");
-      socket.off("disconnect");
-      socket.off("matchCreationSuccess");
-      socket.off("matchCreationFailure");
+      matchingSocket.off("connect");
+      matchingSocket.off("disconnect");
+      matchingSocket.off("matchCreationSuccess");
+      matchingSocket.off("matchCreationFailure");
     };
   }, [routeToNext]);
 
