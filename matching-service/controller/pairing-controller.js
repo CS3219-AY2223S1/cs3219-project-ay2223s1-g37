@@ -1,5 +1,5 @@
 import { ormPairMatches as _pairMatches } from "../model/match-orm.js";
-import { ormRemoveMatch as _removeMatch } from "../model/match-orm.js";
+import { ormRemoveMatchTimeout as _removeMatch } from "../model/match-orm.js";
 
 export async function pairMatches(req, socket) {
   try {

@@ -1,15 +1,14 @@
 /**
- * Match requires info abt...
+ * Room requires info abt...
  * User1 - username
  * User2 - username
  * current total rounds in the session
  * difficulty of qns
- * matching start time
+ * time room is entered
  */
 
-// Rounds are temporarily put in match model, can be shifted to room model
-let MatchModelSchema = (sequelize, DataTypes) =>
-  sequelize.define("Match", {
+let RoomModelSchema = (sequelize, DataTypes) =>
+  sequelize.define("Room", {
     username1: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -27,7 +26,7 @@ let MatchModelSchema = (sequelize, DataTypes) =>
     },
     startTime: {
       type: DataTypes.DATE,
-      // allowNull: false,
+      allowNull: false,
       defaultValue: DataTypes.NOW,
     },
   });
