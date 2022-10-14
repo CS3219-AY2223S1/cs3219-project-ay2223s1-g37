@@ -19,7 +19,6 @@ export async function createRoom(req, socket) {
         socket.emit("roomCreationFailure");
         return;
       } else {
-        console.log(`LOOOOOOOOOOOOOOOOOOOOK ${resp.room.id}`);
         socket.join(resp.room.id); // Join room
         console.log(
           `Created new room for ${username1} and ${username2} successfully!`
