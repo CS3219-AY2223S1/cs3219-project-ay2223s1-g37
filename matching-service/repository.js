@@ -1,5 +1,5 @@
 import MatchModelSchema from "./model/match-model.js";
-// import 'dotenv/config'
+import "dotenv/config";
 
 // Set up sequelize connection
 import Sequelize, { Model } from "sequelize";
@@ -12,6 +12,12 @@ let sequelize = new Sequelize("database", "username", "password", {
   dialect: "sqlite",
   storage: "./db/matchDB.sqlite",
 });
+// Uncomment out in future: Better security with a separate .env file
+// let sequelize = new Sequelize("database", "username", "password", {
+//   host: process.env.HOST,
+//   dialect: process.env.DIALECT,
+//   storage: process.env.STORAGE,
+// });
 
 let Match;
 
@@ -83,7 +89,7 @@ export async function pairMatches(matchEntryId) {
         // { where: { username1: username1 } }
         { where: { id: matchEntryId } }
       );
-      
+
       return Match.findByPk(matchEntryId);
     } else {
       return undefined;

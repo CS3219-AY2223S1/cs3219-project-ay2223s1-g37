@@ -21,18 +21,23 @@ function MatchedRoom() {
   const navigate = useNavigate();
   const location = useLocation();
   const matchEntry = location.state.matchEntryId;
-  console.log("matchEntry: " + JSON.stringify(matchEntry));
+  // console.log("matchEntry: " + JSON.stringify(matchEntry));
 
+  const [documentContent, setDocumentContent] = useState("");
   const [roomInfo, setRoomInfo] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
   const [dialogMsg, setDialogMsg] = useState("");
-  const [isMatchingConnected, setIsMatchingConnected] = useState(matchingSocket.connected);
-  const [isCollabConnected, setIsCollabConnected] = useState(collabSocket.connected);
+  const [isMatchingConnected, setIsMatchingConnected] = useState(
+    matchingSocket.connected
+  );
+  const [isCollabConnected, setIsCollabConnected] = useState(
+    collabSocket.connected
+  );
   const [isRoomCreated, setRoomCreated] = useState(false);
   const [timeLeft, setTimeLeft] = useState(Number.MAX_VALUE);
   const [isInterviewer, setIsInterviewer] = useState(true);
-  
+
   useEffect(() => {
     collabSocket.emit("createRoom", matchEntry);
   }, []);
@@ -46,7 +51,7 @@ function MatchedRoom() {
       setIsMatchingConnected(false);
     });
 
-    collabSocket.on("connect", () => {
+    collabSocket.on("connect", (socket) => {
       setIsCollabConnected(true);
     });
 
@@ -56,13 +61,11 @@ function MatchedRoom() {
 
     // Listening for roomCreated event emitted from collaboration service
     collabSocket.on("roomCreationSuccess", ({ room }) => {
-      console.log("matchedRoom room: ", JSON.stringify(room));
+      // console.log("matchedRoom room: ", JSON.stringify(room));
       setRoomInfo(room);
       setRoomCreated(true);
       setTimeLeft(room.allocatedTime);
-      setIsInterviewer(
-        room.interviewer === sessionStorage.getItem("username")
-      );
+      setIsInterviewer(room.interviewer === sessionStorage.getItem("username"));
     });
 
     collabSocket.on("roomCreationFailure", () => {
@@ -71,7 +74,13 @@ function MatchedRoom() {
         matchingSocket.emit("endSession", matchEntry.id);
       }
       navigate("/home");
-    })
+    });
+
+    // Listens to changes in the collaboration space
+    collabSocket.on("documentUpdated", (content) => {
+      console.log(content);
+      setDocumentContent(content);
+    });
 
     return () => {
       matchingSocket.off("connect");
@@ -86,11 +95,11 @@ function MatchedRoom() {
   useEffect(() => {
     // Reduce timeLeft by calling setTimeLeft function 1 every second (1000ms)
     if (timeLeft === 0) {
-      navigate("/sessionended",
-        { state: {
-          "matchEntry": matchEntry,
-          "roomInfo": roomInfo,
-        }
+      navigate("/sessionended", {
+        state: {
+          matchEntry: matchEntry,
+          roomInfo: roomInfo,
+        },
       });
     } else {
       const timer =
@@ -113,6 +122,14 @@ function MatchedRoom() {
       collabSocket.emit("sessionComplete", { roomId: roomInfo.id });
     }
     navigate("/home");
+  };
+
+  const updateDocument = (event) => {
+    setDocumentContent(event.target.value);
+    collabSocket.emit("uploadChanges", {
+      roomId: roomInfo.id,
+      docChanges: event.target.value,
+    });
   };
 
   const closeDialog = () => setIsDialogOpen(false);
@@ -139,6 +156,8 @@ function MatchedRoom() {
           <Grid item xs={6}>
             <FormControl fullWidth>
               <TextareaAutosize
+                onChange={updateDocument}
+                value={documentContent}
                 readOnly={isInterviewer}
                 minRows={30}
                 placeholder={
