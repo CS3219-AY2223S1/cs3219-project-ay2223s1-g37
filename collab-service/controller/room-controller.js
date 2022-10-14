@@ -2,6 +2,7 @@ import { ormCreateRoom as _createRoom } from "../model/room-orm.js";
 import { ormUpdateRoom as _updateRoom } from "../model/room-orm.js";
 import { ormRemoveRoom as _removeRoom } from "../model/room-orm.js";
 import { ormUploadChanges as _uploadChanges } from "../model/room-orm.js";
+import { ormSwitchRoles as _switchRoles } from "../model/room-orm.js";
 
 export async function createRoom(req, socket) {
   try {
@@ -34,6 +35,7 @@ export async function createRoom(req, socket) {
   } catch (err) {
     console.log("Database failure when creating new room!");
     socket.emit("roomCreationFailure");
+    console.log(err);
     return;
   }
 }
@@ -60,8 +62,21 @@ export async function deleteRoom(req, socket) {
   try {
     const removedRoomId = await _removeRoom(roomId);
     console.log(`Deleted room: ${removedRoomId}`);
+    socket.to(roomId).emit("oneUserLeft");
   } catch (err) {
     console.log("Error deleting room!");
+    return;
+  }
+}
+
+export async function switchRoles(req, socket) {
+  const { roomId } = req;
+  try {
+    const switchedRoomId = await _switchRoles(roomId);
+    console.log(`Roles switched in room: ${switchedRoomId}`);
+    socket.emit("switchedRolesSuccessful");
+  } catch (err) {
+    console.log("Error switching roles!");
     return;
   }
 }

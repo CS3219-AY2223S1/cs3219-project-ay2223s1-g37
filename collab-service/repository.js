@@ -97,6 +97,19 @@ export async function updateRoom(roomId) {
   }
 }
 
+// Returns if both users are ready for next round
+// Handles the switching of roles in the database
+export async function switchRoles(roomId) {
+  console.log(`Switching roles...`);
+  const currentRoom = await Room.findByPk(roomId);
+  // console.log(currentRoom.username2);
+  await Room.update(
+    { interviewer: currentRoom.username2 },
+    { where: { id: roomId } }
+  );
+  return roomId;
+}
+
 export async function uploadChanges(roomId, docChanges) {
   console.log(`Uploading document changes...`);
   // const currentRoom = await Room.findByPk(roomId);

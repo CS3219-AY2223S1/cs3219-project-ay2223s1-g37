@@ -88,7 +88,7 @@ function CountdownPage() {
           <Button
             variant={"outlined"}
             onClick={() => {
-              navigate("/selectdifficulty");
+              navigate("/home");
             }}
           >
             Back

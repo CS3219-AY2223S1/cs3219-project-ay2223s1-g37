@@ -3,6 +3,7 @@ import {
   updateRoom,
   removeRoom,
   uploadChanges,
+  switchRoles,
 } from "../repository.js";
 
 export async function ormCreateRoom(username1, username2, difficulty) {
@@ -46,6 +47,16 @@ export async function ormRemoveRoom(roomId) {
   try {
     const removedRoomId = await removeRoom(roomId);
     return removedRoomId;
+  } catch (err) {
+    return { err };
+  }
+}
+
+export async function ormSwitchRoles(roomId) {
+  try {
+    const switchedRoom = await switchRoles(roomId);
+    console.log(`room-orm response, switched roles in room: ${switchedRoom}`);
+    return switchedRoom;
   } catch (err) {
     return { err };
   }
