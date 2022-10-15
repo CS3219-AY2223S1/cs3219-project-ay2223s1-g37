@@ -1,7 +1,9 @@
 import {
   createRoom,
   updateRoom,
-  removeRoom
+  removeRoom,
+  uploadChanges,
+  switchRoles,
 } from "../repository.js";
 
 export async function ormCreateRoom(username1, username2, difficulty) {
@@ -9,7 +11,7 @@ export async function ormCreateRoom(username1, username2, difficulty) {
   try {
     let interviewer = username1;
     let allocatedTime = 0;
-  
+
     switch (difficulty) {
       case "Easy":
         allocatedTime = 20 * 60;
@@ -29,7 +31,7 @@ export async function ormCreateRoom(username1, username2, difficulty) {
       username2,
       interviewer,
       difficulty,
-      allocatedTime
+      allocatedTime,
     });
     newRoom.save();
     // const roomId = newRoom.id;
@@ -50,11 +52,31 @@ export async function ormRemoveRoom(roomId) {
   }
 }
 
+export async function ormSwitchRoles(roomId) {
+  try {
+    const switchedRoom = await switchRoles(roomId);
+    console.log(`room-orm response, switched roles in room: ${switchedRoom}`);
+    return switchedRoom;
+  } catch (err) {
+    return { err };
+  }
+}
+
 export async function ormUpdateRoom(roomId) {
   try {
     const isComplete = await updateRoom(roomId);
-    console.log(`room-orm response: ${isComplete}`);
+    console.log(`room-orm response, room updated: ${isComplete}`);
     return isComplete;
+  } catch (err) {
+    return { err };
+  }
+}
+
+export async function ormUploadChanges(roomId, docChanges) {
+  try {
+    const updatedContent = await uploadChanges(roomId, docChanges);
+    console.log(`room-orm response, changes uploaded: ${updatedContent}`);
+    return updatedContent;
   } catch (err) {
     return { err };
   }

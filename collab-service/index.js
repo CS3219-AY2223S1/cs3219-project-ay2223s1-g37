@@ -6,6 +6,8 @@ import {
   createRoom,
   updateRoom,
   deleteRoom,
+  uploadChanges,
+  switchRoles,
 } from "./controller/room-controller.js";
 
 const app = express();
@@ -39,7 +41,11 @@ io.on("connection", (socket) => {
 
   socket.on("sessionEnded", (data) => updateRoom(data, socket));
 
+  socket.on("switchRoles", (data) => switchRoles(data, socket));
+
   socket.on("sessionComplete", (data) => deleteRoom(data, socket));
+
+  socket.on("uploadChanges", (data) => uploadChanges(data, socket));
 });
 
 httpServer.listen(8002, () =>
