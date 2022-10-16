@@ -17,7 +17,7 @@ function SessionEndedPage() {
     collabSocket.connected
   );
   const [isSessionComplete, setSessionComplete] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(30);
+  const [timeLeft, setTimeLeft] = useState(10);
   const [userLeft, setUserLeft] = useState(false);
   const [isRoleSwitched, setIsRoleSwitched] = useState(false);
 
