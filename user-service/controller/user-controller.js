@@ -115,7 +115,7 @@ export async function userLogin(req, res) {
             if (validPassword) {
                 const token = jwt.sign({
                     username: username
-                }, process.env.JWT_SECRET_KEY, { expiresIn: '3h'}) // helloworld is the jwt secret key, it's just an example and should put in env file
+                }, process.env.JWT_SECRET_KEY, { expiresIn: '3h'})
                 res.cookie('token', token, { httpOnly: true }) // httponly false to allow cookie to pass to front
                 return res.status(200).json({message: 'Authentication successful', token: token})
             } else {
@@ -141,7 +141,6 @@ export async function userLogout(req, res) {
 
 export async function deleteUser(req, res) {
     try {
-        // todo: might need to use token for authentication to delete
         const { username, password } = req.body
         if (!username || !password) {
             return res.status(400).json({message: 'Username and/or Password are missing!'})

@@ -1,21 +1,27 @@
 import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  TextField,
-  Typography,
-} from "@mui/material";
+    Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    TextField,
+    Typography,
+    IconButton,
+    Alert,
+    Snackbar
+} from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close';
 import { useState } from "react";
 import axios from "axios";
 import { URL_USER_SVC } from "../configs";
 import { STATUS_CODE_NOT_FOUND, STATUS_CODE_UNAUTHORIZED, 
-    STATUS_CODE_INTERNAL_SERVER_ERROR, STATUS_CODE_OK
+    STATUS_CODE_INTERNAL_SERVER_ERROR, STATUS_CODE_OK,
+    STATUS_CODE_BAD_REQUEST
 } from "../constants";
 import { Link, useParams } from "react-router-dom";
+import '../components/UpdateAccount.css'
 
 function ResetPasswordPage() {
     const [password, setPassword] = useState("");
@@ -23,6 +29,9 @@ function ResetPasswordPage() {
     const [dialogTitle, setDialogTitle] = useState("");
     const [dialogMsg, setDialogMsg] = useState("");
     const [isResetSuccess, setIsResetSuccess] = useState(false);
+    const [openAlert, setOpenAlert] = useState(false);
+    const [message, setMessage] = useState("")
+    const [severity, setSeverity] = useState("error")
 
     const { id, token } = useParams()
 
@@ -40,22 +49,31 @@ function ResetPasswordPage() {
         setDialogMsg(msg);
     };
 
-    const setErrorDialog = (msg) => {
-        setIsDialogOpen(true);
-        setDialogTitle("Error");
-        setDialogMsg(msg);
-    };
-
     const handleReset = async () => {
         setIsResetSuccess(false)
         const res = await axios.post(URL_USER_SVC + '/reset/password', data)
             .catch((err) => {
                 if (err.response.status === STATUS_CODE_UNAUTHORIZED) {
-                    setErrorDialog("Token cannot be found! Please try again")
+                    setSeverity("error")
+                    setOpenAlert(true)
+                    setMessage("Token cannot be found! Please try again!")
                 } else if (err.response.status === STATUS_CODE_NOT_FOUND) {
-                    setErrorDialog(`Username: ${id} not found in database!`)
+                    setSeverity("error")
+                    setOpenAlert(true)
+                    setMessage(`User cannot be found in the database!`)
                 } else if (err.response.status === STATUS_CODE_INTERNAL_SERVER_ERROR) {
-                    setErrorDialog("Database failure when resetting password!")
+                    setSeverity("error")
+                    setOpenAlert(true)
+                    setMessage(`Database failure when resetting password!`)
+                } else if (err.response.status === STATUS_CODE_BAD_REQUEST 
+                    && err.response.data.message.includes("password")) {
+                    setSeverity("error")
+                    setOpenAlert(true)
+                    setMessage("Password does not meet requirements")
+                } else if (err.response.status === STATUS_CODE_BAD_REQUEST) {
+                    setSeverity("error")
+                    setOpenAlert(true)
+                    setMessage("Unable to reset password! Please try again")
                 }
             })
         if (res && res.status === STATUS_CODE_OK) {
@@ -63,9 +81,39 @@ function ResetPasswordPage() {
             setIsResetSuccess(true)
         }
     }
+
+    const alert = (
+        <Snackbar 
+            open={openAlert} 
+            autoHideDuration={5000}
+            onClose={() => {
+                setOpenAlert(false);
+            }}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+        <Alert 
+            severity={severity}
+            action={
+                <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                    setOpenAlert(false);
+                }}
+                >
+                    <CloseIcon/>
+                </IconButton>
+            }
+        >
+            {message}
+        </Alert>
+    </Snackbar>
+    )
     
     return (
         <Box display={"flex"} flexDirection={"column"} width={"30%"} margin={"0px auto"} padding={"4rem"}>
+            {openAlert? alert : null}
             <Typography variant={"h3"} marginBottom={"2rem"}>Reset Password</Typography>
             <TextField
                 label="Password"

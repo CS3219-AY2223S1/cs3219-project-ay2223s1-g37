@@ -1,15 +1,15 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import SignupPage from "./components/SignupPage";
-import LogininPage from "./components/LoginPage";
+import SignupPage from "./pages/SignupPage";
+import LogininPage from "./pages/LoginPage";
 import { Box } from "@mui/material";
-import CountdownPage from "./components/CountdownPage";
-import MatchedRoom from "./components/MatchedRoom";
-import SessionEndedPage from "./components/SessionEndedPage";
-import Home from "./components/Home";
+import CountdownPage from "./pages/CountdownPage";
+import MatchedRoom from "./pages/MatchedRoom";
+import SessionEndedPage from "./pages/SessionEndedPage";
+import Home from "./pages/HomePage";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import UpdateAccount from "./components/UpdateAccount";
-import ResetPasswordPage from './components/ResetPasswordPage'
-import ForgetPasswordPage from './components/ForgetPasswordPage'
+import ResetPasswordPage from './pages/ResetPasswordPage'
+import ForgetPasswordPage from './pages/ForgetPasswordPage'
 
 function App() {
   return (
@@ -24,7 +24,6 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LogininPage />} />
           <Route path="/reset/:id/:token" element={<ResetPasswordPage />} />
-          {/* most likely move updating password into protected routes */}
           <Route path="/update" element={<UpdateAccount />} />
           <Route path="/reset" element={<ForgetPasswordPage />} />
           <Route path="/" element={<ProtectedRoute />}>
