@@ -7,8 +7,12 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle
-} from '@mui/material'
+    DialogTitle,
+    IconButton,
+    Snackbar,
+    Alert
+} from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
@@ -26,17 +30,31 @@ function ForgetPasswordPage() {
     const [dialogTitle, setDialogTitle] = useState("");
     const [dialogMsg, setDialogMsg] = useState("");
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [openAlert, setOpenAlert] = useState(false);
+    const [message, setMessage] = useState("")
+    const [severity, setSeverity] = useState("error")
 
     const handleUpdate = async () => {
         setIsEmailSentSuccess(false)
         const res = await axios.post(URL_USER_SVC + '/reset', { email })
             .catch((err) => {
-                if (err.response.status === STATUS_CODE_BAD_REQUEST) {
-                    setErrorDialog("Invalid email format")
+                if (err.response.status === STATUS_CODE_BAD_REQUEST 
+                    && err.response.data.message.includes("Invalid Email Format!")) {
+                    setSeverity("error")
+                    setOpenAlert(true)
+                    setMessage("Invalid Email format!")
                 } else if (err.response.status === STATUS_CODE_NOT_FOUND) {
-                    setErrorDialog(`Email cannot be found in database`)
+                    setSeverity("error")
+                    setOpenAlert(true)
+                    setMessage("Email does not exist in the database!")
                 } else if (err.response.status === STATUS_CODE_INTERNAL_SERVER_ERROR) {
-                    setErrorDialog("Failed to send email. Please try again later")
+                    setSeverity("error")
+                    setOpenAlert(true)
+                    setMessage("Error")
+                } else if (err.response.status === STATUS_CODE_BAD_REQUEST) {
+                    setSeverity("error")
+                    setOpenAlert(true)
+                    setMessage("Unable to sent email! Please try again later")
                 }
             })
         if (res && res.status === STATUS_CODE_OK) {
@@ -53,14 +71,38 @@ function ForgetPasswordPage() {
         setDialogMsg(msg);
     };
 
-    const setErrorDialog = (msg) => {
-        setIsDialogOpen(true);
-        setDialogTitle("Error");
-        setDialogMsg(msg);
-    };
+    const alert = (
+        <Snackbar 
+            open={openAlert} 
+            autoHideDuration={5000}
+            onClose={() => {
+                setOpenAlert(false);
+            }}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+        <Alert 
+            severity={severity}
+            action={
+                <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                    setOpenAlert(false);
+                }}
+                >
+                    <CloseIcon/>
+                </IconButton>
+            }
+        >
+            {message}
+        </Alert>
+    </Snackbar>
+    )
 
     return (
         <Box display={"flex"} flexDirection={"column"} width={"30%"} margin={"0px auto"} padding={"4rem"}>
+            {openAlert? alert : null}
             <Typography variant={"h3"} marginBottom={"2rem"}>Reset Password</Typography>
             <TextField
                 label="Email"

@@ -173,6 +173,538 @@
         "category": "dynamic programming",
         "difficulty": "medium",
         "url": "https://leetcode.com/problems/jump-game/"
+    },
+    {
+        "name": "Clone Graph",
+        "description": "Given a reference of a node in a connected undirected graph.\n\nReturn a deep copy (clone) of the graph.\n\nEach node in the graph contains a value (int) and a list (List[Node]) of its neighbors.\n\n",
+        "category": "graph",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/clone-graph/"
+    },
+    {
+        "name": "Course Schedule",
+        "description": "There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. You are given an array prerequisites where prerequisites[i] = [ai, bi] indicates that you must take course bi first if you want to take course ai.\n- For example, the pair [0, 1], indicates that to take course 0 you have to first take course 1.\n\nReturn true if you can finish all courses. Otherwise, return false.",
+        "category": "graph",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/course-schedule/"
+    },
+    {
+        "name": "Pacific Atlantic Water Flow",
+        "description": "There is an m x n rectangular island that borders both the Pacific Ocean and Atlantic Ocean. The Pacific Ocean touches the island's left and top edges, and the Atlantic Ocean touches the island's right and bottom edges.\n\nThe island is partitioned into a grid of square cells. You are given an m x n integer matrix heights where heights[r][c] represents the height above sea level of the cell at coordinate (r, c).\n\nThe island receives a lot of rain, and the rain water can flow to neighboring cells directly north, south, east, and west if the neighboring cell's height is less than or equal to the current cell's height. Water can flow from any cell adjacent to an ocean into the ocean.\n\nReturn a 2D list of grid coordinates result where result[i] = [ri, ci] denotes that rain water can flow from cell (ri, ci) to both the Pacific and Atlantic oceans.",
+        "category": "graph",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/pacific-atlantic-water-flow/"
+    }, 
+    {
+        "name": "Number of Islands",
+        "description": "Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands.\n\nAn island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.",
+        "category": "graph",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/number-of-islands/"
+    },
+    {
+        "name": "Longest Consecutive Sequence",
+        "description": "Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence.\n\nYou must write an algorithm that runs in O(n) time.",
+        "category": "graph",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/longest-consecutive-sequence/"
+    },
+    {
+        "name": "Insert Interval",
+        "description": "You are given an array of non-overlapping intervals intervals where intervals[i] = [starti, endi] represent the start and the end of the ith interval and intervals is sorted in ascending order by starti. You are also given an interval newInterval = [start, end] that represents the start and end of another interval.\n\nInsert newInterval into intervals such that intervals is still sorted in ascending order by starti and intervals still does not have any overlapping intervals (merge overlapping intervals if necessary).\n\nReturn intervals after the insertion.",
+        "category": "interval",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/insert-interval/"
+    },
+    {
+        "name": "Merge Intervals",
+        "description": "Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.",
+        "category": "interval",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/merge-intervals/"
+    },
+    {
+        "name": "Non-overlapping Intervals",
+        "description": "Given an array of intervals intervals where intervals[i] = [starti, endi], return the minimum number of intervals you need to remove to make the rest of the intervals non-overlapping.",
+        "category": "interval",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/non-overlapping-intervals/"
+    },
+    {
+        "name": "Reverse Linked List",
+        "description": "Given the head of a singly linked list, reverse the list, and return the reversed list.",
+        "category": "linked list",
+        "difficulty": "easy",
+        "url": "https://leetcode.com/problems/reverse-linked-list/"
+    },
+    {
+        "name": "Linked List Cycle",
+        "description": "Given head, the head of a linked list, determine if the linked list has a cycle in it.\n\nThere is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to. Note that pos is not passed as a parameter.\n\nReturn true if there is a cycle in the linked list. Otherwise, return false.",
+        "category": "linked list",
+        "difficulty": "easy",
+        "url": "https://leetcode.com/problems/linked-list-cycle/"
+    },
+    {
+        "name": "Merge Two Sorted Lists",
+        "description": "You are given the heads of two sorted linked lists list1 and list2.\n\nMerge the two lists in a one sorted list. The list should be made by splicing together the nodes of the first two lists.\n\nReturn the head of the merged linked list.",
+        "category": "linked list",
+        "difficulty": "easy",
+        "url": "https://leetcode.com/problems/merge-two-sorted-lists/"
+    },
+    {
+        "name": "Merge k Sorted Lists",
+        "description": "You are given an array of k linked-lists lists, each linked-list is sorted in ascending order.\n\nMerge all the linked-lists into one sorted linked-list and return it.",
+        "category": "linked list",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/merge-k-sorted-lists/"
+    },
+    {
+        "name": "Remove Nth Node From End of List",
+        "description": "Given the head of a linked list, remove the nth node from the end of the list and return its head.",
+        "category": "linked list",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/remove-nth-node-from-end-of-list/"
+    },
+    {
+        "name": "Reorder List",
+        "description": "You are given the head of a singly linked-list. The list can be represented as:\nL0 → L1 → … → Ln - 1 → Ln\nReorder the list to be on the following form:\nL0 → Ln → L1 → Ln - 1 → L2 → Ln - 2 → …\nYou may not modify the values in the list's nodes. Only nodes themselves may be changed.",
+        "category": "linked list",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/reorder-list/"
+    },
+    {
+        "name": "Set Matrix Zeroes",
+        "description": "Given an m x n integer matrix matrix, if an element is 0, set its entire row and column to 0's.\n\nYou must do it in place.",
+        "category": "matrix",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/set-matrix-zeroes/"
+    },
+    {
+        "name": "Spiral Matrix",
+        "description": "Given an m x n matrix, return all elements of the matrix in spiral order.",
+        "category": "matrix",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/spiral-matrix/"
+    },
+    {
+        "name": "Rotate Image",
+        "description": "You are given an n x n 2D matrix representing an image, rotate the image by 90 degrees (clockwise).\n\nYou have to rotate the image in-place, which means you have to modify the input 2D matrix directly. DO NOT allocate another 2D matrix and do the rotation.",
+        "category": "matrix",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/rotate-image/"
+    },
+    {
+        "name": "Word Search",
+        "description": "Given an m x n grid of characters board and a string word, return true if word exists in the grid.\n\nThe word can be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.",
+        "category": "matrix",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/word-search/"
+    },
+    {
+        "name": "Longest Substring Without Repeating Characters",
+        "description": "Given a string s, find the length of the longest substring without repeating characters.",
+        "category": "string",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/longest-substring-without-repeating-characters/"
+    },
+    {
+        "name": "Longest Repeating Character Replacement",
+        "description": "You are given a string s and an integer k. You can choose any character of the string and change it to any other uppercase English character. You can perform this operation at most k times.\n\nReturn the length of the longest substring containing the same letter you can get after performing the above operations.",
+        "category": "string",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/longest-repeating-character-replacement/"
+    },
+    {
+        "name": "Minimum Window Substring",
+        "description": "Given two strings s and t of lengths m and n respectively, return the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string \"\".\n\nThe testcases will be generated such that the answer is unique.\n\nA substring is a contiguous sequence of characters within the string.",
+        "category": "string",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/minimum-window-substring/"
+    },
+    {
+        "name": "Valid Anagram",
+        "description": "Given two strings s and t, return true if t is an anagram of s, and false otherwise.\n\nGiven two strings s and t, return true if t is an anagram of s, and false otherwise.",
+        "category": "string",
+        "difficulty": "easy",
+        "url": "https://leetcode.com/problems/valid-anagram/"
+    },
+    {
+        "name": "Group Anagrams",
+        "description": "Given an array of strings strs, group the anagrams together. You can return the answer in any order.\n\nAn Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.",
+        "category": "string",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/group-anagrams/"
+    },
+    {
+        "name": "Valid Parentheses",
+        "description": "Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.\n\nAn input string is valid if:\n1. Open brackets must be closed by the same type of brackets.\n2. Open brackets must be closed in the correct order.\n3. Every close bracket has a corresponding open bracket of the same type.",
+        "category": "string",
+        "difficulty": "easy",
+        "url": "https://leetcode.com/problems/valid-parentheses/"
+    },
+    {
+        "name": "https://leetcode.com/problems/valid-palindrome/",
+        "description": "A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.\n\nGiven a string s, return true if it is a palindrome, or false otherwise.",
+        "category": "string",
+        "difficulty": "easy",
+        "url": "https://leetcode.com/problems/valid-palindrome/"
+    },
+    {
+        "name": "Longest Palindromic Substring",
+        "description": "Given a string s, return the longest palindromic substring in s.\n\nA string is called a palindrome string if the reverse of that string is the same as the original string.",
+        "category": "string",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/longest-palindromic-substring/"
+    },
+    {
+        "name": "https://leetcode.com/problems/palindromic-substrings/",
+        "description": "Given a string s, return the number of palindromic substrings in it.\n\nA string is a palindrome when it reads the same backward as forward.\n\nA substring is a contiguous sequence of characters within the string.",
+        "category": "string",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/palindromic-substrings/"
+    },
+    {
+        "name": "Maximum Depth of Binary Tree",
+        "description": "Given the root of a binary tree, return its maximum depth.\n\nA binary tree's maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.",
+        "category": "tree",
+        "difficulty": "easy",
+        "url": "https://leetcode.com/problems/maximum-depth-of-binary-tree/"
+    },
+    {
+        "name": "Same Tree",
+        "description": "Given the roots of two binary trees p and q, write a function to check if they are the same or not.\n\nTwo binary trees are considered the same if they are structurally identical, and the nodes have the same value.",
+        "category": "tree",
+        "difficulty": "easy",
+        "url": "https://leetcode.com/problems/same-tree/"
+    },
+    {
+        "name": "Invert Binary Tree",
+        "description": "Given the root of a binary tree, invert the tree, and return its root.",
+        "category": "tree",
+        "difficulty": "easy",
+        "url": "https://leetcode.com/problems/invert-binary-tree/"
+    },
+    {
+        "name": "Binary Tree Maximum Path Sum",
+        "description": "A path in a binary tree is a sequence of nodes where each pair of adjacent nodes in the sequence has an edge connecting them. A node can only appear in the sequence at most once. Note that the path does not need to pass through the root.\n\nThe path sum of a path is the sum of the node's values in the path.\n\nGiven the root of a binary tree, return the maximum path sum of any non-empty path.",
+        "category": "tree",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/binary-tree-maximum-path-sum/"
+    },
+    {
+        "name": "Binary Tree Level Order Traversal",
+        "description": "Given the root of a binary tree, return the level order traversal of its nodes' values. (i.e., from left to right, level by level).",
+        "category": "tree",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/binary-tree-level-order-traversal/"
+    },
+    {
+        "name": "Serialize and Deserialize Binary Tree",
+        "description": "Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the same or another computer environment.\n\nDesign an algorithm to serialize and deserialize a binary tree. There is no restriction on how your serialization/deserialization algorithm should work. You just need to ensure that a binary tree can be serialized to a string and this string can be deserialized to the original tree structure.\n\nClarification: The input/output format is the same as how LeetCode serializes a binary tree. You do not necessarily need to follow this format, so please be creative and come up with different approaches yourself.",
+        "category": "tree",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/serialize-and-deserialize-binary-tree/"
+    },
+    {
+        "name": "Subtree of Another Tree",
+        "description": "Given the roots of two binary trees root and subRoot, return true if there is a subtree of root with the same structure and node values of subRoot and false otherwise.\n\nA subtree of a binary tree tree is a tree that consists of a node in tree and all of this node's descendants. The tree tree could also be considered as a subtree of itself.",
+        "category": "tree",
+        "difficulty": "easy",
+        "url": "https://leetcode.com/problems/subtree-of-another-tree/"
+    },
+    {
+        "name": "Construct Binary Tree from Preorder and Inorder Traversal",
+        "description": "Given two integer arrays preorder and inorder where preorder is the preorder traversal of a binary tree and inorder is the inorder traversal of the same tree, construct and return the binary tree.",
+        "category": "tree",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/"
+    },
+    {
+        "name": "Validate Binary Search Tree",
+        "description": "Given the root of a binary tree, determine if it is a valid binary search tree (BST).\n\nA valid BST is defined as follows:\n- The left subtree of a node contains only nodes with keys less than the node's key.\n- The right subtree of a node contains only nodes with keys greater than the node's key.\n- Both the left and right subtrees must also be binary search trees.",
+        "category": "tree",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/validate-binary-search-tree/"
+    },
+    {
+        "name": "Kth Smallest Element in a BST",
+        "description": "Given the root of a binary search tree, and an integer k, return the kth smallest value (1-indexed) of all the values of the nodes in the tree.",
+        "category": "tree",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/kth-smallest-element-in-a-bst/"
+    },
+    {
+        "name": "Lowest Common Ancestor of a Binary Search Tree",
+        "description": "Given a binary search tree (BST), find the lowest common ancestor (LCA) node of two given nodes in the BST.\n\nAccording to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).”",
+        "category": "tree",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/"
+    },
+    {
+        "name": "Implement Trie (Prefix Tree)",
+        "description": "A trie (pronounced as \"try\") or prefix tree is a tree data structure used to efficiently store and retrieve keys in a dataset of strings. There are various applications of this data structure, such as autocomplete and spellchecker.\n\nImplement the Trie class:\n- Trie() Initializes the trie object.\n- void insert(String word) Inserts the string word into the trie.\n- boolean search(String word) Returns true if the string word is in the trie (i.e., was inserted before), and false otherwise.\n- boolean startsWith(String prefix) Returns true if there is a previously inserted string word that has the prefix prefix, and false otherwise.",
+        "category": "tree",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/implement-trie-prefix-tree/"
+    },
+    {
+        "name": "Design Add and Search Words Data Structure",
+        "description": "Design a data structure that supports adding new words and finding if a string matches any previously added string.\n\nImplement the WordDictionary class:\n- WordDictionary() Initializes the object.\n- void addWord(word) Adds word to the data structure, it can be matched later.\n- bool search(word) Returns true if there is any string in the data structure that matches word or false otherwise. word may contain dots '.' where dots can be matched with any letter.",
+        "category": "tree",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/design-add-and-search-words-data-structure/"
+    },
+    {
+        "name": "Word Search II",
+        "description": "Given an m x n board of characters and a list of strings words, return all words on the board.\n\nEach word must be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once in a word.",
+        "category": "tree",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/word-search-ii/"
+    },
+    {
+        "name": "Merge k Sorted Lists",
+        "description": "You are given an array of k linked-lists lists, each linked-list is sorted in ascending order.\n\nMerge all the linked-lists into one sorted linked-list and return it.",
+        "category": "heap",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/merge-k-sorted-lists/"
+    },
+    {
+        "name": "Top K Frequent Elements",
+        "description": "Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.",
+        "category": "heap",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/top-k-frequent-elements/"
+    },
+    {
+        "name": "Find Median from Data Stream",
+        "description": "The median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value and the median is the mean of the two middle values.\n- For example, for arr = [2,3,4], the median is 3.\n- For example, for arr = [2,3], the median is (2 + 3) / 2 = 2.5.\n\nImplement the MedianFinder class:\n- MedianFinder() initializes the MedianFinder object.\n- void addNum(int num) adds the integer num from the data stream to the data structure.\n- double findMedian() returns the median of all elements so far. Answers within 10^-5 of the actual answer will be accepted.",
+        "category": "heap",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/find-median-from-data-stream/"
+    },
+    {
+        "name": "Regular Expression Matching",
+        "description": "Given an input string s and a pattern p, implement regular expression matching with support for '.' and '*' where:\n- '.' Matches any single character.​​​​\n- *' Matches zero or more of the preceding element.\n\nThe matching should cover the entire input string (not partial).",
+        "category": "dynamic programming",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/regular-expression-matching/"
+    },
+    {
+        "name": "Maximum Deletions on a String",
+        "description": "You are given a string s consisting of only lowercase English letters. In one operation, you can:\n- Delete the entire string s, or\n- Delete the first i letters of s if the first i letters of s are equal to the following i letters in s, for any i in the range 1 <= i <= s.length / 2.\n\nFor example, if s = \"ababc\", then in one operation, you could delete the first two letters of s to get \"abc\", since the first two letters of s and the following two letters of s are both equal to \"ab\".\n\nReturn the maximum number of operations needed to delete all of s.",
+        "category": "dynamic programming",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/maximum-deletions-on-a-string/"
+    },
+    {
+        "name": "Find the K-Sum of an Array",
+        "description": "You are given an integer array nums and a positive integer k. You can choose any subsequence of the array and sum all of its elements together.\n\nWe define the K-Sum of the array as the kth largest subsequence sum that can be obtained (not necessarily distinct).\n\nReturn the K-Sum of the array.\n\nA subsequence is an array that can be derived from another array by deleting some or no elements without changing the order of the remaining elements.\n\nNote that the empty subsequence is considered to have a sum of 0.",
+        "category": "array",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/find-the-k-sum-of-an-array/"
+    },
+    {
+        "name": "Count Subarrays With Score Less Than K",
+        "description": "The score of an array is defined as the product of its sum and its length.\n- For example, the score of [1, 2, 3, 4, 5] is (1 + 2 + 3 + 4 + 5) * 5 = 75.\n\nGiven a positive integer array nums and an integer k, return the number of non-empty subarrays of nums whose score is strictly less than k.\n\nA subarray is a contiguous sequence of elements within an array.",
+        "category": "array",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/count-subarrays-with-score-less-than-k/"
+    },
+    {
+        "name": "Minimum Number of Moves to Make Palindrome",
+        "description": "You are given a string s consisting only of lowercase English letters.\n\nn one move, you can select any two adjacent characters of s and swap them.\n\nReturn the minimum number of moves needed to make s a palindrome.\n\nNote that the input will be generated such that s can always be converted to a palindrome.",
+        "category": "string",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/minimum-number-of-moves-to-make-palindrome/"
+    },
+    {
+        "name": "Find Longest Awesome Substring",
+        "description": "You are given a string s. An awesome substring is a non-empty substring of s such that we can make any number of swaps in order to make it a palindrome.\n\nReturn the length of the maximum length awesome substring of s.",
+        "category": "string",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/find-longest-awesome-substring/"
+    },
+    {
+        "name": "Longest Cycle in a Graph",
+        "description": "You are given a directed graph of n nodes numbered from 0 to n - 1, where each node has at most one outgoing edge.\n\nThe graph is represented with a given 0-indexed array edges of size n, indicating that there is a directed edge from node i to node edges[i]. If there is no outgoing edge from node i, then edges[i] == -1.\n\nReturn the length of the longest cycle in the graph. If no cycle exists, return -1.\n\nA cycle is a path that starts and ends at the same node.",
+        "category": "graph",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/longest-cycle-in-a-graph/"
+    },
+    {
+        "name": "Shortest Path Visiting All Nodes",
+        "description": "You have an undirected, connected graph of n nodes labeled from 0 to n - 1. You are given an array graph where graph[i] is a list of all the nodes connected with node i by an edge.\n\nReturn the length of the shortest path that visits every node. You may start and stop at any node, you may revisit nodes multiple times, and you may reuse edges.",
+        "category": "graph",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/shortest-path-visiting-all-nodes/"
+    },
+    {
+        "name": "Sudoku Solver",
+        "description": "Write a program to solve a Sudoku puzzle by filling the empty cells.\n\nA sudoku solution must satisfy all of the following rules:\n1. Each of the digits 1-9 must occur exactly once in each row.\n2. Each of the digits 1-9 must occur exactly once in each column.\n3. Each of the digits 1-9 must occur exactly once in each of the 9 3x3 sub-boxes of the grid.\n\nThe '.' character indicates empty cells.",
+        "category": "matrix",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/sudoku-solver/"
+    },
+    {
+        "name": "Dungeon Game",
+        "description": "The demons had captured the princess and imprisoned her in the bottom-right corner of a dungeon. The dungeon consists of m x n rooms laid out in a 2D grid. Our valiant knight was initially positioned in the top-left room and must fight his way through dungeon to rescue the princess.\n\nThe knight has an initial health point represented by a positive integer. If at any point his health point drops to 0 or below, he dies immediately.\n\nSome of the rooms are guarded by demons (represented by negative integers), so the knight loses health upon entering these rooms; other rooms are either empty (represented as 0) or contain magic orbs that increase the knight's health (represented by positive integers).\n\nTo reach the princess as quickly as possible, the knight decides to move only rightward or downward in each step.\n\nReturn the knight's minimum initial health so that he can rescue the princess.\n\nNote that any room can contain threats or power-ups, even the first room the knight enters and the bottom-right room where the princess is imprisoned.",
+        "category": "matrix",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/dungeon-game/"
+    },
+    {
+        "name": "Maximum Sum BST in Binary Tree",
+        "description": "Maximum Sum BST in Binary Tree\n\nAssume a BST is defined as follows:\n- The left subtree of a node contains only nodes with keys less than the node's key.\n- The right subtree of a node contains only nodes with keys greater than the node's key.\n- Both the left and right subtrees must also be binary search trees.",
+        "category": "tree",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/"
+    },
+    {
+        "name": "Kth Ancestor of a Tree Node",
+        "description": "You are given a tree with n nodes numbered from 0 to n - 1 in the form of a parent array parent where parent[i] is the parent of ith node. The root of the tree is node 0. Find the kth ancestor of a given node.\n\nThe kth ancestor of a tree node is the kth node in the path from that node to the root node.\n\nImplement the TreeAncestor class:\n- TreeAncestor(int n, int[] parent) Initializes the object with the number of nodes in the tree and the parent array.\n- int getKthAncestor(int node, int k) return the kth ancestor of the given node node. If there is no such ancestor, return -1.",
+        "category": "tree",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/kth-ancestor-of-a-tree-node/"
+    },
+    {
+        "name": "Flatten Binary Tree to Linked List",
+        "description": "Given the root of a binary tree, flatten the tree into a \"linked list\":\n- The \"linked list\" should use the same TreeNode class where the right child pointer points to the next node in the list and the left child pointer is always null.\n- The \"linked list\" should be in the same order as a pre-order traversal of the binary tree.",
+        "category": "linked list",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/flatten-binary-tree-to-linked-list/"
+    },
+    {
+        "name": "Swapping Nodes in a Linked List",
+        "description": "You are given the head of a linked list, and an integer k.\n\nReturn the head of the linked list after swapping the values of the kth node from the beginning and the kth node from the end (the list is 1-indexed).",
+        "category": "linked list",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/swapping-nodes-in-a-linked-list/"
+    },
+    {
+        "name": "Battleships in a Board",
+        "description": "Given an m x n matrix board where each cell is a battleship 'X' or empty '.', return the number of the battleships on board.\n\nBattleships can only be placed horizontally or vertically on board. In other words, they can only be made of the shape 1 x k (1 row, k columns) or k x 1 (k rows, 1 column), where k can be of any size. At least one horizontal or vertical cell separates between two battleships (i.e., there are no adjacent battleships).",
+        "category": "matrix",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/battleships-in-a-board/"
+    },
+    {
+        "name": "Shortest Path in Binary Matrix",
+        "description": "Given an n x n binary matrix grid, return the length of the shortest clear path in the matrix. If there is no clear path, return -1.\n\nA clear path in a binary matrix is a path from the top-left cell (i.e., (0, 0)) to the bottom-right cell (i.e., (n - 1, n - 1)) such that:\n- All the visited cells of the path are 0.\n- All the adjacent cells of the path are 8-directionally connected (i.e., they are different and they share an edge or a corner).\n\nThe length of a clear path is the number of visited cells of this path.",
+        "category": "matrix",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/shortest-path-in-binary-matrix/"
+    },
+    {
+        "name": "Maximum Sum of an Hourglass",
+        "description": "You have n bags numbered from 0 to n - 1. You are given two 0-indexed integer arrays capacity and rocks. The ith bag can hold a maximum of capacity[i] rocks and currently contains rocks[i] rocks. You are also given an integer additionalRocks, the number of additional rocks you can place in any of the bags.\n\nReturn the maximum number of bags that could have full capacity after placing the additional rocks in some bags.",
+        "category": "array",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/maximum-bags-with-full-capacity-of-rocks/"
+    },
+    {
+        "name": "Fair Distribution of Cookies",
+        "description": "You are given an integer array cookies, where cookies[i] denotes the number of cookies in the ith bag. You are also given an integer k that denotes the number of children to distribute all the bags of cookies to. All the cookies in the same bag must go to the same child and cannot be split up.\n\nThe unfairness of a distribution is defined as the maximum total cookies obtained by a single child in the distribution.\n\nReturn the minimum unfairness of all distributions.",
+        "category": "array",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/fair-distribution-of-cookies/"
+    },
+    {
+        "name": "Validate Binary Tree Nodes",
+        "description": "You have n binary tree nodes numbered from 0 to n - 1 where node i has two children leftChild[i] and rightChild[i], return true if and only if all the given nodes form exactly one valid binary tree.\n\nIf node i has no left child then leftChild[i] will equal -1, similarly for the right child.\n\nNote that the nodes have no values and that we only use the node numbers in this problem.",
+        "category": "tree",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/validate-binary-tree-nodes/"
+    },
+    {
+        "name": "Binary Tree Pruning",
+        "description": "Given the root of a binary tree, return the same tree where every subtree (of the given tree) not containing a 1 has been removed.\n\n subtree of a node node is node plus every node that is a descendant of node.",
+        "category": "tree",
+        "difficulty": "medium",
+        "url": "https://leetcode.com/problems/binary-tree-pruning/"
+    },
+    {
+        "name": "Vertical Order Traversal of a Binary Tree",
+        "description": "Given the root of a binary tree, calculate the vertical order traversal of the binary tree.\n\nFor each node at position (row, col), its left and right children will be at positions (row + 1, col - 1) and (row + 1, col + 1) respectively. The root of the tree is at (0, 0).\n\nThe vertical order traversal of a binary tree is a list of top-to-bottom orderings for each column index starting from the leftmost column and ending on the rightmost column. There may be multiple nodes in the same row and same column. In such a case, sort these nodes by their values.\n\nReturn the vertical order traversal of the binary tree.",
+        "category": "tree",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/"
+    },
+    {
+        "name": "Count Ways to Build Rooms in an Ant Colony",
+        "description": "You are an ant tasked with adding n new rooms numbered 0 to n-1 to your colony. You are given the expansion plan as a 0-indexed integer array of length n, prevRoom, where prevRoom[i] indicates that you must build room prevRoom[i] before building room i, and these two rooms must be connected directly. Room 0 is already built, so prevRoom[0] = -1. The expansion plan is given such that once all the rooms are built, every room will be reachable from room 0.\n\nYou can only build one room at a time, and you can travel freely between rooms you have already built only if they are connected. You can choose to build any room as long as its previous room is already built.\n\nReturn the number of different orders you can build all the rooms in. Since the answer may be large, return it modulo 109 + 7.",
+        "category": "tree",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/count-ways-to-build-rooms-in-an-ant-colony/"
+    },
+    {
+       "name": "Find if Path Exists in Graph" ,
+       "description": "There is a bi-directional graph with n vertices, where each vertex is labeled from 0 to n - 1 (inclusive). The edges in the graph are represented as a 2D integer array edges, where each edges[i] = [ui, vi] denotes a bi-directional edge between vertex ui and vertex vi. Every vertex pair is connected by at most one edge, and no vertex has an edge to itself.\n\nYou want to determine if there is a valid path that exists from vertex source to vertex destination.\n\nGiven edges and the integers n, source, and destination, return true if there is a valid path from source to destination, or false otherwise.",
+       "category": "graph",
+       "difficulty": "easy",
+       "url": "https://leetcode.com/problems/find-if-path-exists-in-graph/"
+    },
+    {
+        "name": "Find Center of Star Graph",
+        "description": "There is an undirected star graph consisting of n nodes labeled from 1 to n. A star graph is a graph where there is one center node and exactly n - 1 edges that connect the center node with every other node.\n\nYou are given a 2D integer array edges where each edges[i] = [ui, vi] indicates that there is an edge between the nodes ui and vi. Return the center of the given star graph.",
+        "category": "graph",
+        "difficulty": "easy",
+        "url": "https://leetcode.com/problems/find-center-of-star-graph/"
+    },
+    {
+        "name": "Fibonacci Number",
+        "description": "The Fibonacci numbers, commonly denoted F(n) form a sequence, called the Fibonacci sequence, such that each number is the sum of the two preceding ones, starting from 0 and 1. That is,\nF(0) = 0, F(1) = 1\nF(n) = F(n - 1) + F(n - 2),\nfor n > 1.\n\nGiven n, calculate F(n).",
+        "category": "dynamic programming",
+        "difficulty": "easy",
+        "url": "https://leetcode.com/problems/fibonacci-number/"
+    },
+    {
+        "name": "Min Cost Climbing Stairs",
+        "description": "You are given an integer array cost where cost[i] is the cost of ith step on a staircase. Once you pay the cost, you can either climb one or two steps.\n\nYou can either start from the step with index 0, or the step with index 1.\n\nReturn the minimum cost to reach the top of the floor.",
+        "category": "dynamic programming",
+        "difficulty": "easy",
+        "url": "https://leetcode.com/problems/min-cost-climbing-stairs/"
+    },
+    {
+        "name": "Remove Linked List Elements",
+        "description": "Given the head of a linked list and an integer val, remove all the nodes of the linked list that has Node.val == val, and return the new head.",
+        "category": "linked list",
+        "difficulty": "easy",
+        "url": "https://leetcode.com/problems/remove-linked-list-elements/"
+    },
+    {
+        "name": "Design HashMap",
+        "description": "Design a HashMap without using any built-in hash table libraries.\n\nImplement the MyHashMap class:\n- MyHashMap() initializes the object with an empty map.\n- void put(int key, int value) inserts a (key, value) pair into the HashMap. If the key already exists in the map, update the corresponding value.\n- int get(int key) returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key.\n- void remove(key) removes the key and its corresponding value if the map contains the mapping for the key.",
+        "category": "linked list",
+        "difficulty": "easy",
+        "url": "https://leetcode.com/problems/design-hashmap/"
+    },
+    {
+        "name": "Total Appeal of A String",
+        "description": "The appeal of a string is the number of distinct characters found in the string.\n- For example, the appeal of \"abbca\" is 3 because it has 3 distinct characters: 'a', 'b', and 'c'.\n\nGiven a string s, return the total appeal of all of its substrings.\n\nA substring is a contiguous sequence of characters within a string.",
+        "category": "string",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/total-appeal-of-a-string/"
+    },
+    {
+        "name": "Number of Flowers in Full Bloom",
+        "description": "You are given a 0-indexed 2D integer array flowers, where flowers[i] = [starti, endi] means the ith flower will be in full bloom from starti to endi (inclusive). You are also given a 0-indexed integer array persons of size n, where persons[i] is the time that the ith person will arrive to see the flowers.\n\nReturn an integer array answer of size n, where answer[i] is the number of flowers that are in full bloom when the ith person arrives.",
+        "category": "array",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/number-of-flowers-in-full-bloom/"
+    },
+    {
+        "name": "Find Minimum Time to Finish All Jobs",
+        "description": "You are given an integer array jobs, where jobs[i] is the amount of time it takes to complete the ith job.\n\nThere are k workers that you can assign jobs to. Each job should be assigned to exactly one worker. The working time of a worker is the sum of the time it takes to complete all jobs assigned to them. Your goal is to devise an optimal assignment such that the maximum working time of any worker is minimized.\n\nReturn the minimum possible maximum working time of any assignment.",
+        "category": "dynamic programming",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/find-minimum-time-to-finish-all-jobs/"
+    },
+    {
+        "name": "Cat and Mouse",
+        "description": "A game on an undirected graph is played by two players, Mouse and Cat, who alternate turns.\n\nThe graph is given as follows: graph[a] is a list of all nodes b such that ab is an edge of the graph.\n\nThe mouse starts at node 1 and goes first, the cat starts at node 2 and goes second, and there is a hole at node 0.\n\nDuring each player's turn, they must travel along one edge of the graph that meets where they are.  For example, if the Mouse is at node 1, it must travel to any node in graph[1].\n\nAdditionally, it is not allowed for the Cat to travel to the Hole (node 0.)\n\nThen, the game can end in three ways:\n- If ever the Cat occupies the same node as the Mouse, the Cat wins.\n- If ever the Mouse reaches the Hole, the Mouse wins.\n- If ever a position is repeated (i.e., the players are in the same position as a previous turn, and it is the same player's turn to move), the game is a draw.\n\nGiven a graph, and assuming both players play optimally, return\n- 1 if the mouse wins the game,\n- 2 if the cat wins the game, or\n- 0 if the game is a draw.",
+        "category": "graph",
+        "difficulty": "hard",
+        "url": "https://leetcode.com/problems/cat-and-mouse/"
     }
 ]
 

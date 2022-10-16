@@ -1,16 +1,18 @@
 import {
-    Box,
-    Typography,
+    Alert,
     TextField,
     Button,
     Dialog,
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle
+    DialogTitle,
+    IconButton,
+    Snackbar
 } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { URL_USER_SVC } from "../configs"
 import { 
@@ -20,15 +22,17 @@ import {
     STATUS_CODE_INTERNAL_SERVER_ERROR,
     STATUS_CODE_BAD_REQUEST
 } from "../constants";
+import './UpdateAccount.css'
 
-function UpdateAccount() {
+function UpdateAccount(props) {
+    const navigate = useNavigate()
+    const [openAlert, setOpenAlert] = useState(false);
+    const [message, setMessage] = useState("")
+    const [severity, setSeverity] = useState("error")
+    const { open, close } = props
     const [username, setUsername] = useState("")
     const [oldPassword, setOldPassword] = useState("")
     const [newPassword, setNewPassword] = useState("")
-    const [isUpdateSuccess, setIsUpdateSuccess] = useState(false);
-    const [dialogTitle, setDialogTitle] = useState("");
-    const [dialogMsg, setDialogMsg] = useState("");
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const data = {
         username: username,
@@ -37,94 +41,114 @@ function UpdateAccount() {
     }
 
     const handleUpdate = async () => {
-        setIsUpdateSuccess(false)
         const res = await axios.put(URL_USER_SVC, data)
             .catch((err) => {
                 if (err.response.status === STATUS_CODE_UNAUTHORIZED) {
-                    setErrorDialog("Incorrect password! Unable to update account")
+                    setSeverity("error")
+                    setOpenAlert(true)
+                    setMessage("Incorrect password! Unable to update account")
                 } else if (err.response.status === STATUS_CODE_NOT_FOUND) {
-                    setErrorDialog(`Username: ${username} not found in database!`)
+                    setSeverity("error")
+                    setOpenAlert(true)
+                    setMessage(`Username: ${username} not found in database!`)
                 } else if (err.response.status === STATUS_CODE_INTERNAL_SERVER_ERROR) {
-                    setErrorDialog("Database failure when changing password!")
-                }else if (err.response.status === STATUS_CODE_BAD_REQUEST) {
-                    setErrorDialog("Username and/or Password are missing!")
+                    setSeverity("error")
+                    setOpenAlert(true)
+                    setMessage("Database failure when changing password!")
+                } else if (err.response.status === STATUS_CODE_BAD_REQUEST
+                    && (username === "" || newPassword === "" || oldPassword === "")) {
+                    setSeverity("error")
+                    setOpenAlert(true)
+                    setMessage("Missing fields!")
+                } else if (err.response.status === STATUS_CODE_BAD_REQUEST) {
+                    setSeverity("error")
+                    setOpenAlert(true)
+                    setMessage("New password failed to meet requirements!")
                 }
             })
         if (res && res.status === STATUS_CODE_OK) {
-            setSuccessDialog("Account updated successfully");
-            setIsUpdateSuccess(true)
+            sessionStorage.removeItem('token')
+            sessionStorage.removeItem('username')
+            setSeverity("success")
+            setOpenAlert(true)
+            setMessage(`Password successfully updated! Redirecting to login page...`)
+            setTimeout(() => {
+                navigate('/login')
+            }, 2000)
         }
     }
 
-    const closeDialog = () => setIsDialogOpen(false);
-
-
-    const setSuccessDialog = (msg) => {
-        setIsDialogOpen(true);
-        setDialogTitle("Success");
-        setDialogMsg(msg);
-    };
-
-    const setErrorDialog = (msg) => {
-        setIsDialogOpen(true);
-        setDialogTitle("Error");
-        setDialogMsg(msg);
-    };
+    const alert = (
+        <Snackbar 
+            open={openAlert} 
+            autoHideDuration={5000}
+            onClose={() => {
+                setOpenAlert(false);
+            }}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+        <Alert 
+            severity={severity}
+            action={
+                <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                    setOpenAlert(false);
+                }}
+                >
+                    <CloseIcon/>
+                </IconButton>
+            }
+        >
+            {message}
+        </Alert>
+    </Snackbar>
+    )
 
     return (
-        <Box display={"flex"} flexDirection={"column"} width={"30%"} margin={"0px auto"} padding={"4rem"}>
-            <Typography variant={"h3"} marginBottom={"2rem"}>Update password</Typography>
-            <TextField
-                label="Username"
-                variant="standard"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                sx={{marginBottom: "1rem"}}
-                autoFocus
-            />
-            <TextField
-                label="Old Password"
-                variant="standard"
-                type="password"
-                value={oldPassword}
-                onChange={(e) => setOldPassword(e.target.value)}
-                sx={{marginBottom: "1rem"}}
-            />
-            <TextField
-                label="New Password"
-                variant="standard"
-                type="password"
-                value={newPassword}
-                helperText="New password must have length of at least 11 and must contain a number, special character, uppercase and lowercase alphabet."
-                onChange={(e) => setNewPassword(e.target.value)}
-                sx={{marginBottom: "2rem"}}
-            />
-            <Box display={"flex"} flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
-                <Box
-                    sx={{display: 'flex', justifyContent: 'flex-start', flexWrap: 'wrap', flexDirection: 'column'}}
-                >
-                    <Typography component={Link} to="/signup">No account? Sign up here</Typography>
-                    <Typography component={Link} to="/login">Click here to log in</Typography>
-                </Box>
-                <Button variant={"outlined"} onClick={handleUpdate} >Log in</Button>
-            </Box>
-
-            <Dialog
-                open={isDialogOpen}
-                onClose={closeDialog}
-            >
-                <DialogTitle>{dialogTitle}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>{dialogMsg}</DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    {isUpdateSuccess
-                        ? <Button component={Link} to="/login">Update</Button>
-                        : <Button onClick={closeDialog}>Done</Button>
-                    }
-                </DialogActions>
-            </Dialog>
-        </Box>
+        <Dialog
+            open={open}
+            onClose={close}
+        >
+            {openAlert? alert : null}
+            <DialogTitle>Update Account?</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    To update account, please enter your email, current password and your new password. You will need to re-login again after updating your password
+                </DialogContentText>
+                <TextField
+                    label="Username"
+                    variant="standard"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    sx={{marginBottom: "1rem"}}
+                    autoFocus
+                />
+                <TextField
+                    label="Old Password"
+                    variant="standard"
+                    type="password"
+                    value={oldPassword}
+                    onChange={(e) => setOldPassword(e.target.value)}
+                    sx={{marginBottom: "1rem"}}
+                />
+                <TextField
+                    label="New Password"
+                    variant="standard"
+                    type="password"
+                    value={newPassword}
+                    helperText="New password must have length of at least 11 and must contain a number, special character, uppercase and lowercase alphabet."
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    sx={{marginBottom: "2rem"}}
+                />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={close} >Cancel</Button>
+                <Button onClick={handleUpdate} color="secondary">Update</Button>
+            </DialogActions>
+        </Dialog>
     )
 }
 
