@@ -16,7 +16,7 @@ export async function getQuestion(difficulty, questionHistory) {
         const questions = await QuestionModel.find();
         const question = await QuestionModel.aggregate([{"$match": {"difficulty": difficulty}},
                                                         {"$addFields": {"string_id": {"$toString": "$_id"}}}, 
-                                                        {"$match": {"difficulty": difficulty, "string_id": {"$nin": questionHistory}}}, 
+                                                        {"$match": {"difficulty": difficulty, "string_id": {"$ne": questionHistory._id}}}, 
                                                         {"$sample": {"size": 1}}]);
         return question;
     } catch (err) {

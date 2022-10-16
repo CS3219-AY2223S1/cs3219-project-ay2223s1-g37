@@ -52,7 +52,7 @@ function MatchedRoom() {
   const [openAlert, setOpenAlert] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("error");
-  const [question, setQuestion] = useState({"_id": "", "name": "", "description": "", "category": "", "difficulty": "", "url": ""});
+  const [question, setQuestion] = useState({"_id": "", "name": "", "description": "", "category": "", "difficulty": roomInfo.difficulty, "url": ""});
 
   useEffect(() => {
     collabSocket.emit("createRoom", matchEntry);
@@ -83,10 +83,10 @@ function MatchedRoom() {
       setTimeLeft(room.allocatedTime);
       setIsInterviewer(room.interviewer === sessionStorage.getItem("username"));
       //setQuestionHistory(location.state.questionHistory)
-      getQuestion();
-      console.log(question)
-      console.log(roomInfo.difficulty)
-      console.log(questionHistory)
+      // getQuestion()
+      // console.log(question)
+      // console.log(roomInfo.difficulty)
+      // console.log(questionHistory)
     });
 
     collabSocket.on("roomCreationFailure", () => {
@@ -131,7 +131,7 @@ function MatchedRoom() {
   }, [timeLeft]);
 
   const getQuestion = async() => {
-      const response = await axios.post(URL_QUESTION_SVC, { difficulty: roomInfo.difficulty.toLowerCase(), questionHistory: questionHistory }, { withCredentials: true }).catch((err) => {
+      const response = await axios.post(URL_QUESTION_SVC, { difficulty: roomInfo.difficulty, questionHistory: questionHistory }, { withCredentials: true }).catch((err) => {
           if (err.response.status === STATUS_CODE_BAD_REQUEST && (!roomInfo.difficulty || !questionHistory)) {
             setSeverity("error")
             setOpenAlert(true)
@@ -169,6 +169,13 @@ function MatchedRoom() {
       }
   }
 
+  useEffect(() => {
+    if (isRoomCreated) {
+      console.log(questionHistory)
+      console.log(roomInfo.difficulty)
+      getQuestion()
+    }
+  }, [isRoomCreated])
 
   const alert = (
       <Snackbar 

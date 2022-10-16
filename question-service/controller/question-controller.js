@@ -3,8 +3,8 @@ import { ormGetQuestion as _getQuestion } from '../model/question-orm.js'
 export async function getQuestion(req, res) {
     try {
         const { difficulty, questionHistory } = req.body;
-        if (difficulty && questionHistory) {
-            const question = await _getQuestion(difficulty, questionHistory);
+        if (difficulty.toLowerCase() && questionHistory) {
+            const question = await _getQuestion(difficulty.toLowerCase(), questionHistory);
             if (!question.length) {
                 return res.status(200).json({message: 'You have completed all questions of this difficulty!'})
             }
