@@ -6,8 +6,11 @@ import {
     DialogContentText,
     TextField,
     DialogContent,
-} 
-from '@mui/material'
+    Snackbar,
+    IconButton,
+    Alert
+} from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios'
 import { URL_USER_SVC } from "../configs"
 import { useState } from 'react';
@@ -19,15 +22,17 @@ import {
     STATUS_CODE_OK,
     STATUS_CODE_UNAUTHORIZED
 } from "../constants"
+import './UpdateAccount.css'
 
 function DeleteAccount(props) {
     const navigate = useNavigate()
     const { open, close } = props
     const[username, setUsername] = useState("")
     const[password, setPassword] = useState("")
+    const [openAlert, setOpenAlert] = useState(false);
+    const [message, setMessage] = useState("")
+    const [severity, setSeverity] = useState("error")
 
-
-    // todo: create a pop up modal for deletion
     const handleDelete = async () => {
         const data = {
             username: username,
@@ -35,14 +40,25 @@ function DeleteAccount(props) {
         }
         const res = await axios.delete(URL_USER_SVC, {data})
             .catch((err) => {
-                    if (err.response.status === STATUS_CODE_BAD_REQUEST) {
-                        // setErrorDialog("Username or password is missing")
-                        console.log("Username or password is missing")
-                    } else if (err.response.status === STATUS_CODE_INTERNAL_SERVER_ERROR) {
-                        console.log("Error deleting account")
+                    if (err.response.status === STATUS_CODE_BAD_REQUEST
+                        && (username === "" || password === "")) {
+                        setSeverity("error")
+                        setOpenAlert(true)
+                        setMessage("Missing fields!")
+                        console.log("Username or password is missing");
+                    }else if (err.response.status === STATUS_CODE_INTERNAL_SERVER_ERROR) {
+                        setSeverity("error")
+                        setOpenAlert(true)
+                        setMessage("Missing fields!")
+                        console.log("Database failure when deleting account!")
                     } else if (err.response.status === STATUS_CODE_NOT_FOUND) {
-                        console.log(`Username ${username} successfully deleted`)
+                        setSeverity("error")
+                        setOpenAlert(true)
+                        setMessage(`Username: ${username} not found in database!`)
                     } else if (err.response.status === STATUS_CODE_UNAUTHORIZED) {
+                        setSeverity("error")
+                        setOpenAlert(true)
+                        setMessage("Incorrect password! Unable to delete account")
                         console.log('Incorrect password! Unable to delete account')
                     }
                 })
@@ -51,15 +67,50 @@ function DeleteAccount(props) {
             console.log("Successfully deleted")
             sessionStorage.removeItem('token')
             sessionStorage.removeItem('username')
-            navigate('/login')
+            setSeverity("success")
+            setOpenAlert(true)
+            setMessage(`Account successfully deleted! Redirecting to login page...`)
+            setTimeout(() => {
+                navigate('/login')
+            }, 2000)
         }
     }
+
+    const alert = (
+        <Snackbar 
+            open={openAlert} 
+            autoHideDuration={5000}
+            onClose={() => {
+                setOpenAlert(false);
+            }}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+        <Alert 
+            severity={severity}
+            action={
+                <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                    setOpenAlert(false);
+                }}
+                >
+                    <CloseIcon/>
+                </IconButton>
+            }
+        >
+            {message}
+        </Alert>
+    </Snackbar>
+    )
 
     return (
         <Dialog
             open={open}
             onClose={close}
         >
+            {openAlert? alert : null}
             <DialogTitle>Are you sure about deleting the account?</DialogTitle>
             <DialogContent>
                 <DialogContentText>

@@ -16,6 +16,7 @@ import {
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { matchingSocket, collabSocket } from "../utils/Socket.js";
+import axios from 'axios'
 
 function MatchedRoom() {
   const navigate = useNavigate();
@@ -132,6 +133,13 @@ function MatchedRoom() {
     });
   };
 
+  // add api for qns here
+  // const questionBank = async() => {
+  //   const res = await axios.post(..., { data: roomInfo.difficulty }, { withCredentials: true })
+  //       .catch()
+
+  // }
+
   const closeDialog = () => setIsDialogOpen(false);
 
   return (
@@ -175,7 +183,7 @@ function MatchedRoom() {
               Question
             </Typography>
             <Typography fontSize={"1.5rem"}>
-              Question to go here...
+              Question to go here... 
               {roomInfo.question}
             </Typography>
 
