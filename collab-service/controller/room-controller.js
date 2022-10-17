@@ -101,7 +101,7 @@ export async function setQuestion(req, socket) {
   // console.log(question);
   try {
     const updatedQnInfo = await _setQuestion(roomId, question);
-    socket.to(roomId).emit("questionSet", updatedQnInfo);
+    socket.emit("questionSet", updatedQnInfo);
     console.log(`Emitting question set: ${updatedQnInfo}`);
   } catch (err) {
     console.log("Error setting question!");
