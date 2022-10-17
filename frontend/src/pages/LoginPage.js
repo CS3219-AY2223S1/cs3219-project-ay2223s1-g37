@@ -1,14 +1,13 @@
 import {
   Box,
   Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
   TextField,
   Typography,
+  IconButton,
+  Snackbar,
+  Alert
 } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 import { useState } from "react";
 import axios from "axios";
 import { URL_USER_SVC } from "../configs";
@@ -17,53 +16,85 @@ import {
   STATUS_CODE_BAD_REQUEST,
   STATUS_CODE_NOT_FOUND,
   STATUS_CODE_UNAUTHORIZED,
+  STATUS_CODE_INTERNAL_SERVER_ERROR
 } from "../constants";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import '../components/UpdateAccount.css'
 
 function LogininPage() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoginSuccess, setIsLoginSuccess] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [dialogTitle, setDialogTitle] = useState("");
-  const [dialogMsg, setDialogMsg] = useState("");
+  const [openAlert, setOpenAlert] = useState(false);
+  const [message, setMessage] = useState("")
+  const [severity, setSeverity] = useState("error")
 
   const handleLogin = async () => {
-    setIsLoginSuccess(false);
     const res = await axios
       .post(URL_USER_SVC, { username, password }, { withCredentials: true })
       .catch((err) => {
-        if (err.response.status === STATUS_CODE_BAD_REQUEST) {
-          setErrorDialog("Username or password is missing");
+        if (err.response.status === STATUS_CODE_BAD_REQUEST
+          && (username === "" || password === "")) {
+          setSeverity("error")
+          setOpenAlert(true)
+          setMessage("Missing fields!")
           console.log("Username or password is missing");
         }
         if (err.response.status === STATUS_CODE_NOT_FOUND) {
-          setErrorDialog(`${username} cannot be found in database!`);
+          setSeverity("error")
+          setOpenAlert(true)
+          setMessage(`Username: ${username} not found in database!`)
           console.log(`${username} cannot be found in database`);
         }
         if (err.response.status === STATUS_CODE_UNAUTHORIZED) {
-          setErrorDialog("Incorrect username or password!");
-          console.log("Incorrect username or password!");
+          setSeverity("error")
+          setOpenAlert(true)
+          setMessage("Incorrect password!")
+          console.log("Incorrect password!");
+        }
+        if (err.response.status === STATUS_CODE_INTERNAL_SERVER_ERROR) {
+          setSeverity("error")
+          setOpenAlert(true)
+          setMessage("Database failure when logging in!")
         }
       });
     if (res && res.status === STATUS_CODE_OK) {
       console.log("Successfully logged in");
       sessionStorage.setItem("token", res.data.token);
       sessionStorage.setItem("username", username);
-      setIsLoginSuccess(true);
       navigate("/home");
     }
   };
 
-  const closeDialog = () => setIsDialogOpen(false);
-
-  const setErrorDialog = (msg) => {
-    setIsDialogOpen(true);
-    setDialogTitle("Error");
-    setDialogMsg(msg);
-  };
+  const alert = (
+        <Snackbar 
+            open={openAlert} 
+            autoHideDuration={5000}
+            onClose={() => {
+                setOpenAlert(false);
+            }}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+        <Alert 
+            severity={severity}
+            action={
+                <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                    setOpenAlert(false);
+                }}
+                >
+                    <CloseIcon/>
+                </IconButton>
+            }
+        >
+            {message}
+        </Alert>
+    </Snackbar>
+    )
 
   return (
     <Box
@@ -73,6 +104,7 @@ function LogininPage() {
       margin={"0px auto"}
       padding={"4rem"}
     >
+      {openAlert? alert : null}
       <Typography variant={"h3"} marginBottom={"2rem"}>
         Log in
       </Typography>
@@ -117,22 +149,6 @@ function LogininPage() {
           Log in
         </Button>
       </Box>
-
-      <Dialog open={isDialogOpen} onClose={closeDialog}>
-        <DialogTitle>{dialogTitle}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>{dialogMsg}</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          {isLoginSuccess ? (
-            <Button component={Link} to="/login">
-              Log in
-            </Button>
-          ) : (
-            <Button onClick={closeDialog}>Done</Button>
-          )}
-        </DialogActions>
-      </Dialog>
     </Box>
   );
 }

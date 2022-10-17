@@ -1,5 +1,5 @@
 import RoomModelSchema from "./model/room-model.js";
-// import 'dotenv/config'
+import "dotenv/config";
 
 // Set up sequelize connection
 import Sequelize, { Model } from "sequelize";
@@ -12,6 +12,12 @@ let sequelize = new Sequelize("database", "username", "password", {
   dialect: "sqlite",
   storage: "./db/roomDB.sqlite",
 });
+// Uncomment out in future: Better security with a separate .env file
+// let sequelize = new Sequelize("database", "username", "password", {
+//   host: process.env.HOST,
+//   dialect: process.env.DIALECT,
+//   storage: process.env.STORAGE,
+// });
 
 let Room;
 
@@ -28,21 +34,36 @@ export default sequelize;
 
 export async function createRoom(params) {
   // console.log("respository.js: Create room w params " + JSON.stringify(params));
-  const alreadyCreated = await Room.findOne({
+
+  const createdRoom = await Room.create(params).catch((err) => {
+    console.log("respository.js: Unable to add room!\n" + err);
+  });
+
+  const allRooms = await Room.findAll({
     where: {
       username1: params.username1,
       username2: params.username2,
-      difficulty: params.difficulty
+      difficulty: params.difficulty,
     },
   });
 
-  if (alreadyCreated != null) {
-    return alreadyCreated;
+  // Find room with lowest id and remove other rooms
+  let lowestId = allRooms[0].id;
+  for (let i = 1; i < allRooms.length; i++) {
+    if (lowestId < allRooms[i].id) {
+      removeRoom(allRooms[i].id);
+    } else {
+      lowestId = allRooms[i].id;
+      removeRoom(lowestId);
+    }
   }
 
-  return Room.create(params).catch((err) => {
-    console.log("respository.js: Unable to add room!\n" + err);
-  });
+  // Return room object corresponding to lowest room id
+  for (let i = 0; i < allRooms.length; i++) {
+    if (lowestId == allRooms[i].id) {
+      return allRooms[i];
+    }
+  }
 }
 
 export async function removeRoom(roomId) {
@@ -51,7 +72,7 @@ export async function removeRoom(roomId) {
   console.log("Destroying room....");
   return await Room.destroy({
     where: {
-      id: roomId
+      id: roomId,
     },
   });
 }
@@ -74,4 +95,24 @@ export async function updateRoom(roomId) {
     );
     return false;
   }
+}
+
+// Returns if both users are ready for next round
+// Handles the switching of roles in the database
+export async function switchRoles(roomId) {
+  console.log(`Switching roles...`);
+  const currentRoom = await Room.findByPk(roomId);
+  // console.log(currentRoom.username2);
+  await Room.update(
+    { interviewer: currentRoom.username2 },
+    { where: { id: roomId } }
+  );
+  return roomId;
+}
+
+export async function uploadChanges(roomId, docChanges) {
+  console.log(`Uploading document changes...`);
+  // const currentRoom = await Room.findByPk(roomId);
+  await Room.update({ code: docChanges }, { where: { id: roomId } });
+  return docChanges;
 }

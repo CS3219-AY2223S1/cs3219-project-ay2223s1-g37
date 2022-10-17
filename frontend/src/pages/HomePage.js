@@ -12,24 +12,34 @@ import {
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useState } from 'react'
 import axios from 'axios'
-import SelectDifficultyPage from './SelectDifficultyPage'
+import SelectDifficultyPage from '../components/SelectDifficulty'
 import { useNavigate } from "react-router-dom";
 import { STATUS_CODE_OK } from "../constants";
 import { URL_USER_SVC } from "../configs";
-import DeleteAccount from "./DeleteAccount"
+import DeleteAccount from "../components/DeleteAccount"
+import UpdateAccount from '../components/UpdateAccount';
 
 
 function Home() {
     const navigate = useNavigate();
     const [anchorElUser, setAnchorElUser] = useState(null);
-    const [visible, setVisisble] = useState(false);
+    const [visibleDelete, setVisisbleDelete] = useState(false);
+    const [visibleUpdate, setVisisbleUpdate] = useState(false);
 
-    const showModal = () => {
-        setVisisble(true)
+    const showModalDelete = () => {
+        setVisisbleDelete(true)
     }
 
-    const closeModal = () => {
-        setVisisble(false)
+    const showModalUpdate = () => {
+        setVisisbleUpdate(true)
+    }
+
+    const closeModalDelete = () => {
+        setVisisbleDelete(false)
+    }
+
+    const closeModalUpdate = () => {
+        setVisisbleUpdate(false)
     }
 
     const handleLogout = async () => {
@@ -41,17 +51,17 @@ function Home() {
                 console.log("Successfully log out!")
                 sessionStorage.removeItem('token')
                 sessionStorage.removeItem('username');
-                navigate('/login', { state: { logoutUser: true, loginUser: false, deleteUser: false } })
+                navigate('/login')
             }
     }
 
-    const test = async () => {
-        const res = await axios.get(URL_USER_SVC + '/auth', { withCredentials: true })
-            .catch(err => {
-                console.log("error")
-            })
-        console.log(res)
-    }
+    // const test = async () => {
+    //     const res = await axios.get(URL_USER_SVC + '/auth', { withCredentials: true })
+    //         .catch(err => {
+    //             console.log("error")
+    //         })
+    //     console.log(res)
+    // }
 
     const handleOpenUserMenu = (e) => {
         setAnchorElUser(e.currentTarget);
@@ -95,19 +105,22 @@ function Home() {
                                         <Typography textAlign="center">{setting}</Typography>
                                     </MenuItem>
                                 ))} */}
-                                <MenuItem onClick={showModal}>
+                                <MenuItem onClick={showModalDelete}>
                                     Delete Account
                                 </MenuItem>
-                                <MenuItem onClick={test}>Update Password</MenuItem>
+                                <MenuItem onClick={showModalUpdate}>Update Password</MenuItem>
                                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
                             </Menu>
                         </Box>
                     </Toolbar>
                 </Container>        
             </AppBar>
-            {visible? 
-                <DeleteAccount open={visible} close={closeModal}/>
+            {visibleDelete? 
+                <DeleteAccount open={visibleDelete} close={closeModalDelete}/>
              : null}
+            {visibleUpdate?
+                <UpdateAccount open={visibleUpdate} close={closeModalUpdate}/>
+            : null}
             <SelectDifficultyPage />
         </div>
     )

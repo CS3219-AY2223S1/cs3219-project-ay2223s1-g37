@@ -24,4 +24,4 @@ let QuestionModelSchema = new Schema({
     }
 })
 
-module.exports = mongoose.model('QuestionModel', QuestionModelSchema)
+export default mongoose.model('QuestionModel', QuestionModelSchema)
