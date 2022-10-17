@@ -14,18 +14,18 @@ import {
   Grid,
   Snackbar,
   IconButton,
-  Alert
+  Alert,
 } from "@mui/material";
-import CloseIcon from '@mui/icons-material/Close';
-import { 
-  STATUS_CODE_BAD_REQUEST, 
+import CloseIcon from "@mui/icons-material/Close";
+import {
+  STATUS_CODE_BAD_REQUEST,
   STATUS_CODE_INTERNAL_SERVER_ERROR,
-  STATUS_CODE_OK
-} from "../constants"
+  STATUS_CODE_OK,
+} from "../constants";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { matchingSocket, collabSocket } from "../utils/Socket.js";
-import axios from 'axios'
+import axios from "axios";
 import { URL_QUESTION_SVC } from "../configs.js";
 
 function MatchedRoom() {
@@ -53,7 +53,14 @@ function MatchedRoom() {
   const [openAlert, setOpenAlert] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("error");
-  const [question, setQuestion] = useState({"_id": "", "name": "", "description": "", "category": "", "difficulty": roomInfo.difficulty, "url": ""});
+  const [question, setQuestion] = useState({
+    _id: "",
+    name: "",
+    description: "",
+    category: "",
+    difficulty: roomInfo.difficulty,
+    url: "",
+  });
   const [userLeft, setUserLeft] = useState(false);
 
   useEffect(() => {
@@ -65,7 +72,7 @@ function MatchedRoom() {
     questionHistArr.pop();
 
     return questionHistArr;
-  }
+  };
 
   useEffect(() => {
     matchingSocket.on("connect", () => {
@@ -119,6 +126,7 @@ function MatchedRoom() {
       // console.log(getQnHistArr(questionHistory));
       setQuestion(question);
       setQnHist(getQnHistArr(questionHistory));
+    });
 
     // One of the users chose to left the session
     collabSocket.on("oneUserLeft", () => {
@@ -155,91 +163,100 @@ function MatchedRoom() {
     }
   }, [timeLeft]);
 
-  const getQuestion = async() => {
-      const response = await axios.post(URL_QUESTION_SVC, { difficulty: roomInfo.difficulty, questionHistory: qnHist }, { withCredentials: true }).catch((err) => {
-          if (err.response.status === STATUS_CODE_BAD_REQUEST && (!roomInfo.difficulty || !questionHistory)) {
-            setSeverity("error")
-            setOpenAlert(true)
-            setMessage("Missing fields!")
-            if (!roomInfo.difficulty) {
-              console.log("Difficulty missing")
-              console.log(!questionHistory)
-            }
-            console.log("Difficulty field or Question History field is missing");
-          } else if (err.response.status === STATUS_CODE_INTERNAL_SERVER_ERROR) {
-            setSeverity("error")
-            setOpenAlert(true)
-            setMessage("Missing fields!")
-            console.log("Database failure when retrieving question!")
+  const getQuestion = async () => {
+    const response = await axios
+      .post(
+        URL_QUESTION_SVC,
+        { difficulty: roomInfo.difficulty, questionHistory: qnHist },
+        { withCredentials: true }
+      )
+      .catch((err) => {
+        if (
+          err.response.status === STATUS_CODE_BAD_REQUEST &&
+          (!roomInfo.difficulty || !questionHistory)
+        ) {
+          setSeverity("error");
+          setOpenAlert(true);
+          setMessage("Missing fields!");
+          if (!roomInfo.difficulty) {
+            console.log("Difficulty missing");
+            console.log(!questionHistory);
           }
-      })
-      if (response && response.status === STATUS_CODE_OK) {
-        const data = response.data;
-        if (data.question) {
-          // console.log("collab socket connected? " + isCollabConnected);
-          // console.log("roomId: " , roomInfo.id, " question:");
-          // console.log(data.question);
-          
-          // Save question in room DB via collab service
-          collabSocket.emit("setQuestion", {
-            roomId: roomInfo.id,
-            question: data.question
-          });
-
-          // setQuestion(data.question);
-          // setQuestionHistory(arr => {return [...arr, data.question.string_id]});
-          setSeverity("success")
-          setOpenAlert(false)
-          setMessage("Question received successfully")
-          console.log("Question received successfully");
-        } else {
-          setSeverity("success")
-          setOpenAlert(true)
-          setMessage("All questions of current difficulty has been completed.")
-          console.log("No more questions of specified difficulty");
-          setTimeout(() => {
-            navigate('/home')
-          }, 2000)
+          console.log("Difficulty field or Question History field is missing");
+        } else if (err.response.status === STATUS_CODE_INTERNAL_SERVER_ERROR) {
+          setSeverity("error");
+          setOpenAlert(true);
+          setMessage("Missing fields!");
+          console.log("Database failure when retrieving question!");
         }
+      });
+    if (response && response.status === STATUS_CODE_OK) {
+      const data = response.data;
+      if (data.question) {
+        // console.log("collab socket connected? " + isCollabConnected);
+        // console.log("roomId: " , roomInfo.id, " question:");
+        // console.log(data.question);
+
+        // Save question in room DB via collab service
+        collabSocket.emit("setQuestion", {
+          roomId: roomInfo.id,
+          question: data.question,
+        });
+
+        // setQuestion(data.question);
+        // setQuestionHistory(arr => {return [...arr, data.question.string_id]});
+        setSeverity("success");
+        setOpenAlert(false);
+        setMessage("Question received successfully");
+        console.log("Question received successfully");
+      } else {
+        setSeverity("success");
+        setOpenAlert(true);
+        setMessage("All questions of current difficulty has been completed.");
+        console.log("No more questions of specified difficulty");
+        setTimeout(() => {
+          navigate("/home");
+        }, 2000);
       }
-  }
+    }
+  };
 
   useEffect(() => {
     if (isRoomCreated) {
-      console.log(questionHistory)
-      console.log(roomInfo.difficulty)
-      getQuestion()
+      console.log(questionHistory);
+      console.log(roomInfo.difficulty);
+      getQuestion();
     }
-  }, [isRoomCreated])
+  }, [isRoomCreated]);
 
   const alert = (
-      <Snackbar 
-          open={openAlert} 
-          autoHideDuration={5000}
-          onClose={() => {
+    <Snackbar
+      open={openAlert}
+      autoHideDuration={5000}
+      onClose={() => {
+        setOpenAlert(false);
+      }}
+      anchorOrigin={{ vertical: "top", horizontal: "center" }}
+    >
+      <Alert
+        severity={severity}
+        action={
+          <IconButton
+            aria-label="close"
+            color="inherit"
+            size="small"
+            onClick={() => {
               setOpenAlert(false);
-          }}
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        }
       >
-      <Alert 
-          severity={severity}
-          action={
-              <IconButton
-              aria-label="close"
-              color="inherit"
-              size="small"
-              onClick={() => {
-                  setOpenAlert(false);
-              }}
-              >
-                  <CloseIcon/>
-              </IconButton>
-          }
-      >
-          {message}
+        {message}
       </Alert>
-     </Snackbar>
-    )
+    </Snackbar>
+  );
 
   const exitClicked = () => {
     setIsDialogOpen(true);
@@ -269,8 +286,9 @@ function MatchedRoom() {
 
   return (
     <Box width={"90%"} alignSelf={"center"} padding={"2rem 0px"}>
-      {openAlert ? (<Grid item>{alert}</Grid>) : (
-      isRoomCreated ? (
+      {openAlert ? (
+        <Grid item>{alert}</Grid>
+      ) : isRoomCreated ? (
         <Grid container spacing={4}>
           <Grid item xs={8}>
             <Typography variant={"h3"}>
@@ -313,9 +331,7 @@ function MatchedRoom() {
             <Typography fontSize={"2rem"} fontWeight="bold">
               {question.name}
             </Typography>
-            <Typography fontSize={"1.5rem"}>
-              {question.description}
-            </Typography>
+            <Typography fontSize={"1.5rem"}>{question.description}</Typography>
 
             <Typography fontSize={"1rem"} paddingTop={"1rem"}>
               Time left: {Math.floor(timeLeft / 60)} mins {timeLeft % 60} secs
@@ -324,7 +340,7 @@ function MatchedRoom() {
         </Grid>
       ) : (
         <Grid item></Grid>
-      ))}
+      )}
 
       <Dialog open={isDialogOpen} onClose={closeDialog}>
         <DialogTitle>{dialogTitle}</DialogTitle>
