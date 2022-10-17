@@ -49,6 +49,7 @@ function MatchedRoom() {
   const [timeLeft, setTimeLeft] = useState(Number.MAX_VALUE);
   const [isInterviewer, setIsInterviewer] = useState(true);
   const [questionHistory, setQuestionHistory] = useState([]);
+  const [qnHist, setQnHist] = useState([]);
   const [openAlert, setOpenAlert] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("error");
@@ -57,6 +58,13 @@ function MatchedRoom() {
   useEffect(() => {
     collabSocket.emit("createRoom", matchEntry);
   }, []);
+
+  const getQnHistArr = (qnHistStr) => {
+    const questionHistArr = qnHistStr.split(",");
+    questionHistArr.pop();
+
+    return questionHistArr;
+  }
 
   useEffect(() => {
     matchingSocket.on("connect", () => {
@@ -82,6 +90,7 @@ function MatchedRoom() {
       setRoomCreated(true);
       setTimeLeft(room.allocatedTime);
       setIsInterviewer(room.interviewer === sessionStorage.getItem("username"));
+      setQnHist(getQnHistArr(room.questionHistory));
       //setQuestionHistory(location.state.questionHistory)
       // getQuestion()
       // console.log(question)
@@ -103,6 +112,14 @@ function MatchedRoom() {
       setDocumentContent(content);
     });
 
+    collabSocket.on("questionSet", ({ question, questionHistory }) => {
+      // console.log("question has been set");
+      // console.log(question);
+      // console.log(getQnHistArr(questionHistory));
+      setQuestion(question);
+      setQnHist(getQnHistArr(questionHistory));
+    });
+
     return () => {
       matchingSocket.off("connect");
       matchingSocket.off("disconnect");
@@ -110,6 +127,8 @@ function MatchedRoom() {
       collabSocket.off("disconnect");
       collabSocket.off("roomCreationSuccess");
       collabSocket.off("roomCreationFailure");
+      collabSocket.off("documentUpdated");
+      collabSocket.off("questionSet");
     };
   }, []);
 
@@ -131,7 +150,7 @@ function MatchedRoom() {
   }, [timeLeft]);
 
   const getQuestion = async() => {
-      const response = await axios.post(URL_QUESTION_SVC, { difficulty: roomInfo.difficulty, questionHistory: questionHistory }, { withCredentials: true }).catch((err) => {
+      const response = await axios.post(URL_QUESTION_SVC, { difficulty: roomInfo.difficulty, questionHistory: qnHist }, { withCredentials: true }).catch((err) => {
           if (err.response.status === STATUS_CODE_BAD_REQUEST && (!roomInfo.difficulty || !questionHistory)) {
             setSeverity("error")
             setOpenAlert(true)
@@ -151,8 +170,18 @@ function MatchedRoom() {
       if (response && response.status === STATUS_CODE_OK) {
         const data = response.data;
         if (data.question) {
-          setQuestion(data.question);
-          setQuestionHistory(arr => {return [...arr, data.question.string_id]});
+          // console.log("collab socket connected? " + isCollabConnected);
+          // console.log("roomId: " , roomInfo.id, " question:");
+          // console.log(data.question);
+          
+          // Save question in room DB via collab service
+          collabSocket.emit("setQuestion", {
+            roomId: roomInfo.id,
+            question: data.question
+          });
+
+          // setQuestion(data.question);
+          // setQuestionHistory(arr => {return [...arr, data.question.string_id]});
           setSeverity("success")
           setOpenAlert(false)
           setMessage("Question received successfully")

@@ -42,6 +42,14 @@ let RoomModelSchema = (sequelize, DataTypes) =>
     code: {
       type: DataTypes.STRING,
     },
+    question: {
+      type: DataTypes.JSON,
+      defaultValue: null,
+    },
+    questionHistory: {
+      type: DataTypes.STRING,
+      defaultValue: "",
+    },
   });
 
 export default RoomModelSchema;
