@@ -3,6 +3,7 @@ import { ormUpdateRoom as _updateRoom } from "../model/room-orm.js";
 import { ormRemoveRoom as _removeRoom } from "../model/room-orm.js";
 import { ormUploadChanges as _uploadChanges } from "../model/room-orm.js";
 import { ormSwitchRoles as _switchRoles } from "../model/room-orm.js";
+import { ormSetQuestion as _setQuestion } from "../model/room-orm.js";
 
 export async function createRoom(req, socket) {
   try {
@@ -90,6 +91,20 @@ export async function uploadChanges(req, socket) {
     console.log(`Emitting document updated with content: ${updatedContent}`);
   } catch (err) {
     console.log("Error updating document!");
+    return;
+  }
+}
+
+export async function setQuestion(req, socket) {
+  const { roomId, question } = req;
+  console.log(`Setting qn for room ${roomId}`);
+  // console.log(question);
+  try {
+    const updatedQnInfo = await _setQuestion(roomId, question);
+    socket.emit("questionSet", updatedQnInfo);
+    console.log(`Emitting question set: ${updatedQnInfo}`);
+  } catch (err) {
+    console.log("Error setting question!");
     return;
   }
 }

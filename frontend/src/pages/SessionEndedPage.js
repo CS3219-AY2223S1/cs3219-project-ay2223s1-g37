@@ -7,6 +7,7 @@ function SessionEndedPage() {
   const location = useLocation();
   const matchEntry = location.state.matchEntry;
   const roomInfo = location.state.roomInfo;
+  const questionHistory = location.state.questionHistory;
   // const roomId = 2; // TODO: REMOVE. Hardcoded temporarily
   const navigate = useNavigate();
 
@@ -49,6 +50,7 @@ function SessionEndedPage() {
       navigate("/matchedroom", {
         state: {
           matchEntryId: matchEntry,
+          questionHistory: questionHistory,
         },
       });
     }

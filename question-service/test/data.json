@@ -343,7 +343,7 @@
         "url": "https://leetcode.com/problems/valid-parentheses/"
     },
     {
-        "name": "https://leetcode.com/problems/valid-palindrome/",
+        "name": "Valid Palindrome",
         "description": "A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.\n\nGiven a string s, return true if it is a palindrome, or false otherwise.",
         "category": "string",
         "difficulty": "easy",

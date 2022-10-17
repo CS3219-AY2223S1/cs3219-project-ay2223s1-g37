@@ -4,6 +4,7 @@ import {
   removeRoom,
   uploadChanges,
   switchRoles,
+  setQuestion,
 } from "../repository.js";
 
 export async function ormCreateRoom(username1, username2, difficulty) {
@@ -77,6 +78,18 @@ export async function ormUploadChanges(roomId, docChanges) {
     const updatedContent = await uploadChanges(roomId, docChanges);
     console.log(`room-orm response, changes uploaded: ${updatedContent}`);
     return updatedContent;
+  } catch (err) {
+    return { err };
+  }
+}
+
+export async function ormSetQuestion(roomId, question) {
+  try {
+    const updatedQnInfo = await setQuestion(roomId, question);
+    // console.log(`room-orm response, question set: ${updatedQn}`);
+    
+    // updatedQnInfo contains question and question history
+    return updatedQnInfo;
   } catch (err) {
     return { err };
   }

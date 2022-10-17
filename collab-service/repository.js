@@ -90,7 +90,10 @@ export async function updateRoom(roomId) {
     // Session not completed yet
     console.log(`Another round to go..........`);
     await Room.update(
-      { rounds: Sequelize.literal("rounds + 1") },
+      {
+        rounds: Sequelize.literal("rounds + 1"),
+        question: null,
+      },
       { where: { id: roomId } }
     );
     return false;
@@ -115,4 +118,33 @@ export async function uploadChanges(roomId, docChanges) {
   // const currentRoom = await Room.findByPk(roomId);
   await Room.update({ code: docChanges }, { where: { id: roomId } });
   return docChanges;
+}
+
+export async function setQuestion(roomId, question) {
+  console.log(`Setting question...`);
+  const currentRoom = await Room.findByPk(roomId);
+  const currentQuestion = currentRoom.question;
+  let currentQnHist = currentRoom.questionHistory;
+  // console.log("current qn: ");
+  // console.log(currentQuestion);
+  // console.log("current qn hist: ");
+  // console.log(currentQnHist);
+
+  if (currentQuestion == null) {
+    console.log("no question set yet!");
+    currentQnHist = currentQnHist + question._id.toString() + ",";
+
+    await Room.update({ question: question, questionHistory: currentQnHist }, { where: { id: roomId } });
+  }
+
+  const updatedRoom = await Room.findByPk(roomId);
+  const updatedQuestion = updatedRoom.question;
+  const updatedQuestionHistory = updatedRoom.questionHistory;
+  
+  // console.log("qn: ");
+  // console.log(qn);
+  // console.log("qnHist");
+  // console.log(updatedQuestionHistory);
+
+  return { question: updatedQuestion, questionHistory: updatedQuestionHistory };
 }
