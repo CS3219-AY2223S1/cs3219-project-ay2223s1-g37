@@ -1,5 +1,5 @@
-import { Box, Typography, Button } from "@mui/material";
-import { useState, useEffect, useCallback } from "react";
+import { Typography, Button } from "@mui/material";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { matchingSocket, collabSocket } from "../utils/Socket.js";
 
@@ -17,7 +17,7 @@ function SessionEndedPage() {
     collabSocket.connected
   );
   const [isSessionComplete, setSessionComplete] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(30);
+  const [timeLeft, setTimeLeft] = useState(10);
   const [userLeft, setUserLeft] = useState(false);
   const [isRoleSwitched, setIsRoleSwitched] = useState(false);
 
@@ -41,7 +41,11 @@ function SessionEndedPage() {
 
   // Navigate to next page once countdown is over and roles have been switched
   useEffect(() => {
-    if (timeLeft == 0 && isRoleSwitched == true && isSessionComplete == false) {
+    if (
+      timeLeft === 0 &&
+      isRoleSwitched === true &&
+      isSessionComplete === false
+    ) {
       navigate("/matchedroom", {
         state: {
           matchEntryId: matchEntry,

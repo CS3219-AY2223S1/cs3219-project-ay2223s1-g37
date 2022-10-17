@@ -16,7 +16,7 @@ import {
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { matchingSocket, collabSocket } from "../utils/Socket.js";
-import axios from 'axios'
+import axios from "axios";
 
 function MatchedRoom() {
   const navigate = useNavigate();
@@ -38,6 +38,7 @@ function MatchedRoom() {
   const [isRoomCreated, setRoomCreated] = useState(false);
   const [timeLeft, setTimeLeft] = useState(Number.MAX_VALUE);
   const [isInterviewer, setIsInterviewer] = useState(true);
+  const [userLeft, setUserLeft] = useState(false);
 
   useEffect(() => {
     collabSocket.emit("createRoom", matchEntry);
@@ -83,6 +84,12 @@ function MatchedRoom() {
       setDocumentContent(content);
     });
 
+    // One of the users chose to left the session
+    collabSocket.on("oneUserLeft", () => {
+      setUserLeft(true);
+      setTimeLeft(0);
+    });
+
     return () => {
       matchingSocket.off("connect");
       matchingSocket.off("disconnect");
@@ -95,7 +102,7 @@ function MatchedRoom() {
 
   useEffect(() => {
     // Reduce timeLeft by calling setTimeLeft function 1 every second (1000ms)
-    if (timeLeft === 0) {
+    if (timeLeft === 0 && userLeft === false) {
       navigate("/sessionended", {
         state: {
           matchEntry: matchEntry,
@@ -160,30 +167,35 @@ function MatchedRoom() {
               Back to Home
             </Button>
           </Grid>
-
-          <Grid item xs={6}>
-            <FormControl fullWidth>
-              <TextareaAutosize
-                onChange={updateDocument}
-                value={documentContent}
-                readOnly={isInterviewer}
-                minRows={30}
-                placeholder={
-                  isInterviewer
-                    ? "View the code here..."
-                    : "Type your code here..."
-                }
-                style={{ padding: "0.5rem", fontSize: "1rem" }}
-              />
-            </FormControl>
-          </Grid>
+          {userLeft ? (
+            <Typography fontSize={"h4"} style={{ color: "red" }}>
+              Your partner has left the session, please start another session!
+            </Typography>
+          ) : (
+            <Grid item xs={6}>
+              <FormControl fullWidth>
+                <TextareaAutosize
+                  onChange={updateDocument}
+                  value={documentContent}
+                  readOnly={isInterviewer}
+                  minRows={30}
+                  placeholder={
+                    isInterviewer
+                      ? "View the code here..."
+                      : "Type your code here..."
+                  }
+                  style={{ padding: "0.5rem", fontSize: "1rem" }}
+                />
+              </FormControl>
+            </Grid>
+          )}
 
           <Grid item xs={6}>
             <Typography fontSize={"2rem"} fontWeight="bold">
               Question
             </Typography>
             <Typography fontSize={"1.5rem"}>
-              Question to go here... 
+              Question to go here...
               {roomInfo.question}
             </Typography>
 
