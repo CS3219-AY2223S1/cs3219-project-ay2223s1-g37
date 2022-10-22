@@ -6,11 +6,19 @@ import Sequelize, { Model } from "sequelize";
 import DataTypes from "sequelize";
 import { Op } from "sequelize";
 
-// TODO: Decide if host should be local or remote
+const sequelizeHost = process.env.NODE_ENV == "production" ? process.env.DB_CLOUD_HOST : "localhost";
+const sequelizeStorage = process.env.NODE_ENV == "production"
+                          ? process.env.DB_CLOUD_STORAGE
+                          : process.env.NODE_ENV == "development"
+                            // ? process.env.DB_LOCAL_STORAGE
+                            // : process.env.DB_TEST_STORAGE;
+                            ? "./db/matchDB.sqlite"
+                            : "./db/matchDB-test.sqlite";
+
 let sequelize = new Sequelize("database", "username", "password", {
-  host: "localhost",
+  host: sequelizeHost,
   dialect: "sqlite",
-  storage: "./db/matchDB.sqlite",
+  storage: sequelizeStorage,
 });
 // Uncomment out in future: Better security with a separate .env file
 // let sequelize = new Sequelize("database", "username", "password", {
@@ -30,7 +38,7 @@ try {
   console.error("Unable to connect to DB :(");
 }
 
-export default sequelize;
+export { sequelize, Match };
 
 export async function createMatch(params) {
   // console.log("respository.js: Create match w params " + JSON.stringify(params));
