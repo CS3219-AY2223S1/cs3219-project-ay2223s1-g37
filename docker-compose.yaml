@@ -3,6 +3,7 @@ version: "3.9"
 services: 
   nginx:
     depends_on:
+      - frontend
       - collab-service
       - matching-service
       - user-service
@@ -13,6 +14,14 @@ services:
     build:
       context: ./nginx
     restart: always
+
+  frontend:
+    image: frontend
+    build:
+      context: ./frontend
+    stdin_open: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
   
   collab-service:
     image: collab-service
