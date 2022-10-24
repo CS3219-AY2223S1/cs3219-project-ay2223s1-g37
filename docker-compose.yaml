@@ -1,0 +1,35 @@
+version: "3.9"
+
+services: 
+  nginx:
+    depends_on:
+      - collab-service
+      - matching-service
+      - user-service
+      - question-service
+    image: nginx
+    ports:
+      - 80:80
+    build:
+      context: ./nginx
+    restart: always
+  
+  collab-service:
+    image: collab-service
+    build:
+      context: ./collab-service
+
+  matching-service:
+    image: matching-service
+    build:
+      context: ./matching-service
+  
+  user-service:
+    image: user-service
+    build:
+      context: ./user-service
+  
+  question-service:
+    image: question-service
+    build:
+      context: ./question-service
