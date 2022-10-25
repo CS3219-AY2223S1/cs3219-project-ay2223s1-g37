@@ -58,9 +58,9 @@ function Chat({ username, roomId }) {
   }, []);
 
   // Scroll to bottom every time a new message is added
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messageList]);
+  //   useEffect(() => {
+  //     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  //   }, [messageList]);
 
   return (
     <Paper variant="outlined" sx={{ padding: 2 }}>

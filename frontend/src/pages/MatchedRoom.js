@@ -15,18 +15,20 @@ import {
   Snackbar,
   IconButton,
   Alert,
-  Paper,
 } from "@mui/material";
 import Chat from "../components/Chat";
 import CloseIcon from "@mui/icons-material/Close";
+import ChatIcon from "@mui/icons-material/Chat";
+import HomeIcon from "@mui/icons-material/Home";
+import MarkUnreadChatAltIcon from "@mui/icons-material/MarkUnreadChatAlt";
 import {
   STATUS_CODE_BAD_REQUEST,
   STATUS_CODE_INTERNAL_SERVER_ERROR,
   STATUS_CODE_OK,
 } from "../constants";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { matchingSocket, collabSocket } from "../utils/Socket.js";
+import { matchingSocket, collabSocket, chatSocket } from "../utils/Socket.js";
 import axios from "axios";
 import { URL_QUESTION_SVC } from "../configs.js";
 
@@ -36,6 +38,7 @@ function MatchedRoom() {
   const matchEntry = location.state.matchEntryId;
   // console.log("matchEntry: " + JSON.stringify(matchEntry));
 
+  const chatRef = useRef(null);
   const [documentContent, setDocumentContent] = useState("");
   const [roomInfo, setRoomInfo] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -63,6 +66,7 @@ function MatchedRoom() {
     url: "",
   });
   const [userLeft, setUserLeft] = useState(false);
+  const [hasNewMessage, setHasNewMessage] = useState(false);
 
   useEffect(() => {
     collabSocket.emit("createRoom", matchEntry);
@@ -128,6 +132,10 @@ function MatchedRoom() {
     collabSocket.on("oneUserLeft", () => {
       setUserLeft(true);
       setTimeLeft(0);
+    });
+
+    chatSocket.on("hasNewMessage", () => {
+      setHasNewMessage(true);
     });
 
     return () => {
@@ -282,23 +290,59 @@ function MatchedRoom() {
 
   const closeDialog = () => setIsDialogOpen(false);
 
+  const scrollToChat = () => {
+    chatRef.current.scrollIntoView({ behavior: "smooth" });
+    setHasNewMessage(false);
+  };
+
   return (
     <Box width={"90%"} alignSelf={"center"} padding={"2rem 0px"}>
       {openAlert ? (
         <Grid item>{alert}</Grid>
       ) : isRoomCreated ? (
         <Grid container spacing={4}>
-          <Grid item xs={8}>
+          <Grid item xs={8} alignSelf={"center"}>
             <Typography variant={"h3"}>
               {roomInfo.username1} & {roomInfo.username2}'s coding room
             </Typography>
             <Typography fontSize={"1rem"}>
-              You are now the {isInterviewer ? "interviewer" : "interviewee"}
+              You ({sessionStorage.getItem("username")}) are now the{" "}
+              {isInterviewer ? "interviewer" : "interviewee"}
             </Typography>
           </Grid>
-
-          <Grid item xs={4} sx={{ textAlign: "right" }}>
-            <Button variant={"outlined"} onClick={exitClicked}>
+          <Grid
+            item
+            xs={4}
+            sx={{
+              display: "flex",
+              alignSelf: "center",
+              justifyContent: "flex-end",
+            }}
+          >
+            {hasNewMessage ? (
+              <Button
+                sx={{ marginRight: 2 }}
+                variant="contained"
+                startIcon={<MarkUnreadChatAltIcon />}
+                onClick={scrollToChat}
+              >
+                Chat
+              </Button>
+            ) : (
+              <Button
+                sx={{ marginRight: 2 }}
+                variant="outlined"
+                startIcon={<ChatIcon />}
+                onClick={scrollToChat}
+              >
+                Chat
+              </Button>
+            )}
+            <Button
+              variant={"outlined"}
+              onClick={exitClicked}
+              startIcon={<HomeIcon />}
+            >
               Back to Home
             </Button>
           </Grid>
@@ -338,6 +382,7 @@ function MatchedRoom() {
 
           {/* Chat box */}
           <Grid item xs={12} sx={{ marginTop: 5 }}>
+            <div ref={chatRef} />
             <Chat
               username={sessionStorage.getItem("username")}
               roomId={roomInfo.id}

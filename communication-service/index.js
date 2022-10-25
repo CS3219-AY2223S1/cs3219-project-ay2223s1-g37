@@ -39,6 +39,7 @@ io.on("connection", (socket) => {
     console.log(`Emitting data:`);
     console.log(data);
     socket.to(data.room).emit("receive message", data);
+    socket.to(data.room).emit("hasNewMessage", data);
   });
 });
 
