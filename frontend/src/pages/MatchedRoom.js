@@ -15,7 +15,9 @@ import {
   Snackbar,
   IconButton,
   Alert,
+  Paper,
 } from "@mui/material";
+import Chat from "../components/Chat";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   STATUS_CODE_BAD_REQUEST,
@@ -48,7 +50,6 @@ function MatchedRoom() {
   const [isRoomCreated, setRoomCreated] = useState(false);
   const [timeLeft, setTimeLeft] = useState(Number.MAX_VALUE);
   const [isInterviewer, setIsInterviewer] = useState(true);
-  const [questionHistory, setQuestionHistory] = useState([]);
   const [qnHist, setQnHist] = useState([]);
   const [openAlert, setOpenAlert] = useState(false);
   const [message, setMessage] = useState("");
@@ -99,11 +100,6 @@ function MatchedRoom() {
       setTimeLeft(room.allocatedTime);
       setIsInterviewer(room.interviewer === sessionStorage.getItem("username"));
       setQnHist(getQnHistArr(room.questionHistory));
-      //setQuestionHistory(location.state.questionHistory)
-      // getQuestion()
-      // console.log(question)
-      // console.log(roomInfo.difficulty)
-      // console.log(questionHistory)
     });
 
     collabSocket.on("roomCreationFailure", () => {
@@ -153,7 +149,6 @@ function MatchedRoom() {
         state: {
           matchEntry: matchEntry,
           roomInfo: roomInfo,
-          questionHistory: questionHistory,
         },
       });
     } else {
@@ -173,14 +168,14 @@ function MatchedRoom() {
       .catch((err) => {
         if (
           err.response.status === STATUS_CODE_BAD_REQUEST &&
-          (!roomInfo.difficulty || !questionHistory)
+          (!roomInfo.difficulty || !qnHist)
         ) {
           setSeverity("error");
           setOpenAlert(true);
           setMessage("Missing fields!");
           if (!roomInfo.difficulty) {
             console.log("Difficulty missing");
-            console.log(!questionHistory);
+            console.log(!qnHist);
           }
           console.log("Difficulty field or Question History field is missing");
         } else if (err.response.status === STATUS_CODE_INTERNAL_SERVER_ERROR) {
@@ -190,8 +185,11 @@ function MatchedRoom() {
           console.log("Database failure when retrieving question!");
         }
       });
+    console.log(response);
+
     if (response && response.status === STATUS_CODE_OK) {
       const data = response.data;
+
       if (data.question) {
         // console.log("collab socket connected? " + isCollabConnected);
         // console.log("roomId: " , roomInfo.id, " question:");
@@ -223,7 +221,7 @@ function MatchedRoom() {
 
   useEffect(() => {
     if (isRoomCreated) {
-      console.log(questionHistory);
+      console.log(qnHist);
       console.log(roomInfo.difficulty);
       getQuestion();
     }
@@ -326,16 +324,24 @@ function MatchedRoom() {
               </FormControl>
             </Grid>
           )}
-
           <Grid item xs={6}>
+            <Typography fontSize={"2rem"} paddingTop={"1rem"} marginBottom={5}>
+              Time left: {Math.floor(timeLeft / 60)} mins {timeLeft % 60} secs
+            </Typography>
             <Typography fontSize={"2rem"} fontWeight="bold">
               {question.name}
             </Typography>
-            <Typography fontSize={"1.5rem"}>{question.description}</Typography>
-
-            <Typography fontSize={"1rem"} paddingTop={"1rem"}>
-              Time left: {Math.floor(timeLeft / 60)} mins {timeLeft % 60} secs
+            <Typography fontSize={"1rem"} style={{ whiteSpace: "pre-wrap" }}>
+              {question.description}
             </Typography>
+          </Grid>
+
+          {/* Chat box */}
+          <Grid item xs={12} sx={{ marginTop: 5 }}>
+            <Chat
+              username={sessionStorage.getItem("username")}
+              roomId={roomInfo.id}
+            />
           </Grid>
         </Grid>
       ) : (

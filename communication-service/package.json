@@ -1,5 +1,5 @@
 {
-  "name": "question-service",
+  "name": "communication-service",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,17 +9,21 @@
     "start": "node index.js",
     "test": "mocha --exit"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "axios": "^0.27.2",
+  "devDependencies": {
     "chai": "^4.3.6",
     "chai-http": "^4.3.0",
-    "cors": "^2.8.5",
+    "mocha": "^10.0.0",
+    "nodemon": "^2.0.19"
+  },
+  "dependencies": {
     "dotenv": "^16.0.3",
     "express": "^4.18.1",
-    "mocha": "^10.0.0",
-    "mongoose": "^6.6.4",
-    "nodemon": "^2.0.20"
+    "sequelize": "^6.21.3",
+    "socket.io": "^4.5.1",
+    "sqlite3": "^5.0.10",
+    "uuid": "^8.3.2"
   }
 }
