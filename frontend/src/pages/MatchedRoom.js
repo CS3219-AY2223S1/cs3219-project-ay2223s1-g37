@@ -299,7 +299,7 @@ function MatchedRoom() {
     <Box width={"90%"} alignSelf={"center"} padding={"2rem 0px"}>
       {openAlert ? (
         <Grid item>{alert}</Grid>
-      ) : isRoomCreated ? (
+      ) : isRoomCreated && !userLeft ? (
         <Grid container spacing={4}>
           <Grid item xs={8} alignSelf={"center"}>
             <Typography variant={"h3"}>
@@ -346,28 +346,23 @@ function MatchedRoom() {
               Back to Home
             </Button>
           </Grid>
-          {userLeft ? (
-            <Typography fontSize={"h4"} style={{ color: "red" }}>
-              Your partner has left the session, please start another session!
-            </Typography>
-          ) : (
-            <Grid item xs={6}>
-              <FormControl fullWidth>
-                <TextareaAutosize
-                  onChange={updateDocument}
-                  value={documentContent}
-                  readOnly={isInterviewer}
-                  minRows={30}
-                  placeholder={
-                    isInterviewer
-                      ? "View the code here..."
-                      : "Type your code here..."
-                  }
-                  style={{ padding: "0.5rem", fontSize: "1rem" }}
-                />
-              </FormControl>
-            </Grid>
-          )}
+          <Grid item xs={6}>
+            <FormControl fullWidth>
+              <TextareaAutosize
+                onChange={updateDocument}
+                value={documentContent}
+                readOnly={isInterviewer}
+                minRows={30}
+                placeholder={
+                  isInterviewer
+                    ? "View the code here..."
+                    : "Type your code here..."
+                }
+                style={{ padding: "0.5rem", fontSize: "1rem" }}
+              />
+            </FormControl>
+          </Grid>
+
           <Grid item xs={6}>
             <Typography fontSize={"2rem"} paddingTop={"1rem"} marginBottom={5}>
               Time left: {Math.floor(timeLeft / 60)} mins {timeLeft % 60} secs
@@ -390,7 +385,27 @@ function MatchedRoom() {
           </Grid>
         </Grid>
       ) : (
-        <Grid item></Grid>
+        <Box
+          sx={{
+            flex: 1,
+            display: "flex",
+            alignItems: "center",
+            justifyCOntent: "center",
+            flexDirection: "column",
+            backgroundColor: "grey",
+          }}
+        >
+          <Typography fontWeight={"bold"} fontSize={20} marginBottom={2}>
+            Your partner has left the session, please start another session!
+          </Typography>
+          <Button
+            variant={"outlined"}
+            onClick={exitClicked}
+            startIcon={<HomeIcon />}
+          >
+            Back to Home
+          </Button>
+        </Box>
       )}
 
       <Dialog open={isDialogOpen} onClose={closeDialog}>
