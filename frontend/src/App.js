@@ -10,6 +10,7 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 import UpdateAccount from "./components/UpdateAccount";
 import ResetPasswordPage from './pages/ResetPasswordPage'
 import ForgetPasswordPage from './pages/ForgetPasswordPage'
+import IntroductionPage from "./pages/IntroductionPage";
 import Footer from './components/Footer'
 
 function App() {
@@ -20,8 +21,9 @@ function App() {
           <Route
             exact
             path="/"
-            element={<Navigate replace to="/login" />}
+            element={<Navigate replace to="/introduction" />}
           ></Route>
+          <Route path="/introduction" element={<IntroductionPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LogininPage />} />
           <Route path="/reset/:id/:token" element={<ResetPasswordPage />} />

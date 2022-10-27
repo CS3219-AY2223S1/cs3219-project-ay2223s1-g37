@@ -5,9 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js",
-    "test": "mocha --exit"
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "test": "cross-env NODE_ENV=test mocha --exit --timeout 20000"
   },
   "keywords": [],
   "author": "",
@@ -19,10 +19,12 @@
     "nodemon": "^2.0.19"
   },
   "dependencies": {
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
     "express": "^4.18.1",
     "sequelize": "^6.21.3",
     "socket.io": "^4.5.1",
+    "socket.io-client": "^4.5.3",
     "sqlite3": "^5.0.10",
     "uuid": "^8.3.2"
   }
