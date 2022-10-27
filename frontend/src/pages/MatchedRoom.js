@@ -307,7 +307,9 @@ function MatchedRoom() {
             </Typography>
             <Typography fontSize={"1rem"}>
               You ({sessionStorage.getItem("username")}) are now the{" "}
-              {isInterviewer ? "interviewer" : "interviewee"}
+              <Box fontWeight="bold" display="inline" color="#608FB7">
+                {isInterviewer ? "interviewer" : "interviewee"}
+              </Box>
             </Typography>
           </Grid>
           <Grid
