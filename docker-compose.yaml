@@ -8,6 +8,7 @@ services:
       - matching-service
       - user-service
       - question-service
+      - communication-service
     image: nginx
     ports:
       - 80:80
@@ -42,3 +43,8 @@ services:
     image: question-service
     build:
       context: ./question-service
+
+  communication-service:
+    image: communication-service
+    build:
+      context: ./communication-service
