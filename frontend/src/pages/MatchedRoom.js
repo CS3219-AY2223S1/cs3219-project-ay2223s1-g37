@@ -393,8 +393,7 @@ function MatchedRoom() {
             display: "flex",
             alignItems: "center",
             justifyCOntent: "center",
-            flexDirection: "column",
-            backgroundColor: "grey",
+            flexDirection: "column"
           }}
         >
           <Typography fontWeight={"bold"} fontSize={20} marginBottom={2}>
