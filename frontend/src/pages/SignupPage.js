@@ -112,9 +112,13 @@ function SignupPage() {
     )
 
     return (
-        <Box display={"flex"} flexDirection={"column"} width={"30%"} margin={"0px auto"} padding={"4rem"}>
+        <Box sx={{ backgroundColor: "#f8f8ff" }}>
+        <Box width={"30%"} margin={"0px auto"} padding={"1rem"} alignItems="center">
             {openAlert? alert : null}
-            <Typography variant={"h3"} marginBottom={"2rem"}>Sign Up</Typography>
+            <Typography variant={"h4"} marginBottom={"0.9rem"} align="center">PeerPrep</Typography>
+            <Typography sx={{fontFamily: "Trebuchet MS", fontSize: "0.8rem"}} marginBottom={"0.9rem"} align="center">Prepare for technical interviews with your peers</Typography>
+            <Box sx={{ border: 1, boxShadow: 2, backgroundColor: "white"}} display={"flex"} flexDirection={"column"} padding={"2rem"}>
+            <Typography variant={"h5"} marginBottom={"2rem"} align="center">Sign Up</Typography>
             <TextField
                 label="Email"
                 variant="standard"
@@ -129,7 +133,6 @@ function SignupPage() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 sx={{marginBottom: "1rem"}}
-                autoFocus
             />
             <TextField
                 label="Password"
@@ -141,8 +144,8 @@ function SignupPage() {
                 sx={{marginBottom: "2rem"}}
             />
             <Box display={"flex"} flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
-                <Typography component={Link} to="/login">Have an account? Sign in here</Typography>
-                <Button variant={"outlined"} onClick={handleSignup} >Sign up</Button>
+                <Typography component={Link} to="/login">Have an account? Log in here</Typography>
+                <Button sx={{fontFamily: "Arial", textTransform: "none"}} variant={"contained"} onClick={handleSignup} >Sign up</Button>
             </Box>
 
             <Dialog open={isDialogOpen} onClose={closeDialog}>
@@ -160,6 +163,8 @@ function SignupPage() {
                 )}
                 </DialogActions>
             </Dialog>
+            </Box>
+        </Box>
         </Box>
   );
 }

@@ -101,15 +101,19 @@ function ForgetPasswordPage() {
     )
 
     return (
-        <Box display={"flex"} flexDirection={"column"} width={"30%"} margin={"0px auto"} padding={"4rem"}>
+        <Box sx={{ backgroundColor: "#f8f8ff" }}>
+      <Box width={"30%"} margin={"0px auto"} padding={"1rem"} alignItems="center">
             {openAlert? alert : null}
-            <Typography variant={"h3"} marginBottom={"2rem"}>Reset Password</Typography>
+            <Typography variant={"h4"} marginBottom={"0.9rem"} align="center">PeerPrep</Typography>
+            <Typography sx={{fontFamily: "Trebuchet MS", fontSize: "0.8rem"}} marginBottom={"0.9rem"} align="center">Prepare for technical interviews with your peers</Typography>
+            <Box sx={{ border: 1, boxShadow: 2, backgroundColor: "white"}} display={"flex"} flexDirection={"column"} padding={"2rem"}>
+            <Typography variant={"h5"} marginBottom={"2rem"} align="center">Reset Password</Typography>
             <TextField
                 label="Email"
                 variant="standard"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                sx={{ marginBottom: "1rem" }}
+                sx={{ marginBottom: "4rem" }}
                 autoFocus
             />
             <Box display={"flex"} flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
@@ -119,7 +123,7 @@ function ForgetPasswordPage() {
                     <Typography component={Link} to="/signup">No account? Sign up here</Typography>
                     <Typography component={Link} to="/login">Click here to log in</Typography>
                 </Box>
-                <Button variant={"outlined"} onClick={handleUpdate} >Reset</Button>
+                <Button sx={{fontFamily: "Arial", textTransform: "none"}} variant={"contained"} onClick={handleUpdate} >Reset</Button>
             </Box>
 
             <Dialog
@@ -137,6 +141,8 @@ function ForgetPasswordPage() {
                     }
                 </DialogActions>
             </Dialog>
+        </Box>
+        </Box>
         </Box>
     )
 }
