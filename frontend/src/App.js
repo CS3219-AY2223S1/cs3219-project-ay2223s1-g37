@@ -8,14 +8,13 @@ import SessionEndedPage from "./pages/SessionEndedPage";
 import Home from "./pages/HomePage";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import UpdateAccount from "./components/UpdateAccount";
-import ResetPasswordPage from './pages/ResetPasswordPage'
-import ForgetPasswordPage from './pages/ForgetPasswordPage'
+import ResetPasswordPage from "./pages/ResetPasswordPage";
+import ForgetPasswordPage from "./pages/ForgetPasswordPage";
 import IntroductionPage from "./pages/IntroductionPage";
-import Footer from './components/Footer'
 
 function App() {
   return (
-    <div style={{ height: '100%' }}>
+    <div style={{ height: "100%" }}>
       <Box display={"flex"} flexDirection={"column"} height={"100%"}>
         <Routes>
           <Route
