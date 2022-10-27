@@ -11,11 +11,12 @@ import UpdateAccount from "./components/UpdateAccount";
 import ResetPasswordPage from './pages/ResetPasswordPage'
 import ForgetPasswordPage from './pages/ForgetPasswordPage'
 import IntroductionPage from "./pages/IntroductionPage";
+import Footer from './components/Footer'
 
 function App() {
   return (
-    <div className="App">
-      <Box display={"flex"} flexDirection={"column"}>
+    <div style={{ height: '100%' }}>
+      <Box display={"flex"} flexDirection={"column"} height={"100%"}>
         <Routes>
           <Route
             exact

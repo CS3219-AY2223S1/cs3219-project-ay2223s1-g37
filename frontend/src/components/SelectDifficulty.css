@@ -1,0 +1,22 @@
+.main {
+    background-color: #f0f8ff;
+    border-radius: 4rem;
+}
+
+.instructions {
+    background-color: #f0f8ff;
+    border-radius: 4rem;
+    margin-left: 33px;
+}
+
+.resources {
+    background-color: #f0f8ff;
+    border-radius: 4rem;
+    height: 100%;
+}
+
+.links {
+    display: flex;
+    justify-content: flex-start;
+    padding-bottom: 20px;
+}

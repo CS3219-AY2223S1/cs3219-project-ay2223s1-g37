@@ -8,8 +8,10 @@ import {
     Box,
     Menu,
     MenuItem,
+    Modal
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import { useState } from 'react'
 import axios from 'axios'
 import SelectDifficultyPage from '../components/SelectDifficulty'
@@ -25,6 +27,9 @@ function Home() {
     const [anchorElUser, setAnchorElUser] = useState(null);
     const [visibleDelete, setVisisbleDelete] = useState(false);
     const [visibleUpdate, setVisisbleUpdate] = useState(false);
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     const showModalDelete = () => {
         setVisisbleDelete(true)
@@ -55,14 +60,6 @@ function Home() {
             }
     }
 
-    // const test = async () => {
-    //     const res = await axios.get(URL_USER_SVC + '/auth', { withCredentials: true })
-    //         .catch(err => {
-    //             console.log("error")
-    //         })
-    //     console.log(res)
-    // }
-
     const handleOpenUserMenu = (e) => {
         setAnchorElUser(e.currentTarget);
     };
@@ -70,17 +67,54 @@ function Home() {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: '#F2F3F5',
+        border: '2px',
+        borderRadius: '2rem',
+        boxShadow: 24,
+        p: 4,
+    };
+
     return (
-        <div>
+        <div style={{ height: '100%' }}>
             <AppBar sx={{ backgroundColor: "#232F3D" }} position="sticky">
                 <Container maxWidth="xl">
                     <Toolbar sx={{ justifyContent: "space-between" }}>
-                        <Typography>
+                        <Typography 
+                            style={{ fontFamily: "Courier New, Courier, monospace" }} 
+                        >
                             PeerPrep
                         </Typography>
                         <Box sx={{ flexGrow: 0 }}>
+                            <Tooltip title="What is PeerPrep?">
+                            <IconButton sx={{ color: "inherit"}} onClick={handleOpen}>
+                                <QuestionMarkIcon/>
+                            </IconButton>
+                            </Tooltip>
+                            <Modal
+                                open={open}
+                                onClose={handleClose}
+                                aria-labelledby="modal-modal-title"
+                                aria-describedby="modal-modal-description"
+                            >
+                                <Box sx={style}>
+                                <Typography id="modal-modal-title" variant="h6" component="h2">
+                                    What is PeerPrep?
+                                </Typography>
+                                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                                     PeerPrep is a tool to help you and your peer prepare for upcoming interview sessions, 
+                                     with coding challenges ranging from easy to hard to test your skills!
+                                </Typography>
+                                </Box>
+                            </Modal>
                             <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, color: "inherit"}}>
+                            <IconButton onClick={handleOpenUserMenu} sx={{ color: "inherit"}}>
                                 <SettingsIcon />
                             </IconButton>
                             </Tooltip>
@@ -100,11 +134,6 @@ function Home() {
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
                                 >
-                                {/* {settings.map((setting) => (
-                                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                        <Typography textAlign="center">{setting}</Typography>
-                                    </MenuItem>
-                                ))} */}
                                 <MenuItem onClick={showModalDelete}>
                                     Delete Account
                                 </MenuItem>
