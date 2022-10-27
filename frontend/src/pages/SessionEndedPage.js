@@ -1,7 +1,9 @@
-import { Typography, Button } from "@mui/material";
+import { Typography, Button, Box } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { matchingSocket, collabSocket } from "../utils/Socket.js";
+import HomeIcon from "@mui/icons-material/Home";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 function SessionEndedPage() {
   const location = useLocation();
@@ -103,49 +105,63 @@ function SessionEndedPage() {
   }, []);
 
   return (
-    <div
+    <Box
       style={{
         display: "flex",
-        flex: 1,
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        height: "100%",
-        padding: 20,
+        marginTop: 20,
       }}
     >
-      <Typography variant={"h2"}>Times up!</Typography>
-      <Typography fontSize={"1rem"}>
+      <Typography variant={"h2"} sx={{ marginBottom: 2 }}>
+        Times up!
+      </Typography>
+      <Typography fontSize={20} sx={{ marginBottom: 2 }}>
         {isSessionComplete
           ? // ? "Would you like to try another question with the same partner?"
             "Session complete!"
           : "Ready to switch roles and continue?"}
       </Typography>
       {userLeft ? (
-        <Typography fontSize={"1rem"} style={{ color: "red" }}>
+        <Typography
+          fontSize={20}
+          style={{ color: "red" }}
+          sx={{ marginBottom: 2 }}
+        >
           Your partner has left the session, please start another session!
         </Typography>
       ) : null}
       {isSessionComplete ? (
-        <Button onClick={handleExit}>Home</Button>
+        <Button
+          variant="outlined"
+          onClick={handleExit}
+          startIcon={<HomeIcon />}
+        >
+          Home
+        </Button>
       ) : (
-        <div
+        <Box
           style={{
             display: "flex",
-            flex: 1,
             alignItems: "center",
             justifyContent: "center",
             flexDirection: "column",
-            marginTop: 20,
           }}
         >
-          <Typography variant={"h4"}>
+          <Typography fontSize={20} sx={{ marginBottom: 2 }}>
             Next session starting in: {timeLeft}
           </Typography>
-          <Button onClick={handleExit}>Leave</Button>
-        </div>
+          <Button
+            variant="outlined"
+            onClick={handleExit}
+            startIcon={<LogoutIcon />}
+          >
+            Leave
+          </Button>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 }
 
