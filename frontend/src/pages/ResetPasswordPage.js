@@ -112,9 +112,13 @@ function ResetPasswordPage() {
     )
     
     return (
-        <Box display={"flex"} flexDirection={"column"} width={"30%"} margin={"0px auto"} padding={"4rem"}>
+        <Box sx={{ backgroundColor: "#f8f8ff" }}>
+      <Box width={"30%"} margin={"0px auto"} padding={"1rem"} alignItems="center">
             {openAlert? alert : null}
-            <Typography variant={"h3"} marginBottom={"2rem"}>Reset Password</Typography>
+            <Typography variant={"h4"} marginBottom={"0.9rem"} align="center">PeerPrep</Typography>
+            <Typography sx={{fontFamily: "Trebuchet MS", fontSize: "0.8rem"}} marginBottom={"0.9rem"} align="center">Prepare for technical interviews with your peers</Typography>
+            <Box sx={{ border: 1, boxShadow: 2, backgroundColor: "white"}} display={"flex"} flexDirection={"column"} padding={"2rem"}>
+            <Typography variant={"h5"} marginBottom={"2rem"} align="center">Reset Password</Typography>
             <TextField
                 label="Password"
                 variant="standard"
@@ -125,7 +129,7 @@ function ResetPasswordPage() {
                 sx={{marginBottom: "2rem"}}
             />
             <Box display={"flex"} flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
-                <Button variant={"outlined"} onClick={handleReset}>Reset</Button>
+                <Button sx={{fontFamily: "Arial", textTransform: "none"}} variant={"contained"} onClick={handleReset}>Reset</Button>
             </Box>
 
 
@@ -144,6 +148,8 @@ function ResetPasswordPage() {
                 )}
                 </DialogActions>
             </Dialog>
+        </Box>
+        </Box>
         </Box>
     )
 }
