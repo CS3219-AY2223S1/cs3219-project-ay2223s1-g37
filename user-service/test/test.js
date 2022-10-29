@@ -30,22 +30,12 @@ describe('user-service tests', data => {
         })
     })
 
-    // before("create a new user and login", async () => {
-    //     const salt = await bcrypt.genSalt(10);
-    //     newUser.password = await bcrypt.hash(password, salt);
-    //     await UserModel.insertMany(newUser)
-    //     // chai.request(app)
-    //     //     .post('/api/user')
-    //     //     .set('content-type', 'application/json')
-    //     //     .send({username: newUser.username, password: password})
-    // })
-
     after("delete user", async () => {
         await UserModel.findOneAndRemove({username: usersData[1].username}).exec();
     })
 
-    describe("create new user", () => {
-        it('test', async () => {
+    describe("setup", () => {
+        it('create user setup', async () => {
             const salt = await bcrypt.genSalt(10);
             newUser.password = await bcrypt.hash(password, salt);
             await UserModel.create(newUser)
