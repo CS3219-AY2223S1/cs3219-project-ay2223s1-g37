@@ -37,11 +37,12 @@ jobs:
     - run: npm install
     - run: npm ci
     - run: npm run build --if-present
-    - name: Create.env
+    - name: Create .env
       run: |
         touch .env
         DB_LOCAL_URI=mongodb+srv://admin:q0RqQon9AYeZSoHt@cluster0.thnlshk.mongodb.net/myDb?retryWrites=true&w=majority >> .env
         JWT_SECRET_KEY=testSecretKey >> .env
+        ENV=DEV >> .env
     - run: npm test
   
   question-service:
