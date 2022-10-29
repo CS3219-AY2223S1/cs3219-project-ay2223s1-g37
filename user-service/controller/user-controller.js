@@ -104,13 +104,11 @@ export async function userLogin(req, res) {
         const { username, password } = req.body;
         const user = await _checkUser(username, 0);
 
-        // todo: add check to check if there are any fields left blank, return 500 if so
         if (!username || !password) {
             return res.status(400).json({message: 'Username and/or Password are missing!'})
         }
 
         if (user && user.verified) {
-            // todo: add check to check if password is correct and return 401/403 (need check) if incorrect password
             const validPassword = await _checkCorrectPassword(username, password);
             if (validPassword) {
                 const token = jwt.sign({
