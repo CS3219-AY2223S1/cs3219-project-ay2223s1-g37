@@ -41,6 +41,8 @@ jobs:
       env:
         DB_LOCAL_URI: mongodb+srv://admin:q0RqQon9AYeZSoHt@cluster0.thnlshk.mongodb.net/myDb?retryWrites=true&w=majority
         JWT_SECRET_KEY: testSecretKey
+        USERNAME: heng.dora@gmail.com
+        PASSWORD: mgmdaxedhjitclqp
 
   
   question-service:
