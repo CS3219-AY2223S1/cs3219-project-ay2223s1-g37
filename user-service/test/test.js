@@ -20,15 +20,15 @@ describe('user-service tests', data => {
         verified: true
     })
 
-    before("test MongoDB", (done) => {
-        mongoose.connect(process.env.DB_LOCAL_URI)
-        const db = mongoose.connection
-        db.on('error', console.error.bind(console, 'Unable to connect to MongoDB'))
-        db.once('open', function () {
-            console.log('Connected to MongoDB')
-            done()
-        })
-    })
+    // before("test MongoDB", (done) => {
+    //     mongoose.connect(process.env.DB_LOCAL_URI)
+    //     const db = mongoose.connection
+    //     db.on('error', console.error.bind(console, 'Unable to connect to MongoDB'))
+    //     db.once('open', function () {
+    //         console.log('Connected to MongoDB')
+    //         done()
+    //     })
+    // })
 
     before("create a new user and login", async () => {
         const salt = await bcrypt.genSalt(10);
