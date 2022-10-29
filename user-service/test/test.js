@@ -30,32 +30,32 @@ describe('user-service tests', data => {
         })
     })
 
-    // before("create a new user and login", async () => {
-    //     const salt = await bcrypt.genSalt(10);
-    //     newUser.password = await bcrypt.hash(password, salt);
-    //     await newUser.save()
-    //     // chai.request(app)
-    //     //     .post('/api/user')
-    //     //     .set('content-type', 'application/json')
-    //     //     .send({username: newUser.username, password: password})
-    // })
-    //
-    //
-    // after("delete user", async () => {
-    //     await UserModel.findOneAndRemove({username: usersData[1].username}).exec();
-    // })
-    //
-    // describe('GET', () => {
-    //     it('should show hello world message', (done) => {
-    //         chai.request(app)
-    //             .get("/api/user")
-    //             .end((err, res) => {
-    //                 res.should.have.status(200);
-    //                 res.text.should.equal("Hello World from user-service")
-    //                 done();
-    //             })
-    //     })
-    // })
+    before("create a new user and login", async () => {
+        const salt = await bcrypt.genSalt(10);
+        newUser.password = await bcrypt.hash(password, salt);
+        await newUser.save()
+        // chai.request(app)
+        //     .post('/api/user')
+        //     .set('content-type', 'application/json')
+        //     .send({username: newUser.username, password: password})
+    })
+
+
+    after("delete user", async () => {
+        await UserModel.findOneAndRemove({username: usersData[1].username}).exec();
+    })
+
+    describe('GET', () => {
+        it('should show hello world message', (done) => {
+            chai.request(app)
+                .get("/api/user")
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.text.should.equal("Hello World from user-service")
+                    done();
+                })
+        })
+    })
     //
     // describe('POST /api/user', () => {
     //     it('should not login if user is unknown', (done) => {
