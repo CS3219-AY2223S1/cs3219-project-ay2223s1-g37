@@ -41,7 +41,7 @@ jobs:
       env:
         DB_LOCAL_URI: mongodb://localhost:27017/cs3219project
         JWT_SECRET_KEY: testSecretKey
-        USERNAME: heng.dora@gmail.com
+        USERNAME: test@gmail.com
         PASSWORD: test
 
   
