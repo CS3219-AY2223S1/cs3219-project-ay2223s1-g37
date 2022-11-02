@@ -8,7 +8,7 @@ export const auth = async (req, res, next) => {
         const token = req.headers?.cookie.split('=')[1]
         console.log(token)
 
-        const verifyUser = jwt.verify(token, process.env.JWT_SECRET_KEY) // "helloworld is the JWT secret key"
+        const verifyUser = jwt.verify(token, process.env.JWT_SECRET_KEY)
     
         const blacklistToken = await BlackListTokenModel.find({ token }).exec();
         if (blacklistToken.length > 0) {
