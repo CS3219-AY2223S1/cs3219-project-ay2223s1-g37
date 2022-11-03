@@ -19,7 +19,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: [18.x]
         mongodb-version: ['5.0', '6.0']
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
@@ -38,6 +38,12 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
+      env:
+        DB_LOCAL_URI: mongodb://localhost:27017/cs3219project
+        JWT_SECRET_KEY: testSecretKey
+        USERNAME: test@gmail.com
+        PASSWORD: test
+
   
   question-service:
     runs-on: ubuntu-latest

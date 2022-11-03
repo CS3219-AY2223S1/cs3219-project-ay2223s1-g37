@@ -1,4 +1,4 @@
-import { createUser } from './repository.js';
+import {createUser} from './repository.js';
 import UserModel from './user-model.js'
 import bcrypt from 'bcrypt'
 import crypto from 'crypto'
@@ -11,9 +11,8 @@ export async function ormCreateUser(email, username, password) {
     try {
         const newUser = await createUser({email, username, password});
         const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-        newUser.password = hashedPassword;
-        newUser.save();
+        newUser.password = await bcrypt.hash(password, salt);
+        await newUser.save();
         return newUser;
     } catch (err) {
         console.log('ERROR: Could not create new user');
@@ -66,8 +65,7 @@ export async function ormCreateEmailToken(user) {
 
 export async function ormCheckEmailToken(user, tokenId) {
      try {
-        const token = await EmailTokenModel.findOne({userId: user._id, token: tokenId})
-        return token;
+         return await EmailTokenModel.findOne({userId: user._id, token: tokenId});
     } catch (err) {
         console.log('ERROR: Could not find email token');
         return { err }
@@ -118,7 +116,7 @@ export async function ormChangePassword(username, newPassword) {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(newPassword, salt);
         user.password = hashedPassword;
-        user.save();
+        await user.save();
         return true;
     } catch (err) {
         console.log('ERROR: Could not change password');
@@ -131,7 +129,7 @@ export async function ormCreateBlacklistToken(token) {
         const blacklistToken = new BlackListTokenModel({
             token: token
         })
-        blacklistToken.save()
+        await blacklistToken.save()
         return blacklistToken
     } catch (err) {
         console.log('ERROR: Could not create blacklist token')
