@@ -2,6 +2,7 @@ import {app} from "../index.js"
 import chaiHttp from 'chai-http'
 import chai from 'chai'
 import mongoose from "mongoose"
+import fs from 'fs'
 
 
 chai.use(chaiHttp)
@@ -16,6 +17,12 @@ describe('question-service tests', data => {
         db.once('open', function () {
             console.log('Connected to MongoDB')
         })
+        const questionModel = db.collection('questionmodels')
+        fs.readFile('./test/data.json', async (err, data) => {
+            if (err) throw err;
+            let questions = JSON.parse(data);
+            await questionModel.insertMany(questions).then(res => res)
+        });
     })
 
 
