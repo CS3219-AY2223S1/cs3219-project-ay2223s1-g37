@@ -1,4 +1,5 @@
-import { Typography, Button } from "@mui/material";
+import { Typography, Button, Snackbar, IconButton, Alert } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { matchingSocket, collabSocket } from "../utils/Socket.js";
@@ -8,6 +9,8 @@ function SessionEndedPage() {
   const matchEntry = location.state.matchEntry;
   const roomInfo = location.state.roomInfo;
   const questionHistory = location.state.questionHistory;
+  const answerUrl = location.state.answerUrl;
+
   // const roomId = 2; // TODO: REMOVE. Hardcoded temporarily
   const navigate = useNavigate();
 
@@ -21,6 +24,7 @@ function SessionEndedPage() {
   const [timeLeft, setTimeLeft] = useState(10);
   const [userLeft, setUserLeft] = useState(false);
   const [isRoleSwitched, setIsRoleSwitched] = useState(false);
+  const [openAlert, setOpenAlert] = useState(true);
 
   console.log("session ended match entry: " + JSON.stringify(matchEntry));
   console.log("session ended room info: " + JSON.stringify(roomInfo));
@@ -102,6 +106,34 @@ function SessionEndedPage() {
     };
   }, []);
 
+  const alert = (
+    <Snackbar
+      open={openAlert}
+      onClose={() => {
+        setOpenAlert(false);
+      }}
+      anchorOrigin={{ vertical: "top", horizontal: "center" }}
+    >
+      <Alert
+        severity="success"
+        action={
+          <IconButton
+            aria-label="close"
+            color="inherit"
+            size="small"
+            onClick={() => {
+              setOpenAlert(false);
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        }
+      >
+        <Typography>Click <a href={answerUrl} target="_blank">here</a> to open the website where we obtained the question</Typography>
+      </Alert>
+    </Snackbar>
+  );
+
   return (
     <div
       style={{
@@ -114,6 +146,7 @@ function SessionEndedPage() {
         padding: 20,
       }}
     >
+      {openAlert? alert : null}
       <Typography variant={"h2"}>Times up!</Typography>
       <Typography fontSize={"1rem"}>
         {isSessionComplete

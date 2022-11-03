@@ -7,37 +7,56 @@ import {
     Container,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import {keyframes} from '@mui/system';
+import logo from '../components/cs3219logo-transparent.png';
+
+const highlight = keyframes`
+    100% {background-position: 0 0}
+`;
+const rootStyle = {
+    backgroundColor: "#f8f8ff",
+    height: '100vh',
+    overflow: "auto",
+}
 
 function IntroductionPage() {
     return (
-        <div>
-        <AppBar sx={{ backgroundColor: "#f8f8ff" }} position="sticky" elevation={0}>
-                <Container maxWidth="xl">
-                    <Toolbar sx={{ justifyContent: "space-between" }}>
-                        <Typography variant={"h5"} color="common.black">
-                            PeerPrep
-                        </Typography>
-                        <Box sx={{ flexGrow: 0 }}>
-                        <Typography component={Link} to="/login" variant={"h7"} color="common.black">
-                            Login
-                        </Typography>
-                        </Box>
-                    </Toolbar>
-                </Container>        
-        </AppBar>
-        <Box sx={{ backgroundColor: "#f8f8ff" }} display="flex" justifyContent="center" alignItems="center">
-            <Container display="flex" justifyContent="center" alignItems="center">
-        <Typography sx={{fontFamily: "Garamond", fontWeight: "bold", fontSize: "4rem"}} marginBottom={"2rem"} marginTop={"3rem"} marginLeft={"17rem"} marginRight={"17rem"} align="center">
-            Success is best when it is <Typography sx={{fontFamily: "Garamond", fontWeight: "bold", fontSize: "4rem"}} display="inline"><mark>shared</mark></Typography>.
-        </Typography>
-        <Typography sx={{fontFamily: "Trebuchet MS"}} variant={"h6"} marginBottom={"2rem"} marginLeft={"20rem"} marginRight={"20rem"} align="center">
-            PeerPrep helps you to prepare for technical interviews using a peer learning system.
-        </Typography>
-        <Typography align="center">
-        <Button sx={{fontFamily: "Arial", textTransform: "none", fontSize: "1rem"}} component={Link} to="/signup" variant="contained">Create Account ></Button>
-        </Typography>
-        </Container>
-        </Box>
+        <div style={rootStyle}>
+            <AppBar sx={{ backgroundColor: "#f8f8ff" }} position="sticky" elevation={0}>
+                    <Container maxWidth="xl">
+                        <Toolbar sx={{ justifyContent: "space-between"}}>
+                            <a href="/introduction">
+                                <img src={logo} alt="logo" width="80" height="60" style={{marginLeft: 5 + 'rem', marginTop: 2 + 'rem'}}/>
+                            </a>
+                            <Box sx={{ flexGrow: 0 }}>
+                            <Typography component={Link} to="/login" variant={"h7"} color="common.black" marginRight={"5rem"}>
+                                Login
+                            </Typography>
+                            </Box>
+                        </Toolbar>
+                    </Container>        
+            </AppBar>
+            <Box margin={"0px auto"} alignItems="center">
+                <Container>
+                    <Typography sx={{fontFamily: "Garamond", fontWeight: "bold", fontSize: "4rem"}} marginBottom={"0.4rem"} marginTop={"2rem"} marginLeft={"17rem"} marginRight={"17rem"} align="center">
+                        Success is best when it is <Typography sx={{ animation: `${highlight} 5s ease normal forwards infinite`, 
+                                                        background: 'linear-gradient(90deg, #FFFF00 50%, rgba(255, 255, 255, 0) 50%)', 
+                                                        backgroundSize: '200% 100%', 
+                                                        backgroundPosition: '100% 0',
+                                                        fontFamily: "Garamond", 
+                                                        fontWeight: "bold", 
+                                                        fontSize: "4rem"}} 
+                                                    display="inline">shared</Typography>.
+                    </Typography>
+                    <Typography sx={{fontFamily: "Garamond", fontStyle: "italic", fontSize: "1.5rem"}} align="center" marginBottom={"2rem"}>- Howard Schultz</Typography>
+                    <Typography sx={{fontFamily: "Helvetica Now"}} variant={"h5"} marginBottom={"2rem"} marginLeft={"20rem"} marginRight={"20rem"} align="center">
+                        PeerPrep helps you to prepare for technical interviews using a peer learning system.
+                    </Typography>
+                    <Typography align="center">
+                        <Button sx={{textTransform: "none", fontSize: "1rem"}} component={Link} to="/signup" variant="contained">Create Account ></Button>
+                    </Typography>
+                </Container>
+            </Box>
         </div>
       );
 }

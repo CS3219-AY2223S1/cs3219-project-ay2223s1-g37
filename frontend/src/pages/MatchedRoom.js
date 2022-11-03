@@ -154,6 +154,7 @@ function MatchedRoom() {
           matchEntry: matchEntry,
           roomInfo: roomInfo,
           questionHistory: questionHistory,
+          answerUrl: question.url,
         },
       });
     } else {
