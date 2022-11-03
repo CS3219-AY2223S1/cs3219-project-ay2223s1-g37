@@ -49,6 +49,10 @@ io.on("connection", (socket) => {
   socket.on("uploadChanges", (data) => uploadChanges(data, socket));
 
   socket.on("setQuestion", (data) => setQuestion(data, socket));
+
+  socket.on("finishConfirmed", (data) => {
+    socket.to(data.roomId).emit("intervieweeConfirmedFinish", data);
+  });
 });
 
 httpServer.listen(8002, () =>

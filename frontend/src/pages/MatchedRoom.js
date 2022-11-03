@@ -20,6 +20,7 @@ import Chat from "../components/Chat";
 import CloseIcon from "@mui/icons-material/Close";
 import ChatIcon from "@mui/icons-material/Chat";
 import HomeIcon from "@mui/icons-material/Home";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import MarkUnreadChatAltIcon from "@mui/icons-material/MarkUnreadChatAlt";
 import {
   STATUS_CODE_BAD_REQUEST,
@@ -44,6 +45,7 @@ function MatchedRoom() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
   const [dialogMsg, setDialogMsg] = useState("");
+  const [isFinishClicked, setIsFinishClicked] = useState(false);
   const [isMatchingConnected, setIsMatchingConnected] = useState(
     matchingSocket.connected
   );
@@ -134,6 +136,16 @@ function MatchedRoom() {
       setTimeLeft(0);
     });
 
+    // When the interviewee has confirmed to finish the session early
+    collabSocket.on("intervieweeConfirmedFinish", (data) => {
+      navigate("/sessionended", {
+        state: {
+          matchEntry: data.matchEntry,
+          roomInfo: data.roomInfo,
+        },
+      });
+    });
+
     chatSocket.on("hasNewMessage", () => {
       setHasNewMessage(true);
     });
@@ -147,6 +159,7 @@ function MatchedRoom() {
       collabSocket.off("roomCreationFailure");
       collabSocket.off("documentUpdated");
       collabSocket.off("questionSet");
+      collabSocket.off("intervieweeConfirmedFinish");
     };
   }, []);
 
@@ -270,6 +283,27 @@ function MatchedRoom() {
     setDialogMsg("All progress made will be lost.");
   };
 
+  const finishClicked = () => {
+    setIsDialogOpen(true);
+    setIsFinishClicked(true);
+    setDialogTitle("Are you sure you have finished the question?");
+    setDialogMsg("This session will end.");
+  };
+
+  const handleFinishConfirm = () => {
+    collabSocket.emit("finishConfirmed", {
+      roomId: roomInfo.id,
+      matchEntry: matchEntry,
+      roomInfo: roomInfo,
+    });
+    navigate("/sessionended", {
+      state: {
+        matchEntry: matchEntry,
+        roomInfo: roomInfo,
+      },
+    });
+  };
+
   const handleExit = () => {
     if (isMatchingConnected) {
       matchingSocket.emit("endSession", { roomId: matchEntry.id });
@@ -375,8 +409,18 @@ function MatchedRoom() {
             <Typography fontSize={"1rem"} style={{ whiteSpace: "pre-wrap" }}>
               {question.description}
             </Typography>
+            {!isInterviewer ? (
+              <Button
+                startIcon={<CheckCircleIcon />}
+                variant="contained"
+                sx={{ marginTop: 5 }}
+                fullWidth
+                onClick={finishClicked}
+              >
+                Finished!
+              </Button>
+            ) : null}
           </Grid>
-
           {/* Chat box */}
           <Grid item xs={12} sx={{ marginTop: 5 }}>
             <div ref={chatRef} />
@@ -393,7 +437,7 @@ function MatchedRoom() {
             display: "flex",
             alignItems: "center",
             justifyCOntent: "center",
-            flexDirection: "column"
+            flexDirection: "column",
           }}
         >
           <Typography fontWeight={"bold"} fontSize={20} marginBottom={2}>
@@ -414,10 +458,17 @@ function MatchedRoom() {
         <DialogContent>
           <DialogContentText>{dialogMsg}</DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={closeDialog}>No</Button>
-          <Button onClick={handleExit}>Yes</Button>
-        </DialogActions>
+        {isFinishClicked ? (
+          <DialogActions>
+            <Button onClick={closeDialog}>No</Button>
+            <Button onClick={handleFinishConfirm}>Yes</Button>
+          </DialogActions>
+        ) : (
+          <DialogActions>
+            <Button onClick={closeDialog}>No</Button>
+            <Button onClick={handleExit}>Yes</Button>
+          </DialogActions>
+        )}
       </Dialog>
 
       <Backdrop
