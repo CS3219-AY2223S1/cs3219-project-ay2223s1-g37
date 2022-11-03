@@ -18,6 +18,13 @@ import axios from "axios";
 import { URL_USER_SVC, PREFIX_CREATE_USER} from "../configs";
 import { STATUS_CODE_CONFLICT, STATUS_CODE_CREATED, STATUS_CODE_BAD_REQUEST, STATUS_CODE_INTERNAL_SERVER_ERROR } from "../constants";
 import { Link } from "react-router-dom";
+import logo from '../components/cs3219logo-transparent.png';
+
+const rootStyle = {
+    backgroundColor: "#f8f8ff",
+    height: '100vh',
+    overflow: "auto",
+}
 
 function SignupPage() {
     const [email, setEmail] = useState("");
@@ -112,61 +119,64 @@ function SignupPage() {
     )
 
     return (
-        <Box sx={{ backgroundColor: "#f8f8ff" }}>
-        <Box width={"30%"} margin={"0px auto"} padding={"1rem"} alignItems="center">
-            {openAlert? alert : null}
-            <Typography variant={"h4"} marginBottom={"0.9rem"} align="center">PeerPrep</Typography>
-            <Typography sx={{fontFamily: "Trebuchet MS", fontSize: "0.8rem"}} marginBottom={"0.9rem"} align="center">Prepare for technical interviews with your peers</Typography>
-            <Box sx={{ border: 1, boxShadow: 2, backgroundColor: "white"}} display={"flex"} flexDirection={"column"} padding={"2rem"}>
-            <Typography variant={"h5"} marginBottom={"2rem"} align="center">Sign Up</Typography>
-            <TextField
-                label="Email"
-                variant="standard"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                sx={{ marginBottom: "1rem" }}
-                autoFocus
-            />
-            <TextField
-                label="Username"
-                variant="standard"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                sx={{marginBottom: "1rem"}}
-            />
-            <TextField
-                label="Password"
-                variant="standard"
-                type="password"
-                value={password}
-                helperText="Password must have length of at least 11 and must contain a number, special character, uppercase and lowercase alphabet."
-                onChange={(e) => setPassword(e.target.value)}
-                sx={{marginBottom: "2rem"}}
-            />
-            <Box display={"flex"} flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
-                <Typography component={Link} to="/login">Have an account? Log in here</Typography>
-                <Button sx={{fontFamily: "Arial", textTransform: "none"}} variant={"contained"} onClick={handleSignup} >Sign up</Button>
+        <div style={rootStyle}>
+            <Box width={"30%"} margin={"0px auto"} padding={"1rem"} alignItems="center">
+                {openAlert? alert : null}
+                <Box sx={{textAlign: "center"}}>
+                <a href="/introduction">
+                    <img src={logo} alt="logo" width="80" height="60"/>
+                </a>
+                </Box>
+                <Typography sx={{fontFamily: "Trebuchet MS", fontSize: "0.8rem"}} marginBottom={"0.9rem"} align="center">Prepare for technical interviews with your peers</Typography>
+                <Box sx={{ border: 1, boxShadow: 2, backgroundColor: "white"}} display={"flex"} flexDirection={"column"} padding={"2rem"}>
+                    <Typography variant={"h5"} marginBottom={"2rem"} align="center">Sign Up</Typography>
+                    <TextField
+                        label="Email"
+                        variant="standard"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        sx={{ marginBottom: "1rem" }}
+                        autoFocus
+                    />
+                    <TextField
+                        label="Username"
+                        variant="standard"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        sx={{marginBottom: "1rem"}}
+                    />
+                    <TextField
+                        label="Password"
+                        variant="standard"
+                        type="password"
+                        value={password}
+                        helperText="Password must have length of at least 11 and must contain a number, special character, uppercase and lowercase alphabet."
+                        onChange={(e) => setPassword(e.target.value)}
+                        sx={{marginBottom: "2rem"}}
+                    />
+                    <Box display={"flex"} flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
+                        <Typography component={Link} to="/login">Have an account? Log in here</Typography>
+                        <Button sx={{fontFamily: "Arial", textTransform: "none"}} variant={"contained"} onClick={handleSignup} >Sign up</Button>
+                    </Box>
+                    <Dialog open={isDialogOpen} onClose={closeDialog}>
+                        <DialogTitle>{dialogTitle}</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText>{dialogMsg}</DialogContentText>
+                            </DialogContent>
+                        <DialogActions>
+                        {isSignupSuccess ? (
+                            <Button component={Link} to="/login">
+                                Log in
+                            </Button>
+                        ) : (
+                            <Button onClick={closeDialog}>Done</Button>
+                        )}
+                        </DialogActions>
+                    </Dialog>
+                </Box>
             </Box>
-
-            <Dialog open={isDialogOpen} onClose={closeDialog}>
-                <DialogTitle>{dialogTitle}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>{dialogMsg}</DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                {isSignupSuccess ? (
-                    <Button component={Link} to="/login">
-                    Log in
-                    </Button>
-                ) : (
-                    <Button onClick={closeDialog}>Done</Button>
-                )}
-                </DialogActions>
-            </Dialog>
-            </Box>
-        </Box>
-        </Box>
-  );
+        </div>
+    );
 }
 
 export default SignupPage;

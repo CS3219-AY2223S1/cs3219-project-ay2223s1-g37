@@ -170,6 +170,7 @@ function MatchedRoom() {
         state: {
           matchEntry: matchEntry,
           roomInfo: roomInfo,
+          answerUrl: question.url,
         },
       });
     } else {

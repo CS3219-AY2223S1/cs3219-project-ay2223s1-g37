@@ -21,6 +21,14 @@ import {
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import '../components/UpdateAccount.css'
+import logo from '../components/cs3219logo-transparent.png';
+
+const rootStyle = {
+  backgroundColor: "#f8f8ff",
+  height: '100vh',
+  overflow: "auto",
+}
+
 
 function LogininPage() {
   const navigate = useNavigate();
@@ -97,57 +105,61 @@ function LogininPage() {
     )
 
   return (
-    <Box sx={{ backgroundColor: "#f8f8ff" }}>
+    <div style={rootStyle}>
       <Box width={"30%"} margin={"0px auto"} padding={"1rem"} alignItems="center">
-      {openAlert? alert : null}
-      <Typography variant={"h4"} marginBottom={"0.9rem"} align="center">PeerPrep</Typography>
-            <Typography sx={{fontFamily: "Trebuchet MS", fontSize: "0.8rem"}} marginBottom={"0.9rem"} align="center">Prepare for technical interviews with your peers</Typography>
-            <Box sx={{ border: 1, boxShadow: 2, backgroundColor: "white"}} display={"flex"} flexDirection={"column"} padding={"2rem"}>
-            <Typography variant={"h5"} marginBottom={"2rem"} align="center">Log In</Typography>
-      <TextField
-        label="Username"
-        variant="standard"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        sx={{ marginBottom: "1rem" }}
-        autoFocus
-      />
-      <TextField
-        label="Password"
-        variant="standard"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        sx={{ marginBottom: "4rem" }}
-      />
-      <Box
-        display={"flex"}
-        flexDirection={"row"}
-        justifyContent={"space-between"}
-        alignItems={"center"}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-start",
-            flexWrap: "wrap",
-            flexDirection: "column",
-          }}
-        >
-          <Typography component={Link} to="/signup">
-            No account? Sign up here
-          </Typography>
-          <Typography component={Link} to="/reset">
-            Forget password?
-          </Typography>
+        {openAlert? alert : null}
+        <Box sx={{textAlign: "center"}}>
+          <a href="/introduction">
+            <img src={logo} alt="logo" width="80" height="60"/>
+          </a>
         </Box>
-        <Button sx={{fontFamily: "Arial", textTransform: "none"}} variant={"contained"} onClick={handleLogin}>
-          Log in
-        </Button>
+        <Typography sx={{fontFamily: "Trebuchet MS", fontSize: "0.8rem"}} marginBottom={"0.9rem"} align="center">Prepare for technical interviews with your peers</Typography>
+        <Box sx={{ border: 1, boxShadow: 2, backgroundColor: "white"}} display={"flex"} flexDirection={"column"} padding={"2rem"}>
+          <Typography variant={"h5"} marginBottom={"2rem"} align="center">Log In</Typography>
+          <TextField
+            label="Username"
+            variant="standard"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            sx={{ marginBottom: "1rem" }}
+            autoFocus
+          />
+          <TextField
+            label="Password"
+            variant="standard"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            sx={{ marginBottom: "4rem" }}
+          />
+          <Box
+            display={"flex"}
+            flexDirection={"row"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-start",
+                flexWrap: "wrap",
+                flexDirection: "column",
+              }}
+            >
+              <Typography component={Link} to="/signup">
+                No account? Sign up here
+              </Typography>
+              <Typography component={Link} to="/reset">
+                Forget password?
+              </Typography>
+            </Box>
+            <Button sx={{fontFamily: "Arial", textTransform: "none"}} variant={"contained"} onClick={handleLogin}>
+              Log in
+            </Button>
+          </Box>
+        </Box>
       </Box>
-    </Box>
-    </Box>
-    </Box>
+    </div>
   );
 }
 

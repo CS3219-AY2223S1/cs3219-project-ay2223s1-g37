@@ -22,6 +22,13 @@ import { STATUS_CODE_NOT_FOUND, STATUS_CODE_UNAUTHORIZED,
 } from "../constants";
 import { Link, useParams } from "react-router-dom";
 import '../components/UpdateAccount.css'
+import logo from '../components/cs3219logo-transparent.png';
+
+const rootStyle = {
+    backgroundColor: "#f8f8ff",
+    height: '100vh',
+    overflow: "auto",
+}
 
 function ResetPasswordPage() {
     const [password, setPassword] = useState("");
@@ -112,45 +119,48 @@ function ResetPasswordPage() {
     )
     
     return (
-        <Box sx={{ backgroundColor: "#f8f8ff" }}>
-      <Box width={"30%"} margin={"0px auto"} padding={"1rem"} alignItems="center">
-            {openAlert? alert : null}
-            <Typography variant={"h4"} marginBottom={"0.9rem"} align="center">PeerPrep</Typography>
-            <Typography sx={{fontFamily: "Trebuchet MS", fontSize: "0.8rem"}} marginBottom={"0.9rem"} align="center">Prepare for technical interviews with your peers</Typography>
-            <Box sx={{ border: 1, boxShadow: 2, backgroundColor: "white"}} display={"flex"} flexDirection={"column"} padding={"2rem"}>
-            <Typography variant={"h5"} marginBottom={"2rem"} align="center">Reset Password</Typography>
-            <TextField
-                label="Password"
-                variant="standard"
-                type="password"
-                value={password}
-                helperText="New password must have length of at least 11 and must contain a number, special character, uppercase and lowercase alphabet."
-                onChange={(e) => setPassword(e.target.value)}
-                sx={{marginBottom: "2rem"}}
-            />
-            <Box display={"flex"} flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
-                <Button sx={{fontFamily: "Arial", textTransform: "none"}} variant={"contained"} onClick={handleReset}>Reset</Button>
+        <div style={rootStyle}>
+            <Box width={"30%"} margin={"0px auto"} padding={"1rem"} alignItems="center">
+                {openAlert? alert : null}
+                <Box sx={{textAlign: "center"}}>
+                <a href="/introduction">
+                    <img src={logo} alt="logo" width="80" height="60"/>
+                </a>
+                </Box>
+                <Typography sx={{fontFamily: "Trebuchet MS", fontSize: "0.8rem"}} marginBottom={"0.9rem"} align="center">Prepare for technical interviews with your peers</Typography>
+                <Box sx={{ border: 1, boxShadow: 2, backgroundColor: "white"}} display={"flex"} flexDirection={"column"} padding={"2rem"}>
+                    <Typography variant={"h5"} marginBottom={"2rem"} align="center">Reset Password</Typography>
+                    <TextField
+                        label="Password"
+                        variant="standard"
+                        type="password"
+                        value={password}
+                        helperText="New password must have length of at least 11 and must contain a number, special character, uppercase and lowercase alphabet."
+                        onChange={(e) => setPassword(e.target.value)}
+                        sx={{marginBottom: "2rem"}}
+                    />
+                    <Box display={"flex"} flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
+                        <Button sx={{fontFamily: "Arial", textTransform: "none"}} variant={"contained"} onClick={handleReset}>Reset</Button>
+                    </Box>
+
+                    <Dialog open={isDialogOpen} onClose={closeDialog}>
+                        <DialogTitle>{dialogTitle}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>{dialogMsg}</DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                        {isResetSuccess ? (
+                            <Button component={Link} to="/login">
+                            Log in
+                            </Button>
+                        ) : (
+                            <Button onClick={closeDialog}>Done</Button>
+                        )}
+                        </DialogActions>
+                    </Dialog>
+                </Box>
             </Box>
-
-
-            <Dialog open={isDialogOpen} onClose={closeDialog}>
-                <DialogTitle>{dialogTitle}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>{dialogMsg}</DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                {isResetSuccess ? (
-                    <Button component={Link} to="/login">
-                    Log in
-                    </Button>
-                ) : (
-                    <Button onClick={closeDialog}>Done</Button>
-                )}
-                </DialogActions>
-            </Dialog>
-        </Box>
-        </Box>
-        </Box>
+        </div>
     )
 }
 
