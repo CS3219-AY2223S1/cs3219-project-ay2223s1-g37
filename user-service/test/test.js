@@ -26,7 +26,6 @@ describe('user-service tests', data => {
         db.on('error', console.error.bind(console, 'Unable to connect to MongoDB'))
         db.once('open', function () {
             console.log('Connected to MongoDB')
-            // done()
         })
     })
 
