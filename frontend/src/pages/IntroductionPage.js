@@ -1,12 +1,13 @@
 import {
-    Box,
-    Button,
-    Typography,
-    AppBar,
-    Toolbar,
-    Container,
+  Box,
+  Button,
+  Typography,
+  AppBar,
+  Toolbar,
+  Container,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import {keyframes} from '@mui/system';
 import logo from '../components/cs3219logo-transparent.png';
 
@@ -53,7 +54,7 @@ function IntroductionPage() {
                         PeerPrep helps you to prepare for technical interviews using a peer learning system.
                     </Typography>
                     <Typography align="center">
-                        <Button sx={{textTransform: "none", fontSize: "1rem"}} component={Link} to="/signup" variant="contained">Create Account ></Button>
+                        <Button sx={{textTransform: "none", fontSize: "1rem"}} component={Link} to="/signup" variant="contained" endIcon={<ArrowForwardIosIcon />}>Create Account</Button>
                     </Typography>
                 </Container>
             </Box>

@@ -1,7 +1,9 @@
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, CircularProgress, Fab } from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { matchingSocket } from "../utils/Socket.js";
+import "./CountdownPage.css";
 
 function CountdownPage() {
   const location = useLocation();
@@ -63,39 +65,86 @@ function CountdownPage() {
 
   useEffect(() => {
     // Reduce timeLeft by calling setTimeLeft function 1 every second (1000ms)
-    const timer =
-      timeLeft > 0 && setInterval(() => setTimeLeft(timeLeft - 1), 1000);
+    const timer = setInterval(() => {
+      setTimeLeft((timeLeft) => (timeLeft > 0 ? timeLeft - 1 : 0));
+    }, 1000);
     return () => clearInterval(timer);
   }, [timeLeft]);
 
   return (
-    <Box
-      display={"flex"}
-      flexDirection={"column"}
-      width={"50%"}
-      alignSelf={"center"}
-      alignItems={"center"}
-    >
-      <Typography variant={"h3"} marginBottom={"2rem"}>
-        Awaiting a match...
-      </Typography>
-      <Typography variant={"h3"}>{timeLeft}</Typography>
-      {timeLeft === 0 ? (
-        <Box display={"flex"} flexDirection={"column"}>
-          <Typography variant={"h6"} marginBottom={5}>
-            No match found.
+    <div style={{ display: "flex", justifyContent: "center" }}>
+      <Fab
+        color="primary"
+        variant="extended"
+        aria-label="home"
+        sx={{ mt: "35px" }}
+        onClick={() => navigate("/home")}
+      >
+        <HomeIcon sx={{ mr: 1 }} />
+        Home
+      </Fab>
+      <Box
+        display={"flex"}
+        flexDirection={"column"}
+        width={"50%"}
+        alignSelf={"center"}
+        alignItems={"center"}
+        marginTop={"30px"}
+      >
+        {timeLeft > 0 ? (
+          <Typography variant={"h3"} marginBottom={"2rem"} className="loading">
+            Awaiting a match
           </Typography>
-          <Button
-            variant={"outlined"}
-            onClick={() => {
-              navigate("/home");
+        ) : (
+          <Typography marginBottom={"2rem"}>
+            <br></br>
+          </Typography>
+        )}
+        <Box sx={{ position: "relative", display: "inline-flex" }}>
+          <CircularProgress
+            variant="determinate"
+            value={timeLeft * (100 / 30)}
+            size={300}
+          />
+          <Box
+            sx={{
+              top: 0,
+              left: 0,
+              bottom: 0,
+              right: 0,
+              position: "absolute",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            Back
-          </Button>
+            <Typography
+              variant="caption"
+              component="div"
+              color="#3579DC"
+              fontSize={"5rem"}
+            >
+              {`${timeLeft}`}
+            </Typography>
+          </Box>
         </Box>
-      ) : null}
-    </Box>
+        {timeLeft === 0 ? (
+          <Box display={"flex"} flexDirection={"column"}>
+            <Typography variant={"h6"} marginBottom={5}>
+              No match found.
+            </Typography>
+            <Button
+              variant={"outlined"}
+              onClick={() => {
+                navigate("/home");
+              }}
+            >
+              Back to home
+            </Button>
+          </Box>
+        ) : null}
+      </Box>
+    </div>
   );
 }
 

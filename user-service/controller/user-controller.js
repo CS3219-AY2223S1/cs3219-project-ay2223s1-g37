@@ -182,7 +182,7 @@ export async function resetPasswordUsingEmail(req, res) {
         const emailToken = await _createEmailToken(user)
         if (emailToken) {
             let message = 'Hello!\n\nPlease click on the link below to reset your password:\n'
-            message += `http://localhost:3000/reset/${user.username}/${emailToken.token}`
+            message += `${process.env.URI_FRONTEND}/reset/${user.username}/${emailToken.token}`
             sendEmail(user.email, "Reset password", message)
             return res.status(200).json({message: `Successfully sent email`});
         }
