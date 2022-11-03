@@ -67,6 +67,8 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
+      env:
+        DB_LOCAL_URI: mongodb://localhost:27017/cs3219project
   
   collab-service:
     runs-on: ubuntu-latest
