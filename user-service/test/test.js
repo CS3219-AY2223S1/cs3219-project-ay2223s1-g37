@@ -20,13 +20,12 @@ describe('user-service tests', data => {
         verified: true
     })
 
-    before("test MongoDB", (done) => {
+    before("test MongoDB", () => {
         mongoose.connect(process.env.DB_LOCAL_URI)
         const db = mongoose.connection
         db.on('error', console.error.bind(console, 'Unable to connect to MongoDB'))
         db.once('open', function () {
             console.log('Connected to MongoDB')
-            done()
         })
     })
 
