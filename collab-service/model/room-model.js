@@ -6,7 +6,7 @@
  * difficulty of qns
  * time room is entered
  * time allocated based on difficulty
- * code entered? (remove if not used for code collab)
+ * code entered
  */
 
 let RoomModelSchema = (sequelize, DataTypes) =>

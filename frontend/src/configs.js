@@ -1,10 +1,13 @@
+/*---- For usage without Docker ----*/
 // const URI_USER_SVC = process.env.URI_USER_SVC || "http://localhost:8000";
 // const URI_QUESTION_SVC =
 //   process.env.URI_QUESTION_SVC || "http://localhost:8003";
+/*----------------------------------*/
 
-// For usage with Docker
+/*---- For usage with Docker ----*/
 const URI_USER_SVC = process.env.URI_USER_SVC || "/user-service";
 const URI_QUESTION_SVC = process.env.URI_QUESTION_SVC || "/question-service";
+/*----------------------------------*/
 
 const PREFIX_USER_SVC = "/api/user";
 export const PREFIX_CREATE_USER = "/signup";

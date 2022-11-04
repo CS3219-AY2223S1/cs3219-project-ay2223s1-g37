@@ -7,7 +7,6 @@
  * matching start time
  */
 
-// Rounds are temporarily put in match model, can be shifted to room model
 let MatchModelSchema = (sequelize, DataTypes) =>
   sequelize.define("Match", {
     username1: {
@@ -23,7 +22,6 @@ let MatchModelSchema = (sequelize, DataTypes) =>
     },
     startTime: {
       type: DataTypes.DATE,
-      // allowNull: false,
       defaultValue: DataTypes.NOW,
     },
   });
