@@ -60,7 +60,12 @@ function ResetPasswordPage() {
         setIsResetSuccess(false)
         const res = await axios.post(URL_USER_SVC + '/reset/password', data)
             .catch((err) => {
-                if (err.response.status === STATUS_CODE_UNAUTHORIZED) {
+                if (err.response.status === STATUS_CODE_BAD_REQUEST
+                    && data.newPassword == "") {
+                    setSeverity("error")
+                    setOpenAlert(true)
+                    setMessage("Missing fields!")
+                } else if (err.response.status === STATUS_CODE_UNAUTHORIZED) {
                     setSeverity("error")
                     setOpenAlert(true)
                     setMessage("Token cannot be found! Please try again!")
