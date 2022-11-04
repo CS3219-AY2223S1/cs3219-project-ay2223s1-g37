@@ -1,37 +1,4 @@
-import RoomModelSchema from "./room-model.js";
-import "dotenv/config";
-import { Sequelize, DataTypes } from "sequelize";
-
-// Set up sequelize connection
-async function initSequelize() {
-  const sequelizeHost = process.env.NODE_ENV == "production" ? process.env.DB_CLOUD_HOST : "localhost";
-  const sequelizeStorage = process.env.NODE_ENV == "production"
-                            ? process.env.DB_CLOUD_STORAGE
-                            : process.env.NODE_ENV == "development"
-                              ? "./db/roomDB.sqlite"
-                              : "./db/roomDB-test.sqlite";
-
-  let sequelize = new Sequelize("database", "username", "password", {
-    host: sequelizeHost,
-    dialect: "sqlite",
-    storage: sequelizeStorage,
-  });
-
-  let Room;
-
-  try {
-    await sequelize.authenticate();
-    console.log("Connection with SQLite has been established!");
-    Room = RoomModelSchema(sequelize, DataTypes);
-    Room.sync({ force: true });
-  } catch (err) {
-    console.error("Unable to connect to room DB :(");
-  }
-
-  return { sequelize: sequelize, Room: Room };
-}
-
-export const { sequelize, Room } = await initSequelize();
+import { sequelize, Room } from "../index.js";
 
 export async function ormCreateRoom(username1, username2, difficulty) {
   try {
@@ -148,7 +115,7 @@ export async function ormUpdateRoom(roomId) {
       console.log(`Another round to go..........`);
       await Room.update(
         {
-          rounds: Sequelize.literal("rounds + 1"),
+          rounds: sequelize.literal("rounds + 1"),
           question: null,
         },
         { where: { id: roomId } }
@@ -159,6 +126,7 @@ export async function ormUpdateRoom(roomId) {
     console.log(`room-orm response, room updated: ${isComplete}`);
     return isComplete;
   } catch (err) {
+    console.log(err)
     return { err };
   }
 }

@@ -2,7 +2,7 @@ import { app } from "../index.js"
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 import { io } from 'socket.io-client'
-import { Room } from "../model/room-orm.js"
+import { Room } from "../index.js"
 
 const assert = chai.assert;
 

@@ -2,7 +2,7 @@ import { app } from "../index.js"
 import chai, { should } from 'chai'
 import chaiHttp from 'chai-http'
 import { io } from 'socket.io-client'
-import { sequelize, Match } from "../model/match-orm.js"
+import { sequelize, Match } from "../index.js"
 
 const assert = chai.assert;
 

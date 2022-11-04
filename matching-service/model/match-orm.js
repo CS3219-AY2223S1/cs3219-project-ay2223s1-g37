@@ -1,38 +1,5 @@
-import MatchModelSchema from "./match-model.js";
-import "dotenv/config";
-import { Sequelize, DataTypes} from "sequelize";
+import { Match } from "../index.js";
 import { Op } from "sequelize";
-
-// Set up sequelize connection
-async function initSequelize() {
-  const sequelizeHost = process.env.NODE_ENV == "production" ? process.env.DB_CLOUD_HOST : "localhost";
-  const sequelizeStorage = process.env.NODE_ENV == "production"
-                            ? process.env.DB_CLOUD_STORAGE
-                            : process.env.NODE_ENV == "development"
-                              ? "./db/matchDB.sqlite"
-                              : "./db/matchDB-test.sqlite";
-
-  let sequelize = new Sequelize("database", "username", "password", {
-    host: sequelizeHost,
-    dialect: "sqlite",
-    storage: sequelizeStorage,
-  });
-
-  let Match;
-
-  try {
-    await sequelize.authenticate();
-    console.log("Connection with SQLite has been established!");
-    Match = MatchModelSchema(sequelize, DataTypes);
-    Match.sync({ force: true });
-  } catch (err) {
-    console.error("Unable to connect to DB :(");
-  }
-
-  return { sequelize: sequelize, Match: Match };
-}
-
-export const { sequelize, Match } = await initSequelize();
 
 export async function ormCreateMatch(username1, difficulty) {
   // console.log("match-orm: create match w {" + username1 + ", " + difficulty + "}");
