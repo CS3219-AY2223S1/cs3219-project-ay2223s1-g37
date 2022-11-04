@@ -71,8 +71,10 @@ named as `questionmodels`, otherwise, create the collection
 
 ### Frontend
 1. Go into `frontend` directory
-2. Install npm packages using `npm i`
-3. Run Frontend using `npm start`
+2. In the `configs.js` and `Socket.js` files, uncomment the lines within the 'For usage *without* Docker' section, and comment out
+the lines within the 'For usage with Docker section
+3. Install npm packages using `npm i`
+4. Run Frontend using `npm start`
 
 ## Using Docker:
 Docker is used to deploy the app to the local staging environment, and it helps simplify the process by running all services at once
@@ -83,6 +85,9 @@ To run docker at the root folder: run `DOCKER_BUILDKIT=1 docker-compose up --bui
 After running the command, check that there should be 8 containers that are created and started under `cs3219-project-ay2223s1-g37` main container
 
 Go to `http://localhost:80` to start using the app
+
+**Note**: Before running docker, go into the `frontend` directory and ensure that the correct lines are commented out in the `configs.js` and `Socket.js` files.
+The lines within the 'For usage *with* Docker' section should be uncommented, and the lines within the 'For usage without Docker' section should be commented out.
 
 ## Notes:
 1. Make sure that PORT 80, 8000, 8001, 8002, 8003 and 8004 is not used when running Docker or when manually starting each service
