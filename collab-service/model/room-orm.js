@@ -1,47 +1,39 @@
 import RoomModelSchema from "./room-model.js";
 import "dotenv/config";
+import { Sequelize, DataTypes } from "sequelize";
 
 // Set up sequelize connection
-import Sequelize, { Model } from "sequelize";
-import DataTypes from "sequelize";
-import { Op } from "sequelize";
+async function initSequelize() {
+  const sequelizeHost = process.env.NODE_ENV == "production" ? process.env.DB_CLOUD_HOST : "localhost";
+  const sequelizeStorage = process.env.NODE_ENV == "production"
+                            ? process.env.DB_CLOUD_STORAGE
+                            : process.env.NODE_ENV == "development"
+                              ? "./db/roomDB.sqlite"
+                              : "./db/roomDB-test.sqlite";
 
-const sequelizeHost = process.env.NODE_ENV == "production" ? process.env.DB_CLOUD_HOST : "localhost";
-const sequelizeStorage = process.env.NODE_ENV == "production"
-                          ? process.env.DB_CLOUD_STORAGE
-                          : process.env.NODE_ENV == "development"
-                            // ? process.env.DB_LOCAL_STORAGE
-                            // : process.env.DB_TEST_STORAGE;
-                            ? "./db/roomDB.sqlite"
-                            : "./db/roomDB-test.sqlite";
+  let sequelize = new Sequelize("database", "username", "password", {
+    host: sequelizeHost,
+    dialect: "sqlite",
+    storage: sequelizeStorage,
+  });
 
-let sequelize = new Sequelize("database", "username", "password", {
-  host: sequelizeHost,
-  dialect: "sqlite",
-  storage: sequelizeStorage,
-});
-// Uncomment out in future: Better security with a separate .env file
-// let sequelize = new Sequelize("database", "username", "password", {
-//   host: process.env.HOST,
-//   dialect: process.env.DIALECT,
-//   storage: process.env.STORAGE,
-// });
+  let Room;
 
-let Room;
+  try {
+    await sequelize.authenticate();
+    console.log("Connection with SQLite has been established!");
+    Room = RoomModelSchema(sequelize, DataTypes);
+    Room.sync({ force: true });
+  } catch (err) {
+    console.error("Unable to connect to room DB :(");
+  }
 
-try {
-  await sequelize.authenticate();
-  console.log("Connection with SQLite has been established!");
-  Room = RoomModelSchema(sequelize, DataTypes);
-  Room.sync({ force: true });
-} catch (err) {
-  console.error("Unable to connect to room DB :(");
+  return { sequelize: sequelize, Room: Room };
 }
 
-export { sequelize, Room };
+export const { sequelize, Room } = await initSequelize();
 
 export async function ormCreateRoom(username1, username2, difficulty) {
-  // console.log("match-orm: create match w {" + username1 + ", " + difficulty + "}");
   try {
     let interviewer = username1;
     let allocatedTime = 0;
@@ -100,24 +92,19 @@ export async function ormCreateRoom(username1, username2, difficulty) {
       }
     }
     
-    newRoom.save();
-    // const roomId = newRoom.id;
-    // return { roomId: roomId };
     return { room: newRoom };
   } catch (err) {
-    console.log("ERROR: Could not create new room");
+    console.log("ERROR: Could not create new room" + err);
     return { err };
   }
 }
 
 export async function ormRemoveRoom(roomId) {
   try {
-    let removedRoomId;
-
     const currentRoom = await Room.findByPk(roomId);
 
     console.log("Destroying room....");
-    removedRoomId = await Room.destroy({
+    const removedRoomId = await Room.destroy({
       where: {
         id: roomId,
       },
@@ -131,8 +118,6 @@ export async function ormRemoveRoom(roomId) {
 
 export async function ormSwitchRoles(roomId) {
   try {
-    let switchedRoom;
-
     console.log(`Switching roles...`);
     const currentRoom = await Room.findByPk(roomId);
     // console.log(currentRoom.username2);
@@ -140,10 +125,9 @@ export async function ormSwitchRoles(roomId) {
       { interviewer: currentRoom.username2 },
       { where: { id: roomId } }
     );
-    switchedRoom = roomId;
 
-    console.log(`room-orm response, switched roles in room: ${switchedRoom}`);
-    return switchedRoom;
+    console.log(`room-orm response, switched roles in room: ${roomId}`);
+    return roomId;
   } catch (err) {
     return { err };
   }
@@ -156,7 +140,6 @@ export async function ormUpdateRoom(roomId) {
     console.log(`Updating room...`);
     const currentRoom = await Room.findByPk(roomId);
     if (currentRoom.rounds != 0 && currentRoom.rounds % 4 == 0) {
-      // TODO: Currently % 4 because update is executing twice for some reason. Figure out why
       // Session completed
       console.log(`Session complete!!!!!!`);
       isComplete = true;
@@ -182,12 +165,9 @@ export async function ormUpdateRoom(roomId) {
 
 export async function ormUploadChanges(roomId, docChanges) {
   try {
-    let updatedContent;
-
     console.log(`Uploading document changes...`);
-    // const currentRoom = await Room.findByPk(roomId);
     await Room.update({ code: docChanges }, { where: { id: roomId } });
-    updatedContent = docChanges;
+    const updatedContent = docChanges;
 
     console.log(`room-orm response, changes uploaded: ${updatedContent}`);
     return updatedContent;
@@ -198,17 +178,11 @@ export async function ormUploadChanges(roomId, docChanges) {
 
 export async function ormSetQuestion(roomId, question) {
   try {
-    let updatedQnInfo;
-    // console.log(`room-orm response, question set: ${updatedQn}`);
-
     console.log(`Setting question...`);
+    
     const currentRoom = await Room.findByPk(roomId);
     const currentQuestion = currentRoom.question;
     let currentQnHist = currentRoom.questionHistory;
-    // console.log("current qn: ");
-    // console.log(currentQuestion);
-    // console.log("current qn hist: ");
-    // console.log(currentQnHist);
 
     if (currentQuestion == null) {
       console.log("no question set yet!");
@@ -220,13 +194,8 @@ export async function ormSetQuestion(roomId, question) {
     const updatedRoom = await Room.findByPk(roomId);
     const updatedQuestion = updatedRoom.question;
     const updatedQuestionHistory = updatedRoom.questionHistory;
-    
-    // console.log("qn: ");
-    // console.log(qn);
-    // console.log("qnHist");
-    // console.log(updatedQuestionHistory);
 
-    updatedQnInfo = { question: updatedQuestion, questionHistory: updatedQuestionHistory };
+    const updatedQnInfo = { question: updatedQuestion, questionHistory: updatedQuestionHistory };
     
     // updatedQnInfo contains question and question history
     return updatedQnInfo;
