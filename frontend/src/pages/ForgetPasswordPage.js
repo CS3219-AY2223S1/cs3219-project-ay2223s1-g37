@@ -45,7 +45,12 @@ function ForgetPasswordPage() {
         setIsEmailSentSuccess(false)
         const res = await axios.post(URL_USER_SVC + '/reset', { email })
             .catch((err) => {
-                if (err.response.status === STATUS_CODE_BAD_REQUEST 
+                if (err.response.status === STATUS_CODE_BAD_REQUEST
+                    && email === "") {
+                    setSeverity("error")
+                    setOpenAlert(true)
+                    setMessage("Missing fields!")
+                } else if (err.response.status === STATUS_CODE_BAD_REQUEST 
                     && err.response.data.message.includes("Invalid Email Format!")) {
                     setSeverity("error")
                     setOpenAlert(true)

@@ -1,4 +1,3 @@
-import {createUser} from './repository.js';
 import UserModel from './user-model.js'
 import bcrypt from 'bcrypt'
 import crypto from 'crypto'
@@ -9,7 +8,7 @@ import BlackListTokenModel from '../model/blacklist-token-model.js'
 //need to separate orm functions from repository to decouple business logic from persistence
 export async function ormCreateUser(email, username, password) {
     try {
-        const newUser = await createUser({email, username, password});
+        const newUser = new UserModel({email, username, password});
         const salt = await bcrypt.genSalt(10);
         newUser.password = await bcrypt.hash(password, salt);
         await newUser.save();

@@ -167,6 +167,10 @@ export async function deleteUser(req, res) {
 export async function resetPasswordUsingEmail(req, res) {
     try {
         const { email } = req.body
+        if (!email) {
+            return res.status(400).json({message: 'Email missing!'})
+        }
+
         if (!validateEmail(email)) {
             return res.status(400).json({message: "Invalid Email Format!"})
         }
@@ -194,6 +198,9 @@ export async function resetPassword(req, res) {
     try {
         const { id, token, newPassword } = req.body
         const user = await _checkUser(id, 0)
+        if (!newPassword) {
+            return res.status(400).json({message: 'Password missing!'})
+        }
 
         if (!user) {
             return res.status(404).json({message: 'User is not found'})
