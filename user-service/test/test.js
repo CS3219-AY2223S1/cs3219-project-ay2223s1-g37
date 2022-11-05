@@ -209,10 +209,22 @@ describe('user-service tests', data => {
     })
 
     describe('PUT /api/user', () => {
+        before('login for DELETE api', (done) => {
+            chai.request(app)
+                .post('/api/user')
+                .set('content-type', 'application/json')
+                .send({username: newUser.username, password: password})
+                .end((err, res) => {
+                    token = res.body.token
+                    done()
+                })
+        })
+
         it("should not change password with empty fields", (done) => {
             chai.request(app)
                 .put("/api/user")
                 .set('content-type', 'application/json')
+                .set('Cookie', `token=${token}`)
                 .send({username: newUser.username})
                 .end((err, res) => {
                     res.should.have.status(400)
@@ -225,6 +237,7 @@ describe('user-service tests', data => {
             chai.request(app)
                 .put("/api/user")
                 .set('content-type', 'application/json')
+                .set('Cookie', `token=${token}`)
                 .send({username: 'test2', oldPassword: newUser.password, newPassword: newUser.password})
                 .end((err, res) => {
                     res.should.have.status(404)
@@ -237,6 +250,7 @@ describe('user-service tests', data => {
             chai.request(app)
                 .put("/api/user")
                 .set('content-type', 'application/json')
+                .set('Cookie', `token=${token}`)
                 .send({username: newUser.username, oldPassword: 'test1', newPassword: newUser.password})
                 .end((err, res) => {
                     res.should.have.status(401)
@@ -249,6 +263,7 @@ describe('user-service tests', data => {
             chai.request(app)
                 .put("/api/user")
                 .set('content-type', 'application/json')
+                .set('Cookie', `token=${token}`)
                 .send({username: newUser.username, oldPassword: password, newPassword: password})
                 .end((err, res) => {
                     res.should.have.status(200)
@@ -314,13 +329,17 @@ describe('user-service tests', data => {
                 .post('/api/user')
                 .set('content-type', 'application/json')
                 .send({username: newUser.username, password: password})
-                .end(done)
+                .end((err, res) => {
+                    token = res.body.token
+                    done()
+                })
         })
 
         it('should not delete user if user is unknown', (done) => {
             chai.request(app)
                 .delete("/api/user")
                 .set('content-type', 'application/json')
+                .set('Cookie', `token=${token}`)
                 .send({ username: 'test2', password: 'test2' })
                 .end((err, res) => {
                     res.should.have.status(404)
@@ -333,6 +352,7 @@ describe('user-service tests', data => {
             chai.request(app)
                 .delete("/api/user")
                 .set('content-type', 'application/json')
+                .set('Cookie', `token=${token}`)
                 .send({ username: newUser.username })
                 .end((err, res) => {
                     res.should.have.status(400)
@@ -345,6 +365,7 @@ describe('user-service tests', data => {
             chai.request(app)
                 .delete("/api/user")
                 .set('content-type', 'application/json')
+                .set('Cookie', `token=${token}`)
                 .send({ username: newUser.username, password: 'test1' })
                 .end((err, res) => {
                     res.should.have.status(401)
@@ -357,6 +378,7 @@ describe('user-service tests', data => {
             chai.request(app)
                 .delete("/api/user")
                 .set('content-type', 'application/json')
+                .set('Cookie', `token=${token}`)
                 .send({ username: newUser.username, password: password })
                 .end((err, res) => {
                     res.should.have.status(200)
