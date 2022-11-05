@@ -68,6 +68,9 @@ function UpdateAccount(props) {
                     setSeverity("error")
                     setOpenAlert(true)
                     setMessage("Unauthorized!")
+                    setTimeout(() => {
+                        navigate('/login')
+                    }, 2000)
                 }
             })
         if (res && res.status === STATUS_CODE_OK) {

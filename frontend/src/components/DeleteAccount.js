@@ -64,6 +64,9 @@ function DeleteAccount(props) {
                         setSeverity("error")
                         setOpenAlert(true)
                         setMessage("Unauthorized!")
+                        setTimeout(() => {
+                            navigate('/login')
+                        }, 2000)
                     }
                 })
 
