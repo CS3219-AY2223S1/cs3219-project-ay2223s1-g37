@@ -129,6 +129,9 @@ export async function userLogin(req, res) {
 
 export async function userLogout(req, res) {
     try {
+        if (!req.headers?.cookie) {
+            return res.status(401).json({message: 'Unauthorized'})
+        }
         const token = req.headers?.cookie.split('=')[1]
         const blacklistedToken = await _createBlacklistToken(token)
         return res.clearCookie("token").status(200).json({message: "Successfully log out!", token: blacklistedToken.token})
@@ -139,6 +142,10 @@ export async function userLogout(req, res) {
 
 export async function deleteUser(req, res) {
     try {
+        const token = req.headers?.cookie
+        if (!token) {
+            return res.status(401).json({message: 'Unauthorized'})
+        }
         const { username, password } = req.body
         if (!username || !password) {
             return res.status(400).json({message: 'Username and/or Password are missing!'})
@@ -231,6 +238,10 @@ export async function resetPassword(req, res) {
 
 export async function changePassword(req, res) {
     try {
+        const token = req.headers?.cookie
+        if (!token) {
+            return res.status(401).json({message: 'Unauthorized'})
+        }
         const { username, oldPassword, newPassword } = req.body;
         const user = await _checkUser(username, 0);
 

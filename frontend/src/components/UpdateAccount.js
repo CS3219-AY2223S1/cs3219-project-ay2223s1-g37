@@ -41,7 +41,7 @@ function UpdateAccount(props) {
     }
 
     const handleUpdate = async () => {
-        const res = await axios.put(URL_USER_SVC, data)
+        const res = await axios.put(URL_USER_SVC, data, { withCredentials: true })
             .catch((err) => {
                 if (err.response.status === STATUS_CODE_UNAUTHORIZED) {
                     setSeverity("error")
@@ -64,6 +64,10 @@ function UpdateAccount(props) {
                     setSeverity("error")
                     setOpenAlert(true)
                     setMessage("New password failed to meet requirements!")
+                } else if (err.response.status === STATUS_CODE_UNAUTHORIZED) {
+                    setSeverity("error")
+                    setOpenAlert(true)
+                    setMessage("Unauthorized!")
                 }
             })
         if (res && res.status === STATUS_CODE_OK) {
