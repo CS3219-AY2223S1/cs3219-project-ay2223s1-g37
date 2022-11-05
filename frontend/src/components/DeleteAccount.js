@@ -49,7 +49,7 @@ function DeleteAccount(props) {
                     }else if (err.response.status === STATUS_CODE_INTERNAL_SERVER_ERROR) {
                         setSeverity("error")
                         setOpenAlert(true)
-                        setMessage("Missing fields!")
+                        setMessage("Database failure when deleting account!")
                         console.log("Database failure when deleting account!")
                     } else if (err.response.status === STATUS_CODE_NOT_FOUND) {
                         setSeverity("error")
