@@ -1,6 +1,6 @@
 import {
-    AppBar, 
-    Toolbar, 
+    AppBar,
+    Toolbar,
     Container,
     IconButton,
     Tooltip,
@@ -8,7 +8,7 @@ import {
     Box,
     Menu,
     MenuItem,
-    Modal
+    Modal, Snackbar, Alert
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
@@ -16,10 +16,11 @@ import { useState } from 'react'
 import axios from 'axios'
 import SelectDifficultyPage from '../components/SelectDifficulty'
 import { useNavigate } from "react-router-dom";
-import { STATUS_CODE_OK } from "../constants";
+import {STATUS_CODE_OK, STATUS_CODE_UNAUTHORIZED} from "../constants";
 import { URL_USER_SVC } from "../configs";
 import DeleteAccount from "../components/DeleteAccount"
 import UpdateAccount from '../components/UpdateAccount';
+import CloseIcon from "@mui/icons-material/Close";
 
 
 function Home() {
@@ -30,6 +31,9 @@ function Home() {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const [openAlert, setOpenAlert] = useState(false);
+    const [message, setMessage] = useState("")
+    const [severity, setSeverity] = useState("error")
 
     const showModalDelete = () => {
         setVisisbleDelete(true)
@@ -47,10 +51,46 @@ function Home() {
         setVisisbleUpdate(false)
     }
 
+    const alert = (
+        <Snackbar
+            open={openAlert}
+            autoHideDuration={5000}
+            onClose={() => {
+                setOpenAlert(false);
+            }}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+            <Alert
+                severity={severity}
+                action={
+                    <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="small"
+                        onClick={() => {
+                            setOpenAlert(false);
+                        }}
+                    >
+                        <CloseIcon/>
+                    </IconButton>
+                }
+            >
+                {message}
+            </Alert>
+        </Snackbar>
+    )
+
     const handleLogout = async () => {
         const res = await axios.post(URL_USER_SVC + '/auth', {},  { withCredentials: true })
             .catch(err => {
-                console.log("error logging out")
+                if (err.response.status === STATUS_CODE_UNAUTHORIZED) {
+                    setSeverity("error")
+                    setOpenAlert(true)
+                    setMessage("Unauthorized!")
+                    setTimeout(() => {
+                        navigate('/login')
+                    }, 2000)
+                }
             })
             if (res && res.status === STATUS_CODE_OK) {
                 console.log("Successfully log out!")
@@ -83,6 +123,7 @@ function Home() {
 
     return (
         <div style={{ height: '100%' }}>
+            {openAlert? alert : null}
             <AppBar sx={{ backgroundColor: "#232F3D" }} position="sticky">
                 <Container maxWidth="xl">
                     <Toolbar sx={{ justifyContent: "space-between" }}>
