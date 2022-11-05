@@ -13,8 +13,8 @@ router.post('/signup', createUser)
 
 router.route('/')
     .post(userLogin)
-    .delete(deleteUser)
-    .put(changePassword)
+    .delete(deleteUser, auth)
+    .put(changePassword, auth)
 
 router.route('/:id/:token')
     .get(verifyEmailToken)

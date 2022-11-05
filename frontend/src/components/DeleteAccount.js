@@ -38,7 +38,7 @@ function DeleteAccount(props) {
             username: username,
             password: password
         }
-        const res = await axios.delete(URL_USER_SVC, {data})
+        const res = await axios.delete(URL_USER_SVC, {data, withCredentials: true})
             .catch((err) => {
                     if (err.response.status === STATUS_CODE_BAD_REQUEST
                         && (username === "" || password === "")) {
@@ -60,6 +60,10 @@ function DeleteAccount(props) {
                         setOpenAlert(true)
                         setMessage("Incorrect password! Unable to delete account")
                         console.log('Incorrect password! Unable to delete account')
+                    } else if (err.response.status === STATUS_CODE_UNAUTHORIZED) {
+                        setSeverity("error")
+                        setOpenAlert(true)
+                        setMessage("Unauthorized!")
                     }
                 })
 
