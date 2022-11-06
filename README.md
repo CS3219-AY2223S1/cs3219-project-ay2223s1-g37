@@ -56,11 +56,13 @@ Change `USERNAME` and `PASSWORD` in the `.env` file to `USER` and `PASS` respect
 2. Rename `.env.sample` file to `.env`
 3. Create a Cloud DB URL using Mongo Atlas
 4. Enter the DB URL created as `DB_LOCAL_URI` in `.env` file
-5. Under `question-service/test`, import `data.json` file into MongoDB (can be done easily through MongoDB Compass)
+5. Under `question-service/test`, import `data.json` file into MongoDB (can be done easily through MongoDB Compass).
+   Alternatively, in `question-service/test`, run `mongoimport --collection questionmodels --jsonArray --uri "<connection-string>" data.json`. 
+   Remember to change `<connection-string>` to your own
 6. Install npm packages using `npm i`
 7. Run Question Service using `npm run dev` at the question-service directory
 
-**Note**: When importing `data.json` file into MongoDB, ensure that the database name that the file is being 
+**Note**: When importing `data.json` file into MongoDB through MongoDB Compass, ensure that the database name that the file is being 
 imported into matches the database as specified in the `DB_LOCAL_URI`. Ensure that there is also a collection in the database 
 named as `questionmodels`, otherwise, create the collection
 
