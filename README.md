@@ -84,7 +84,7 @@ instead of starting them up one by one
 
 To run docker at the root folder: run `DOCKER_BUILDKIT=1 docker-compose up --build -d`
 
-After running the command, check that there should be 8 containers that are created and started under `cs3219-project-ay2223s1-g37` main container
+After running the command, check that there should be 7 containers that are created and started under `cs3219-project-ay2223s1-g37` main container
 
 Go to `http://localhost:80` to start using the app
 
