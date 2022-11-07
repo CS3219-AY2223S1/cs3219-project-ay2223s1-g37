@@ -9,7 +9,7 @@ import {
 import { Link } from "react-router-dom";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import {keyframes} from '@mui/system';
-import logo from '../components/cs3219logo-transparent.png';
+import logo from '../photos/cs3219logo-transparent.png';
 
 const highlight = keyframes`
     100% {background-position: 0 0}

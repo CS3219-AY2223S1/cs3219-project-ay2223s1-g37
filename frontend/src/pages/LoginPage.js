@@ -21,7 +21,7 @@ import {
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import '../components/UpdateAccount.css'
-import logo from '../components/cs3219logo-transparent.png';
+import logo from '../photos/cs3219logo-transparent.png';
 
 const rootStyle = {
   backgroundColor: "#f8f8ff",

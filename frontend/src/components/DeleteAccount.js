@@ -45,12 +45,10 @@ function DeleteAccount(props) {
                         setSeverity("error")
                         setOpenAlert(true)
                         setMessage("Missing fields!")
-                        console.log("Username or password is missing");
                     }else if (err.response.status === STATUS_CODE_INTERNAL_SERVER_ERROR) {
                         setSeverity("error")
                         setOpenAlert(true)
                         setMessage("Database failure when deleting account!")
-                        console.log("Database failure when deleting account!")
                     } else if (err.response.status === STATUS_CODE_NOT_FOUND) {
                         setSeverity("error")
                         setOpenAlert(true)
@@ -59,7 +57,6 @@ function DeleteAccount(props) {
                         setSeverity("error")
                         setOpenAlert(true)
                         setMessage("Incorrect password! Unable to delete account")
-                        console.log('Incorrect password! Unable to delete account')
                     } else if (err.response.status === STATUS_CODE_UNAUTHORIZED) {
                         setSeverity("error")
                         setOpenAlert(true)

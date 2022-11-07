@@ -18,7 +18,7 @@ import axios from "axios";
 import { URL_USER_SVC, PREFIX_CREATE_USER} from "../configs";
 import { STATUS_CODE_CONFLICT, STATUS_CODE_CREATED, STATUS_CODE_BAD_REQUEST, STATUS_CODE_INTERNAL_SERVER_ERROR } from "../constants";
 import { Link } from "react-router-dom";
-import logo from '../components/cs3219logo-transparent.png';
+import logo from '../photos/cs3219logo-transparent.png';
 
 const rootStyle = {
     backgroundColor: "#f8f8ff",

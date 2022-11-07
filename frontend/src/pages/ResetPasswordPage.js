@@ -22,7 +22,7 @@ import { STATUS_CODE_NOT_FOUND, STATUS_CODE_UNAUTHORIZED,
 } from "../constants";
 import { Link, useParams } from "react-router-dom";
 import '../components/UpdateAccount.css'
-import logo from '../components/cs3219logo-transparent.png';
+import logo from '../photos/cs3219logo-transparent.png';
 
 const rootStyle = {
     backgroundColor: "#f8f8ff",
