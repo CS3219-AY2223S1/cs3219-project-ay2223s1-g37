@@ -12,7 +12,6 @@ function SessionEndedPage() {
   const roomInfo = location.state.roomInfo;
   const questionHistory = location.state.questionHistory;
   const answerUrl = location.state.answerUrl;
-
   // const roomId = 2; // TODO: REMOVE. Hardcoded temporarily
   const navigate = useNavigate();
 
@@ -28,23 +27,11 @@ function SessionEndedPage() {
   const [isRoleSwitched, setIsRoleSwitched] = useState(false);
   const [openAlert, setOpenAlert] = useState(true);
 
-  console.log("session ended match entry: " + JSON.stringify(matchEntry));
-  console.log("session ended room info: " + JSON.stringify(roomInfo));
-
   const handleExit = () => {
     matchingSocket.emit("endSession", { roomId: matchEntry.id });
     collabSocket.emit("sessionComplete", { roomId: roomInfo.id });
     navigate("/home");
   };
-
-  // const handleSwitchOrRestart = () => {
-  //   if (isSessionComplete) {
-  //     // TODO: Handle resarting of session. Ensure both parties say YES before going to matched room
-  //   } else {
-  //     // TODO: Switch users
-  //     navigate("/matchedroom");
-  //   }
-  // };
 
   // Navigate to next page once countdown is over and roles have been switched
   useEffect(() => {

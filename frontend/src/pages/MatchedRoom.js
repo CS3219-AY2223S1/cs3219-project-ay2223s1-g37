@@ -100,7 +100,6 @@ function MatchedRoom() {
 
     // Listening for roomCreated event emitted from collaboration service
     collabSocket.on("roomCreationSuccess", ({ room }) => {
-      // console.log("matchedRoom room: ", JSON.stringify(room));
       setRoomInfo(room);
       setRoomCreated(true);
       setTimeLeft(room.allocatedTime);
@@ -142,6 +141,7 @@ function MatchedRoom() {
         state: {
           matchEntry: data.matchEntry,
           roomInfo: data.roomInfo,
+          answerUrl: question.url
         },
       });
     });
@@ -301,6 +301,7 @@ function MatchedRoom() {
       state: {
         matchEntry: matchEntry,
         roomInfo: roomInfo,
+        answerUrl: question.url
       },
     });
   };

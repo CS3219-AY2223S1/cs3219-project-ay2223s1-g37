@@ -23,7 +23,7 @@ import {
     STATUS_CODE_INTERNAL_SERVER_ERROR,
     STATUS_CODE_BAD_REQUEST
 } from "../constants";
-import logo from '../components/cs3219logo-transparent.png';
+import logo from '../photos/cs3219logo-transparent.png';
 
 const rootStyle = {
     backgroundColor: "#f8f8ff",
