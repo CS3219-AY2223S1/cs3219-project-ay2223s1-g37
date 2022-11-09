@@ -1,20 +1,43 @@
-import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
-import SignupPage from './components/SignupPage';
-import {Box} from "@mui/material";
+import { Routes, Route, Navigate } from "react-router-dom";
+import SignupPage from "./pages/SignupPage";
+import LogininPage from "./pages/LoginPage";
+import { Box } from "@mui/material";
+import CountdownPage from "./pages/CountdownPage";
+import MatchedRoom from "./pages/MatchedRoom";
+import SessionEndedPage from "./pages/SessionEndedPage";
+import Home from "./pages/HomePage";
+import ProtectedRoute from "./utils/ProtectedRoute";
+import UpdateAccount from "./components/UpdateAccount";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
+import ForgetPasswordPage from "./pages/ForgetPasswordPage";
+import IntroductionPage from "./pages/IntroductionPage";
 
 function App() {
-    return (
-        <div className="App">
-            <Box display={"flex"} flexDirection={"column"} padding={"4rem"}>
-                <Router>
-                    <Routes>
-                        <Route exact path="/" element={<Navigate replace to="/signup" />}></Route>
-                        <Route path="/signup" element={<SignupPage/>}/>
-                    </Routes>
-                </Router>
-            </Box>
-        </div>
-    );
+  return (
+    <div style={{ height: "100%" }}>
+      <Box display={"flex"} flexDirection={"column"} height={"100%"}>
+        <Routes>
+          <Route
+            exact
+            path="/"
+            element={<Navigate replace to="/introduction" />}
+          ></Route>
+          <Route path="/introduction" element={<IntroductionPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/login" element={<LogininPage />} />
+          <Route path="/reset/:id/:token" element={<ResetPasswordPage />} />
+          <Route path="/update" element={<UpdateAccount />} />
+          <Route path="/reset" element={<ForgetPasswordPage />} />
+          <Route path="/" element={<ProtectedRoute />}>
+            <Route path="home" element={<Home />} />
+            <Route path="countdown" element={<CountdownPage />} />
+            <Route path="matchedroom" element={<MatchedRoom />} />
+            <Route path="sessionended" element={<SessionEndedPage />} />
+          </Route>
+        </Routes>
+      </Box>
+    </div>
+  );
 }
 
 export default App;
